@@ -5,10 +5,6 @@
     <link>https://erolrecep.github.io/tags/</link>
     <description>Recent content in Tags on Recep Erol</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language>
-    
-	<atom:link href="https://erolrecep.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-US</language><atom:link href="https://erolrecep.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
