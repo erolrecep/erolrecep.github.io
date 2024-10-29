@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+    <head>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        
+        <meta name="description" content="HPC Admin Technical Blog">
+        
+        <meta name="keywords" content="minimalist,blog,mlenngineer,hpc,ai,python,c,optimization,computervision,experiments,computation">
+
+        <title>
+              Recep&#39;s Technical Blog - GNU Parallel for Your Terminal Tasks 
+        </title>
+
+        <meta name="generator" content="Hugo 0.136.5">
+
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+        
+
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://erolrecep.github.io/css/main.css">
+        <link rel="stylesheet" href="https://erolrecep.github.io/css/custom.css">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#ffffff"></head>
+
+    <body lang="en-US">
+        <div class="container my-auto">
+
+<header class="text-start title">
+  <h1 class="title">GNU Parallel for Your Terminal Tasks</h1>
+</header>
+
+<section id="category-pane" class="meta">
+  
+  <div class="d-flex flex-column flex-md-row justify-content-between">
+    <h6 class="text-start meta">
+       PUBLISHED ON OCT 28, 2024
+      
+      / 5 MIN READ
+      
+    </h6>
+  </div>
+  
+</section>
+
+<section id="content-pane">
+  <div class="text-justify content">
+    
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-gnu-parallel">What is GNU Parallel?</a></li>
+    <li><a href="#installation-and-usage">Installation and Usage</a></li>
+    <li><a href="#the-power-of-parallel">The Power of Parallel</a></li>
+    <li><a href="#my-daily-tools-and-workflows">My Daily Tools and Workflows</a></li>
+    <li><a href="#use-cases">Use Cases</a>
+      <ul>
+        <li><a href="#converting-images-to-grayscale">Converting Images to Grayscale</a></li>
+        <li><a href="#audio-file-processing">Audio File Processing</a></li>
+        <li><a href="#word-counting">Word Counting</a></li>
+        <li><a href="#file-type-conversion">File Type Conversion</a></li>
+        <li><a href="#miscellaneous-tasks">Miscellaneous Tasks</a></li>
+      </ul>
+    </li>
+    <li><a href="#streamlining-workflows">Streamlining Workflows</a></li>
+    <li><a href="#running-slurm-job-scripts">Running SLURM Job Scripts</a></li>
+    <li><a href="#high-throughput-computing">High Throughput Computing</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    
+    <p>In today&rsquo;s fast-paced world, efficiency is key, especially when working with multiple files and processes. Enter GNU Parallel, a powerful command-line tool that can help you streamline your terminal tasks by running them in parallel. In this blog post, we’ll explore what GNU Parallel is, how to install and use it, and some practical use cases that demonstrate its capabilities.</p>
+<h2 id="what-is-gnu-parallel">What is GNU Parallel?</h2>
+<p>GNU Parallel is a command-line utility designed to execute jobs in parallel, leveraging your system&rsquo;s resources more effectively. Whether you&rsquo;re converting files, processing data, or running scripts, if you can do it in the terminal, you can probably use GNU Parallel to speed it up. This tool is perfect for anyone who relies on the terminal for their daily tasks and wants to optimize their workflow.</p>
+<h2 id="installation-and-usage">Installation and Usage</h2>
+<p>Installing GNU Parallel is straightforward. On most Linux distributions, you can install it using your package manager. For example, on Debian-based systems, you can use:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get install parallel
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># or</span>
+</span></span><span style="display:flex;"><span>brew install parallel
+</span></span></code></pre></div><p>Once installed, you can start using it immediately. The basic syntax is simple:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>parallel <span style="color:#f92672">[</span>options<span style="color:#f92672">]</span> command ::: arguments
+</span></span></code></pre></div><p>This allows you to run a command with multiple sets of arguments concurrently.</p>
+<h2 id="the-power-of-parallel">The Power of Parallel</h2>
+<p>One of the standout features of GNU Parallel is its ability to cite tasks effectively, which can enhance the way you structure and manage your jobs. By incorporating it into your daily routine, you can significantly cut down on processing time.</p>
+<h2 id="my-daily-tools-and-workflows">My Daily Tools and Workflows</h2>
+<p>As someone who frequently uses various terminal tools, I rely on GNU Parallel to combine these tools and handle multiple tasks simultaneously. Some of my go-to tools include:</p>
+<ul>
+<li><strong>GraphicsMagick</strong>: For image manipulation and conversion.</li>
+<li><strong>FFmpeg</strong>: For video processing and format conversions.</li>
+<li><strong>SoX</strong>: For audio processing tasks.</li>
+<li><strong>Python scripts</strong>: Running multiple Python jobs in parallel.</li>
+</ul>
+<h2 id="use-cases">Use Cases</h2>
+<p>Let’s get into some specific workflows where I utilize GNU Parallel:</p>
+<h3 id="converting-images-to-grayscale">Converting Images to Grayscale</h3>
+<p>While I could write Python scripts using OpenCV or PIL to accomplish this, using GraphicsMagick with GNU Parallel is much faster and simpler. A command like this can handle multiple images at once:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gm convert *.jpg -colorspace Gray -parallel <span style="color:#ae81ff">4</span> output_%d.jpg
+</span></span></code></pre></div><p>Additionally, there are other ways that you can employ the parallel for a similar task,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>parallel gm convert <span style="color:#f92672">{}</span> <span style="color:#f92672">{</span>.<span style="color:#f92672">}</span>.jpg ::: *.webp
+</span></span></code></pre></div><p>In this example, gets all the webp files in the same directory and converts them into jpg file type. By using &ldquo;:::&rdquo;, you let parallel to use all the resources necessary for this task.</p>
+<p>For more detailed operations for gm convert, please visit <a href="http://www.graphicsmagick.org/convert.html">GraphicsMagick convert docs</a></p>
+<h3 id="audio-file-processing">Audio File Processing</h3>
+<p>When working with audio files, I often need to convert them into a specific format. GNU Parallel allows me to process multiple files concurrently, making audio conversion a breeze. For instance, if you want to transcribe a set of audio files and write the results to corresponding output files, here’s a streamlined workflow. If the recorded files are in MP3 format, you first need to convert them into WAV files, then use these WAV files with a transcription script to generate the outputs. Here’s how it looks in terminal commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ls *.mp3 | parallel <span style="color:#e6db74">&#39;sox {} {.}.wav&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># or</span>
+</span></span><span style="display:flex;"><span>parallel sox <span style="color:#f92672">{}</span> <span style="color:#f92672">{</span>.<span style="color:#f92672">}</span>.wav ::: *.mp3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># then</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ls *.wav | parallel <span style="color:#e6db74">&#39;python transcribe.py -i {} -o {.}.json&#39;</span> 
+</span></span></code></pre></div><p>See, if you know what to do, automating tasks becomes as easy as painting your own Mona Lisa!</p>
+<h3 id="word-counting">Word Counting</h3>
+<p>If I want to count the number of words in multiple text files, I can do so efficiently with a single command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>parallel wc ::: *.txt
+</span></span></code></pre></div><p>Have you mess with &ldquo;Word count&rdquo; mapreduce problem on distributed computing? Think about this, if you a little bit of bash scripting and text parsing with it, without setting up such environment for word count problem, you can easily build your own workflow with the tools including, we, parallel, and a little bit or awk and bash scripting, you can easily automate the mapreduce program with these tools.</p>
+<h3 id="file-type-conversion">File Type Conversion</h3>
+<p>One of my favorite features of GNU Parallel is its ability to convert multiple file types with a single command. For example, to convert several <code>.txt</code> files to <code>.md</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>parallel mv <span style="color:#f92672">{}</span> <span style="color:#f92672">{</span>.<span style="color:#f92672">}</span>.md ::: *.txt
+</span></span></code></pre></div><h3 id="miscellaneous-tasks">Miscellaneous Tasks</h3>
+<p>Here are some of the one-liners I use almost every day as part of my tasks. Test any of them with your files and types and enjoy the view of htop! :)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>parallel ffmpeg -i <span style="color:#f92672">{}</span> <span style="color:#f92672">{</span>.<span style="color:#f92672">}</span>.mp4 ::: *.webm
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># or</span>
+</span></span><span style="display:flex;"><span>parallel gm convert <span style="color:#f92672">{}</span> <span style="color:#f92672">{</span>.<span style="color:#f92672">}</span>.jpg ::: *.webp
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ls *.webp | parallel <span style="color:#e6db74">&#39;gm convert {} {.}.jpg&#39;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat ids.txt | parallel yt-dlp <span style="color:#f92672">{</span>.<span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sh urls.sh | parallel wget <span style="color:#f92672">{</span>.<span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>These one-liners save me significant time and effort.</p>
+<p> </p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: center"><img src="htop-view-for-parallel-running-320x240.jpg" alt="Image 1"></th>
+          <th style="text-align: center"><img src="parallel-citation-640x480.jpg" alt="Image 2"></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">htop utilizes all the resources</td>
+          <td style="text-align: center">GNU Parallel Citation for your work</td>
+      </tr>
+  </tbody>
+</table>
+<p> </p>
+<p>In addition to this context, I also shared <a href="https://www.linkedin.com/posts/erolrecep_gnuparallel-activity-7235523998489436160-MA4r/">a relevant content on my LinkedIn page</a> and community liked it. This tool is incredible! If you use it for the correct purpose, you can&rsquo;t even imagine how useful this tool would be. Saves time, resources, and even shortens the whole processing time.</p>
+<h2 id="streamlining-workflows">Streamlining Workflows</h2>
+<p>When I have a long list of tasks, I can easily assign them to GNU Parallel, ensuring each job is completed efficiently. After running a set of tasks, I can confirm their completion, allowing for smoother workflows.</p>
+<h2 id="running-slurm-job-scripts">Running SLURM Job Scripts</h2>
+<p>GNU Parallel also integrates seamlessly with SLURM job scripts, enabling you to manage and execute multiple jobs in a high-throughput computing environment. This flexibility allows you to run the same code with different parameters without modifying your original scripts.</p>
+<h2 id="high-throughput-computing">High Throughput Computing</h2>
+<p>One of the significant advantages of GNU Parallel is its capacity for high-throughput computing. It can take smaller tasks, run them concurrently, and maximize the efficiency of your system without necessitating changes to your original code. By combining GNU Parallel with other tools, like SCP, you can build robust pipelines for complex computations on any Linux system. I am planing to create another post just for this topic, &ldquo;<em>High Throughput Computing with GNU Parallel!</em>&rdquo;</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>My experience with parallel programming has taught me the importance of leveraging efficient tools like GNU Parallel. I wholeheartedly recommend it to anyone looking to enhance their terminal workflows. Whether you’re processing files, running scripts, or performing complex computations, GNU Parallel can be a game-changer.</p>
+<p>Kudos to the developer(s) of GNU Parallel for creating such a powerful tool that opens up new possibilities for productivity in the terminal. Give it a try, and see how it can transform your tasks into streamlined, efficient processes!</p>
+
+  </div>
+</section>
+
+<section id="tag-pane" class="meta">
+  
+  <div class="d-flex flex-column flex-md-row justify-content-between">
+    <h6 class="text-end meta">
+      
+    </h6>
+  </div>
+  
+</section>
+
+
+
+
+
+
+
+<section id="menu-pane" class="menu text-center">
+  
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      
+      
+      <li class="menu-item">
+        <a class="menu-item" href="https://erolrecep.github.io/posts/workshop_checklist/">&lt; prev</a>
+      </li>
+      
+
+      <li class="menu-item">
+        
+        <span class="menu-item">&nbsp;|&nbsp;</span>
+        
+        <a class="menu-item" href="/posts">posts</a>
+        
+      </li>
+
+      
+      
+    </ul>
+  </nav>
+  
+  <h4 class="text-center mt-3"><a class="menu-item" href="https://erolrecep.github.io/">home</a></h4>
+</section>
+
+<footer class="text-center footer">
+  <hr />
+  
+  <h6 class="text-center copyright">© 2024. Recep Erol. Made with ❤️ in Fayetteville, AR</h6>
+  
+  <h6 class="text-center powered"><a href="https://gohugo.io/">Hugo, themed by </a> <a
+      href="https://github.com/kaapiandcode/hugo-goa">hugo-goa</a> <br> <a href="https://creativecommons.org/version4/" >Some Rights Reserved</a> </h6>
+  
+  
+  <h6>
+    <a href="https://erolrecep.github.io/index.xml" aria-label="RSS Feed"><i class="fas fa-rss" aria-hidden="true"></i></a>
+  </h6>
+  
+  
+
+</footer>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+
+<script>hljs.highlightAll();</script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="/js/custom.js"></script>
+</body>
+
+</html>
+
