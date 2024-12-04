@@ -6,8 +6,15 @@
     <description>Recent content on Recep&#39;s Technical Blog</description>
     <generator>Hugo</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 28 Oct 2024 21:18:27 -0500</lastBuildDate>
+    <lastBuildDate>Thu, 28 Nov 2024 11:54:34 -0600</lastBuildDate>
     <atom:link href="https://erolrecep.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>5 days in Atlanta: My Personal Highlights from SC24</title>
+      <link>https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</link>
+      <pubDate>Thu, 28 Nov 2024 11:54:34 -0600</pubDate>
+      <guid>https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</guid>
+      <description>&lt;p&gt;&lt;figure&gt;&lt;img src=&#34;https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/sc24_600x375.png&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;em&gt;&lt;!-- raw HTML omitted --&gt;SC24 Logo&lt;!-- raw HTML omitted --&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt; &lt;/p&gt;&#xA;&lt;p&gt;Over the past three years, I’ve had the privilege of attending the Supercomputing (SC) Conference to stay informed about the latest developments, changes, and scientific advancements in the field of supercomputing. In preparation for these experiences, I dedicated myself to building a strong foundation: reading books, taking courses, constructing a mini edge cluster to mimic an HPC center setup, and conducting numerous experiments to explore how different technologies and tools compare.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>GNU Parallel for Your Terminal Tasks</title>
       <link>https://erolrecep.github.io/posts/gnuparallel_for_your_terminal_tasks/</link>
