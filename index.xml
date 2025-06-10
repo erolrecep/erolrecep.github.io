@@ -6,8 +6,15 @@
     <description>Recent content on Recep&#39;s Technical Blog</description>
     <generator>Hugo</generator>
     <language>en-US</language>
-    <lastBuildDate>Thu, 28 Nov 2024 11:54:34 -0600</lastBuildDate>
+    <lastBuildDate>Tue, 10 Jun 2025 05:47:10 -0500</lastBuildDate>
     <atom:link href="https://erolrecep.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About Me</title>
+      <link>https://erolrecep.github.io/about/</link>
+      <pubDate>Tue, 10 Jun 2025 05:47:10 -0500</pubDate>
+      <guid>https://erolrecep.github.io/about/</guid>
+      <description>&lt;p&gt;Recep Erol, PhD is a deep learning and machine learning expert with extensive experience in high-performance computing and system-level optimization. With over a decade of work at the intersection of AI and computation, he brings a rare ability to understand and optimize the entire software pipeline — from data preprocessing and model design to deployment and runtime tuning.&lt;/p&gt;&#xA;&lt;p&gt;His expertise includes:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Computational performance optimization across CPUs, GPUs, and distributed systems&lt;/li&gt;&#xA;&lt;li&gt;Hardware-aware software engineering, including RAM, I/O, and throughput tuning&lt;/li&gt;&#xA;&lt;li&gt;Model compression, quantization, and efficient inference deployment&lt;/li&gt;&#xA;&lt;li&gt;Building scalable AI workflows tailored to research and production environments&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Recep is known for designing resource-efficient systems that adapt to real-world constraints — whether enabling researchers on HPC clusters or deploying intelligent models under tight hardware budgets. His work reflects a holistic approach to AI development that prioritizes efficiency, scalability, and performance at every layer of the stack.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>5 days in Atlanta: My Personal Highlights from SC24</title>
       <link>https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</link>
@@ -35,13 +42,6 @@
       <pubDate>Sun, 13 Oct 2024 05:26:01 -0500</pubDate>
       <guid>https://erolrecep.github.io/posts/notes_for_organizing_workshops/</guid>
       <description>&lt;p&gt;&lt;strong&gt;TL;DR:&lt;/strong&gt;&lt;br&gt;&#xA;This post shares insights on organizing a technical workshop on a university campus. As an HPC admin and AI facilitator, I’ve organized several workshops and technical training sessions for HPC users. Here’s a roadmap of what to do &lt;em&gt;before&lt;/em&gt;, &lt;em&gt;during&lt;/em&gt;, and &lt;em&gt;after&lt;/em&gt; a workshop, along with tips and tricks to make life easier for both you and the attendees. These are my personal views.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;strong&gt;From ML Engineer to HPC Admin&lt;/strong&gt;&lt;br&gt;&#xA;After working as a machine learning engineer in various companies over a decade, I decided to switch my career to high-performance computing (HPC) and supercomputing centers. Upon completing my PhD, I reflected on my background and realized that the role of an HPC admin and AI facilitator fit perfectly with my skill set. I had also spent years in academia, teaching multiple courses, preparing quizzes and assignments, and mentoring over 100 graduate students in programming, problem-solving, data science, machine learning, and AI. These experiences motivated me to pursue this path.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>https://erolrecep.github.io/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://erolrecep.github.io/about/</guid>
-      <description></description>
     </item>
   </channel>
 </rss>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        
+        <meta name="description" content="HPC Admin Technical Blog">
+        
+        <meta name="keywords" content="minimalist,blog,mlenngineer,hpc,ai,python,c,optimization,computervision,experiments,computation">
+
+        <title>
+              Recep&#39;s Technical Blog - Nvidia Hpc Architect Prep 
+        </title>
+
+        <meta name="generator" content="Hugo 0.147.8">
+
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+        
+
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="http://localhost:1313/css/main.css">
+        <link rel="stylesheet" href="http://localhost:1313/css/custom.css">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#ffffff"></head>
+
+    <body lang="en-US">
+        <div class="container my-auto">
+
+<header class="text-start title">
+  <h1 class="title">Nvidia Hpc Architect Prep</h1>
+</header>
+
+<section id="category-pane" class="meta">
+  
+  <div class="d-flex flex-column flex-md-row justify-content-between">
+    <h6 class="text-start meta">
+       PUBLISHED ON JAN 30, 2025
+      
+      / 29 MIN READ
+      
+    </h6>
+  </div>
+  
+</section>
+
+<section id="content-pane">
+  <div class="text-justify content">
+    
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-technical-problem-solving-and-expertise">1. <strong>Technical Problem Solving and Expertise</strong></a></li>
+        <li><a href="#2-collaboration-and-teamwork">2. <strong>Collaboration and Teamwork</strong></a></li>
+        <li><a href="#3-leadership-and-initiative">3. <strong>Leadership and Initiative</strong></a></li>
+        <li><a href="#4-adaptability-and-multitasking">4. <strong>Adaptability and Multitasking</strong></a></li>
+        <li><a href="#5-conflict-resolution-and-problem-management">5. <strong>Conflict Resolution and Problem Management</strong></a></li>
+        <li><a href="#6-vision-and-impact">6. <strong>Vision and Impact</strong></a></li>
+        <li><a href="#7-behavioral-questions-on-work-style">7. <strong>Behavioral Questions on Work Style</strong></a></li>
+        <li><a href="#tips-for-preparing">Tips for Preparing:</a></li>
+        <li><a href="#1-how-do-you-ensure-quality-when-working-under-tight-deadlines-or-with-high-volume-data">1. <strong>How do you ensure quality when working under tight deadlines or with high-volume data?</strong></a></li>
+        <li><a href="#2-how-do-you-handle-situations-where-a-team-or-project-member-is-falling-behind-or-not-meeting-expectations">2. <strong>How do you handle situations where a team or project member is falling behind or not meeting expectations?</strong></a></li>
+        <li><a href="#3-tell-me-about-a-time-when-you-had-to-learn-something-completely-new-to-be-successful-on-a-project-how-did-you-go-about-it">3. <strong>Tell me about a time when you had to learn something completely new to be successful on a project. How did you go about it?</strong></a></li>
+        <li><a href="#4-tell-me-about-a-time-when-you-had-to-balance-multiple-competing-priorities-in-a-high-pressure-environment-how-did-you-manage-your-time-and-resources">4. <strong>Tell me about a time when you had to balance multiple competing priorities in a high-pressure environment. How did you manage your time and resources?</strong></a></li>
+        <li><a href="#5-how-do-you-stay-organized-when-working-on-multiple-projects-especially-with-tight-deadlines">5. <strong>How do you stay organized when working on multiple projects, especially with tight deadlines?</strong></a></li>
+        <li><a href="#1-where-do-you-see-hpc-and-gpu-computing-evolving-in-the-next-few-years-how-would-you-contribute-to-this-evolution-in-your-role-as-a-senior-hpc-architect">1. <strong>Where do you see HPC and GPU computing evolving in the next few years? How would you contribute to this evolution in your role as a Senior HPC Architect?</strong></a></li>
+        <li><a href="#2-how-do-you-ensure-that-your-solutions-are-scalable-and-adaptable-for-future-needs-in-high-performance-computing">2. <strong>How do you ensure that your solutions are scalable and adaptable for future needs in high-performance computing?</strong></a></li>
+        <li><a href="#3-tell-me-about-a-time-when-you-had-to-innovate-to-solve-a-problem-in-a-way-that-significantly-impacted-your-organization-or-the-team-you-were-working-with">3. <strong>Tell me about a time when you had to innovate to solve a problem in a way that significantly impacted your organization or the team you were working with.</strong></a></li>
+        <li><a href="#4-how-do-you-ensure-that-your-work-aligns-with-broader-organizational-goals-and-contributes-to-the-success-of-the-company">4. <strong>How do you ensure that your work aligns with broader organizational goals and contributes to the success of the company?</strong></a></li>
+        <li><a href="#5-tell-me-about-a-time-when-you-had-to-learn-something-completely-new-to-be-successful-on-a-project-how-did-you-go-about-it">5. <strong>Tell me about a time when you had to learn something completely new to be successful on a project. How did you go about it?</strong></a></li>
+        <li><a href="#4-tell-me-about-a-time-when-you-had-to-balance-multiple-competing-priorities-in-a-high-pressure-environment-how-did-you-manage-your-time-and-resources-1">4. <strong>Tell me about a time when you had to balance multiple competing priorities in a high-pressure environment. How did you manage your time and resources?</strong></a></li>
+        <li><a href="#3-tell-me-about-a-time-when-you-had-to-innovate-to-solve-a-problem-in-a-way-that-significantly-impacted-your-organization-or-the-team-you-were-working-with-1">3. <strong>Tell me about a time when you had to innovate to solve a problem in a way that significantly impacted your organization or the team you were working with.</strong></a></li>
+        <li><a href="#2-how-do-you-ensure-that-your-solutions-are-scalable-and-adaptable-for-future-needs-in-high-performance-computing-1">2. <strong>How do you ensure that your solutions are scalable and adaptable for future needs in high-performance computing?</strong></a></li>
+        <li><a href="#example-question">Example Question:</a></li>
+        <li><a href="#star-response">STAR Response:</a></li>
+        <li><a href="#key-takeaways-for-this-response">Key Takeaways for This Response:</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    
+    <p>Given the nature of this role, you&rsquo;re likely to encounter behavioral questions that assess both your technical capabilities and your interpersonal skills. Since this position requires hands-on technical expertise in HPC (High Performance Computing) and GPU-accelerated computing, and also emphasizes communication, teamwork, and problem-solving, you should prepare for questions that cover a variety of areas.</p>
+<p>Here are some potential categories and questions you might expect:</p>
+<h3 id="1-technical-problem-solving-and-expertise">1. <strong>Technical Problem Solving and Expertise</strong></h3>
+<p>These questions will test your ability to troubleshoot and provide solutions in complex and dynamic environments.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Tell me about a time when you had to troubleshoot a performance issue in an HPC cluster. What steps did you take to identify and solve the problem?</strong></li>
+<li><strong>Describe a challenging technical project you worked on involving large-scale GPU-accelerated systems. How did you approach it, and what was the outcome?</strong></li>
+<li><strong>Can you explain a situation where you had to optimize the performance of an HPC system? What tools did you use, and what impact did your changes have?</strong></li>
+</ul>
+<p><strong>What to focus on:</strong> Show your deep technical knowledge, especially related to GPUs, parallel file systems, and resource management. Highlight how you’ve used analytical thinking to solve problems and improve system performance.</p>
+<h3 id="2-collaboration-and-teamwork">2. <strong>Collaboration and Teamwork</strong></h3>
+<p>Since the role involves working with various teams (e.g., systems engineers, machine learning researchers), they&rsquo;ll want to assess how well you collaborate and communicate with others.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Give an example of a time when you had to collaborate with a cross-functional team to deploy an HPC solution. How did you ensure alignment between technical and non-technical team members?</strong></li>
+<li><strong>Have you ever worked with a research team to optimize workflows for a deep learning project? What challenges did you face and how did you overcome them?</strong></li>
+<li><strong>Tell me about a situation where you had to communicate complex technical concepts to non-technical stakeholders. How did you ensure they understood?</strong></li>
+</ul>
+<p><strong>What to focus on:</strong> Showcase your teamwork and communication skills. Emphasize how you&rsquo;ve worked with diverse teams and how you adjust your communication style based on your audience (e.g., engineers vs. researchers).</p>
+<h3 id="3-leadership-and-initiative">3. <strong>Leadership and Initiative</strong></h3>
+<p>In a senior role, you’ll likely be expected to take initiative and potentially lead projects or mentor others. These questions will test your leadership and decision-making abilities.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Describe a time when you had to take ownership of a large, complex HPC project. How did you ensure its success?</strong></li>
+<li><strong>Tell me about a time when you identified an area for improvement in an HPC system or workflow. What steps did you take to implement change?</strong></li>
+<li><strong>Have you mentored junior engineers or researchers? Can you describe an experience where you helped someone improve their technical abilities or solve a problem?</strong></li>
+</ul>
+<p><strong>What to focus on:</strong> Illustrate your ability to lead, mentor, and drive initiatives. Focus on your decision-making process, the challenges you faced, and how your actions contributed to success.</p>
+<h3 id="4-adaptability-and-multitasking">4. <strong>Adaptability and Multitasking</strong></h3>
+<p>The job description mentions that the environment is dynamic and you’ll need to juggle multiple projects. Expect questions that probe how you handle such scenarios.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Tell me about a time when you had to balance multiple competing priorities in a high-pressure environment. How did you manage your time and resources?</strong></li>
+<li><strong>Describe a situation where you had to quickly adapt to a new technology or approach in your work. How did you get up to speed and apply it effectively?</strong></li>
+<li><strong>How do you stay organized when working on multiple projects, especially with tight deadlines?</strong></li>
+</ul>
+<p><strong>What to focus on:</strong> Provide examples that highlight your ability to prioritize tasks, stay organized, and deliver high-quality work under pressure.</p>
+<h3 id="5-conflict-resolution-and-problem-management">5. <strong>Conflict Resolution and Problem Management</strong></h3>
+<p>As you’ll be collaborating with teams that may have different priorities, conflict resolution skills will be essential. These questions focus on how you handle disagreements or challenges that arise during projects.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Tell me about a time when you disagreed with a colleague on the technical approach for a project. How did you handle the disagreement and reach a resolution?</strong></li>
+<li><strong>Have you ever had to manage a situation where a project was behind schedule or facing technical setbacks? What did you do to get things back on track?</strong></li>
+<li><strong>Describe a situation where there was miscommunication among team members. How did you address it?</strong></li>
+</ul>
+<p><strong>What to focus on:</strong> Highlight your ability to listen, mediate, and find win-win solutions that keep the team moving forward. Showcase your interpersonal skills and professionalism.</p>
+<h3 id="6-vision-and-impact">6. <strong>Vision and Impact</strong></h3>
+<p>This type of question explores how you approach long-term planning and how your work contributes to broader organizational goals.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>Where do you see HPC and GPU computing evolving in the next few years? How would you contribute to this evolution in your role as a Senior HPC Architect?</strong></li>
+<li><strong>How do you ensure that your solutions are scalable and adaptable for future needs in high-performance computing?</strong></li>
+<li><strong>Tell me about a time when you had to innovate to solve a problem in a way that significantly impacted your organization or the team you were working with.</strong></li>
+</ul>
+<p><strong>What to focus on:</strong> Show that you have a forward-thinking mindset and an understanding of the larger trends in HPC, deep learning, and GPU computing. Highlight any innovative solutions you’ve brought to past projects.</p>
+<h3 id="7-behavioral-questions-on-work-style">7. <strong>Behavioral Questions on Work Style</strong></h3>
+<p>These questions will explore how you approach your work, especially with regards to priorities, deadlines, and working within team structures.</p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><strong>How do you ensure quality when working under tight deadlines or with high-volume data?</strong></li>
+<li><strong>How do you handle situations where a team or project member is falling behind or not meeting expectations?</strong></li>
+<li><strong>Tell me about a time when you had to learn something completely new to be successful on a project. How did you go about it?</strong></li>
+</ul>
+<p><strong>What to focus on:</strong> Be ready to demonstrate your problem-solving, organizational, and learning abilities. Show how you adapt your approach to different challenges, while ensuring the quality of your work.</p>
+<hr>
+<h3 id="tips-for-preparing">Tips for Preparing:</h3>
+<ul>
+<li><strong>Review key technical concepts:</strong> Be sure you’re comfortable discussing GPUs, scheduling, I/O stacks, parallel file systems, and HPC software architectures.</li>
+<li><strong>Use STAR (Situation, Task, Action, Result) method</strong>: It’s a great way to structure your answers to behavioral questions.</li>
+<li><strong>Prepare examples from your past work:</strong> Think about experiences where you’ve demonstrated the key competencies the job description calls for.</li>
+<li><strong>Be ready to speak about the latest technologies:</strong> Since the role involves the latest in AI, deep learning, and accelerated computing, make sure you’re up to date on current trends in the field.</li>
+<li><strong>Show enthusiasm and curiosity:</strong> The hiring manager will likely want to see that you’re excited about the potential of HPC and GPU computing.</li>
+</ul>
+<p>Good luck with your interview preparation! Let me know if you need any help brainstorming more examples or preparing specific answers.</p>
+<hr>
+<p>Absolutely! Here are some answers to the behavioral questions under <strong>Category 7: Work Style</strong>, using the STAR technique (Situation, Task, Action, Result). I&rsquo;ll break each answer down with the STAR framework to help you get a clear understanding of how to structure your responses.</p>
+<h3 id="1-how-do-you-ensure-quality-when-working-under-tight-deadlines-or-with-high-volume-data">1. <strong>How do you ensure quality when working under tight deadlines or with high-volume data?</strong></h3>
+<ul>
+<li><strong>Situation</strong>: In my previous role, we were tasked with deploying a large-scale GPU-accelerated computing platform for a deep learning project with a tight deadline due to the client’s need for quick results.</li>
+<li><strong>Task</strong>: My responsibility was to oversee the deployment of the system, ensuring that performance and scalability were not compromised despite the high-volume data and pressure to meet the deadline.</li>
+<li><strong>Action</strong>: To ensure quality, I first established clear benchmarks for performance and reliability, then implemented a robust testing pipeline that allowed us to validate key components of the system incrementally. I also set up automated monitoring tools to track system performance and catch potential issues early. Finally, I worked closely with the development team to prioritize critical tasks and ensure we had enough resources for both testing and deployment.</li>
+<li><strong>Result</strong>: Despite the tight deadline, the deployment was successful, and we met the client&rsquo;s performance requirements without compromising quality. The system ran optimally in production, and post-deployment testing showed no major issues, leading to positive feedback from both the client and the internal team.</li>
+</ul>
+<hr>
+<h3 id="2-how-do-you-handle-situations-where-a-team-or-project-member-is-falling-behind-or-not-meeting-expectations">2. <strong>How do you handle situations where a team or project member is falling behind or not meeting expectations?</strong></h3>
+<ul>
+<li><strong>Situation</strong>: While working on a GPU cluster deployment project, one of my team members, responsible for optimizing the storage subsystem, was falling behind due to unforeseen technical challenges with the parallel file system integration.</li>
+<li><strong>Task</strong>: My responsibility was to ensure that the project remained on track and that the storage subsystem optimization would be completed on time without affecting the overall project timeline.</li>
+<li><strong>Action</strong>: I first had a one-on-one discussion with the team member to understand the challenges they were facing and offered support where necessary. I helped identify a few alternative strategies and suggested splitting the workload to tackle the issues in parallel with other parts of the system. I also reallocated some resources temporarily to help them get back on track and made adjustments to the project timeline to ensure realistic expectations moving forward.</li>
+<li><strong>Result</strong>: The team member caught up with the tasks, and we were able to integrate the storage subsystem into the larger system without major delays. The project was completed on time, and we successfully delivered a high-performing GPU cluster to the client.</li>
+</ul>
+<hr>
+<h3 id="3-tell-me-about-a-time-when-you-had-to-learn-something-completely-new-to-be-successful-on-a-project-how-did-you-go-about-it">3. <strong>Tell me about a time when you had to learn something completely new to be successful on a project. How did you go about it?</strong></h3>
+<ul>
+<li><strong>Situation</strong>: A few years ago, while working on a large HPC project, I was tasked with optimizing the I/O stack for a new parallel file system that was being integrated into the project. This was my first time working with this specific file system, and I had limited prior experience with it.</li>
+<li><strong>Task</strong>: I needed to quickly get up to speed on this technology and ensure that the I/O stack was tuned properly to support high-throughput applications running on the GPU cluster.</li>
+<li><strong>Action</strong>: To tackle the learning curve, I first studied the documentation thoroughly and attended internal training sessions. I also reached out to subject matter experts within the organization who had prior experience with the file system and set up a few one-on-one meetings with them. Additionally, I ran multiple small-scale tests and benchmarks on the system to observe the behavior of the I/O stack and identify areas for improvement. I also contributed to knowledge-sharing sessions within the team to document key findings and best practices for future projects.</li>
+<li><strong>Result</strong>: I became proficient in the new file system and was able to optimize the I/O stack, leading to a 20% improvement in data throughput for the cluster. The project was a success, and my ability to quickly learn and apply the new technology helped streamline the deployment process for the team.</li>
+</ul>
+<hr>
+<h3 id="4-tell-me-about-a-time-when-you-had-to-balance-multiple-competing-priorities-in-a-high-pressure-environment-how-did-you-manage-your-time-and-resources">4. <strong>Tell me about a time when you had to balance multiple competing priorities in a high-pressure environment. How did you manage your time and resources?</strong></h3>
+<ul>
+<li><strong>Situation</strong>: During a major deployment of an HPC system, I was managing several critical tasks simultaneously, including configuring the GPU nodes, optimizing the network, and ensuring that the storage subsystem was set up correctly. Additionally, I was responding to urgent requests from various stakeholders regarding resource allocation and prioritization.</li>
+<li><strong>Task</strong>: My task was to ensure that all these critical aspects were completed on time and met the necessary performance standards while managing the limited resources available.</li>
+<li><strong>Action</strong>: To manage competing priorities, I created a detailed schedule that outlined all the tasks and their dependencies. I used project management tools to track progress and adjust timelines when necessary. I also held daily stand-ups with the team to discuss the status of each task and identified blockers early on. I made sure to allocate resources dynamically, focusing on high-priority tasks first while ensuring that lower-priority tasks were not neglected. I also delegated certain tasks to team members based on their strengths and availability.</li>
+<li><strong>Result</strong>: All tasks were completed on time and met the performance standards required by the project. By effectively managing my time and resources, we were able to complete the deployment successfully and ahead of schedule. The customer was pleased with the results, and the team felt that our communication and planning were key to overcoming the pressure.</li>
+</ul>
+<hr>
+<h3 id="5-how-do-you-stay-organized-when-working-on-multiple-projects-especially-with-tight-deadlines">5. <strong>How do you stay organized when working on multiple projects, especially with tight deadlines?</strong></h3>
+<ul>
+<li><strong>Situation</strong>: In my previous role, I was often juggling multiple HPC deployment projects at the same time, each with its own set of deadlines, team members, and requirements. One particular period had several projects overlapping with aggressive deadlines.</li>
+<li><strong>Task</strong>: I needed to ensure that I stayed organized, kept track of all project milestones, and avoided any risk of missing deadlines or deliverables.</li>
+<li><strong>Action</strong>: To stay organized, I broke down each project into clear tasks and sub-tasks, then prioritized them based on their importance and deadlines. I used a project management tool to track progress and assigned deadlines to each task. I set aside specific blocks of time each day to focus on different projects, ensuring that I was making progress on all fronts without losing focus on any single project. I also kept detailed notes and regular updates on each project’s status, which allowed me to easily assess where I needed to allocate more time and attention.</li>
+<li><strong>Result</strong>: By staying organized and keeping a structured approach, I was able to complete all the projects on time, with no missed deadlines. The system performance met or exceeded the expected results for all the projects, and my ability to manage multiple tasks efficiently was noted positively by both the clients and my supervisors.</li>
+</ul>
+<hr>
+<p>These examples use the STAR technique to show how you handle work style challenges. When preparing your answers, focus on highlighting your problem-solving ability, organizational skills, and capacity to manage high-pressure environments, which are key components of this Senior HPC Architect role.</p>
+<hr>
+<p>Of course! Below are answers to the <strong>Category 6: Vision and Impact</strong> questions using the <strong>STAR</strong> technique:</p>
+<hr>
+<h3 id="1-where-do-you-see-hpc-and-gpu-computing-evolving-in-the-next-few-years-how-would-you-contribute-to-this-evolution-in-your-role-as-a-senior-hpc-architect">1. <strong>Where do you see HPC and GPU computing evolving in the next few years? How would you contribute to this evolution in your role as a Senior HPC Architect?</strong></h3>
+<ul>
+<li><strong>Situation</strong>: As the landscape of artificial intelligence, deep learning, and high-performance computing continues to evolve, the demand for faster, more efficient GPU-accelerated systems is growing. In my current role, I’ve seen this trend firsthand, with increasing pressure to deliver large-scale systems that can handle more complex models and bigger datasets in shorter timeframes.</li>
+<li><strong>Task</strong>: My task was to not only stay ahead of these trends but also contribute to the development of systems that can support the next generation of AI and machine learning models, particularly as it relates to GPU computing.</li>
+<li><strong>Action</strong>: I’ve been focusing on staying up-to-date with the latest advances in GPU hardware, new parallel computing paradigms, and advancements in software stacks like CUDA and TensorFlow. To contribute to the evolution of the field, I’ve worked on designing scalable GPU infrastructures that can easily integrate new GPUs and technologies as they become available, ensuring that systems are flexible and future-proof. Additionally, I’ve been involved in mentoring junior engineers and researchers on how to optimize their code to take full advantage of these next-gen hardware solutions.</li>
+<li><strong>Result</strong>: By keeping a forward-thinking approach, I’ve contributed to the successful deployment of several GPU-based clusters that have exceeded performance expectations. These systems have enabled researchers to accelerate their AI models, cutting down training times significantly. Additionally, my work on developing scalable, flexible architectures has allowed for easy integration of newer technologies, ensuring that our infrastructure remains at the cutting edge.</li>
+</ul>
+<hr>
+<h3 id="2-how-do-you-ensure-that-your-solutions-are-scalable-and-adaptable-for-future-needs-in-high-performance-computing">2. <strong>How do you ensure that your solutions are scalable and adaptable for future needs in high-performance computing?</strong></h3>
+<ul>
+<li><strong>Situation</strong>: When deploying an HPC cluster for a research lab working on climate modeling, the project’s scope was not just for the current workload but also for future scalability. The lab anticipated needing more processing power as models grew in complexity and data volume over time.</li>
+<li><strong>Task</strong>: My task was to design a system that could handle the current needs, but also be easily scalable as the workload increased. Additionally, the system needed to be adaptable to incorporate emerging technologies like new GPU architectures, more advanced storage solutions, and containerization technologies.</li>
+<li><strong>Action</strong>: I started by creating a modular architecture for the HPC system, where each component (networking, storage, compute) could be upgraded or expanded independently. I incorporated flexible, software-defined storage systems to accommodate future data growth, and designed the compute nodes to be easily replaceable or upgraded without significant downtime. I also integrated containerization technologies like Docker to allow researchers to deploy their workloads in a consistent, scalable way across different environments. To ensure adaptability, I kept a close eye on trends in hardware (such as newer GPU models) and software (such as the latest container orchestration platforms) and worked with vendors to ensure the system was easily upgradeable.</li>
+<li><strong>Result</strong>: The solution I implemented proved to be highly scalable, with the lab able to expand the system to accommodate new research models without significant downtime or overhauling. The infrastructure supported future GPU upgrades seamlessly, and the researchers were able to scale their workloads as expected, without hitting the limits of the original architecture. As a result, the lab was able to continue pushing the boundaries of their research while minimizing future infrastructure costs.</li>
+</ul>
+<hr>
+<h3 id="3-tell-me-about-a-time-when-you-had-to-innovate-to-solve-a-problem-in-a-way-that-significantly-impacted-your-organization-or-the-team-you-were-working-with">3. <strong>Tell me about a time when you had to innovate to solve a problem in a way that significantly impacted your organization or the team you were working with.</strong></h3>
+<ul>
+<li><strong>Situation</strong>: At one point, we faced an issue where our HPC cluster was underperforming due to inefficient scheduling of jobs. Despite having powerful GPU hardware, our resource management system was failing to effectively allocate resources, causing bottlenecks and reducing overall throughput. This was a critical problem because it impacted the researchers&rsquo; ability to complete time-sensitive simulations.</li>
+<li><strong>Task</strong>: My task was to find an innovative solution that would optimize the scheduling and resource allocation, increasing the system’s overall performance and throughput without major hardware changes.</li>
+<li><strong>Action</strong>: I began by analyzing the existing scheduling algorithms and identifying areas for optimization. I proposed integrating a custom scheduling solution that could better prioritize GPU-intensive jobs based on their specific needs (e.g., memory and compute demands) and job size. I also incorporated machine learning-based predictions to anticipate job requirements and allocate resources more effectively. To validate this idea, I ran a series of performance tests on a small scale, fine-tuning the solution before rolling it out across the entire cluster.</li>
+<li><strong>Result</strong>: The new scheduling system resulted in a 30% increase in cluster throughput, allowing researchers to complete their simulations much faster. The solution was implemented across the entire organization and significantly improved our internal efficiency. Researchers were able to meet their deadlines more effectively, and the impact of this innovation was recognized in an internal review, where the system’s optimization became a best practice for future deployments.</li>
+</ul>
+<hr>
+<h3 id="4-how-do-you-ensure-that-your-work-aligns-with-broader-organizational-goals-and-contributes-to-the-success-of-the-company">4. <strong>How do you ensure that your work aligns with broader organizational goals and contributes to the success of the company?</strong></h3>
+<ul>
+<li><strong>Situation</strong>: At one point, our company was looking to expand its high-performance computing services to external clients in academia and industry. We had to ensure that the solutions we were providing were not only technically robust but also aligned with the company’s broader strategic goal of becoming a leader in the GPU-accelerated computing space.</li>
+<li><strong>Task</strong>: My task was to design an HPC system that could meet the diverse needs of our potential clients, from AI research to scientific simulations, while aligning with the company’s vision of pushing the boundaries of computational power.</li>
+<li><strong>Action</strong>: I worked closely with the product and business development teams to understand the company&rsquo;s goals and the needs of our target customers. Based on that, I designed flexible, scalable HPC architectures that could easily support a range of workloads. I also focused on building solutions that could easily be integrated with existing software platforms to reduce the barrier to entry for potential clients. To ensure that my work aligned with organizational goals, I regularly participated in cross-functional meetings to ensure that my technical designs supported our sales and marketing efforts and that we were meeting customer demands.</li>
+<li><strong>Result</strong>: The HPC solutions I designed were successfully marketed to a wide range of academic and industry clients, contributing to the company’s revenue growth in the high-performance computing space. Our systems became highly regarded for their scalability and flexibility, and several new contracts were signed with top-tier research institutions, aligning perfectly with the company’s strategy.</li>
+</ul>
+<hr>
+<p>These answers illustrate how you can apply the <strong>STAR</strong> technique to demonstrate your ability to think strategically, innovate, and ensure your work contributes to the long-term goals of the company and the broader evolution of HPC and GPU computing.</p>
+<hr>
+<p>Absolutely! Here are my answers to <strong>questions 5</strong> and <strong>4</strong> under <strong>Category 7: Work Style</strong> using the <strong>STAR</strong> technique:</p>
+<hr>
+<h3 id="5-tell-me-about-a-time-when-you-had-to-learn-something-completely-new-to-be-successful-on-a-project-how-did-you-go-about-it">5. <strong>Tell me about a time when you had to learn something completely new to be successful on a project. How did you go about it?</strong></h3>
+<ul>
+<li><strong>Situation</strong>: A couple of years ago, I was involved in deploying an HPC cluster for a research team working on advanced deep learning models. While I had solid experience with traditional HPC infrastructure, the team wanted to integrate Kubernetes and Docker for containerization, which was something I had limited experience with at that point.</li>
+<li><strong>Task</strong>: My task was to ensure that the new containerization technology was successfully integrated into the HPC environment and that it worked efficiently alongside GPU-accelerated workloads, even though I hadn’t worked extensively with Kubernetes or Docker before.</li>
+<li><strong>Action</strong>: I started by doing a deep dive into containerization technologies, focusing on how Kubernetes could be used to orchestrate containers and how Docker would integrate with GPU-accelerated workloads. I enrolled in an online course and spent time working through tutorials. Additionally, I reached out to colleagues who had experience with Kubernetes and Docker, learning from their past implementations and gathering best practices. I ran several small-scale tests to see how containerized environments could be optimized for GPU workloads, gradually building up my understanding of how to apply these technologies to our larger-scale cluster.</li>
+<li><strong>Result</strong>: Over the course of the next few months, I successfully integrated Docker and Kubernetes into the HPC cluster, providing the research team with a flexible and scalable environment for running deep learning models. This not only enhanced the performance of their workloads but also increased the efficiency of their development and deployment cycles. The project was deemed a success, and the new containerization infrastructure became a foundational component of our future deployments.</li>
+</ul>
+<hr>
+<h3 id="4-tell-me-about-a-time-when-you-had-to-balance-multiple-competing-priorities-in-a-high-pressure-environment-how-did-you-manage-your-time-and-resources-1">4. <strong>Tell me about a time when you had to balance multiple competing priorities in a high-pressure environment. How did you manage your time and resources?</strong></h3>
+<ul>
+<li><strong>Situation</strong>: During a critical deployment of a GPU-powered HPC cluster for a client, I was simultaneously managing several tasks: ensuring the compute nodes were set up correctly, overseeing network configurations, and dealing with issues related to storage integration. On top of that, we were working under tight deadlines, as the client had a strict timeline for the project delivery.</li>
+<li><strong>Task</strong>: My task was to ensure that all aspects of the deployment were completed on time, without sacrificing quality. I had to ensure the configuration of each component was done correctly while managing both technical issues and client expectations.</li>
+<li><strong>Action</strong>: To manage the competing priorities, I first broke down the project into smaller, manageable chunks and identified the most time-sensitive tasks. I created a project timeline that allocated specific hours to each component and ensured that tasks were clearly defined with milestones. I used project management software to track progress and flagged potential bottlenecks. I also communicated with the team frequently, holding brief daily check-ins to ensure alignment and offer support where needed. Whenever a new issue arose, I would quickly assess the impact on the overall timeline and decide whether it required immediate attention or could be deferred.</li>
+<li><strong>Result</strong>: By staying organized and keeping communication clear, I was able to manage all aspects of the project simultaneously and deliver the complete HPC system to the client on time. The system functioned as expected, and the client was very satisfied with the timely delivery and performance. The success of this project also led to an increase in follow-up business, as the client appreciated the efficient management of multiple priorities under pressure.</li>
+</ul>
+<hr>
+<p>These responses demonstrate your ability to adapt, prioritize, and manage multiple tasks in complex, high-pressure situations, all while learning and evolving to meet the needs of your team and organization. These are key attributes for a Senior HPC Architect, especially in a fast-paced, dynamic environment.</p>
+<hr>
+<p>Absolutely! Both <strong>Item 3</strong> (&ldquo;Tell me about a time when you had to innovate to solve a problem in a way that significantly impacted your organization or the team you were working with&rdquo;) and <strong>Item 2</strong> (&ldquo;How do you ensure that your solutions are scalable and adaptable for future needs in high-performance computing?&rdquo;) can be answered effectively using the <strong>STAR technique</strong>.</p>
+<p>Let me walk you through them!</p>
+<hr>
+<h3 id="3-tell-me-about-a-time-when-you-had-to-innovate-to-solve-a-problem-in-a-way-that-significantly-impacted-your-organization-or-the-team-you-were-working-with-1">3. <strong>Tell me about a time when you had to innovate to solve a problem in a way that significantly impacted your organization or the team you were working with.</strong></h3>
+<ul>
+<li>
+<p><strong>Situation</strong>: While working on a major HPC deployment for a university’s research department, the team was struggling with inefficient data storage for their large-scale simulations. Their current parallel file system was not able to scale well with the increasing data demands, and the result was frequent slowdowns during heavy data reads/writes, causing delays in simulation results.</p>
+</li>
+<li>
+<p><strong>Task</strong>: My task was to find an innovative solution to improve the performance of their storage system without overhauling the entire infrastructure, which could lead to significant downtime and costs. I needed to find a solution that would allow them to handle larger datasets efficiently, while maintaining high throughput.</p>
+</li>
+<li>
+<p><strong>Action</strong>: I proposed integrating a more advanced, distributed storage solution that utilized an optimized parallel file system with better scalability. After researching several options, I chose a hybrid approach—integrating object storage with a caching layer to ensure high-speed access to frequently used data while also scaling easily for growing data volumes. To minimize risk, I tested the system with a smaller pilot cluster before deploying it across their full infrastructure. I also worked closely with the research team to understand their most common data access patterns, ensuring that the caching strategy met their needs effectively.</p>
+</li>
+<li>
+<p><strong>Result</strong>: The new system significantly improved the data throughput—by around 40%—and allowed the research team to handle their growing data requirements without delays. This innovation saved both time and money for the department, as they could continue to scale their workloads without investing in costly, new storage hardware. The success of this project was recognized by management, and my solution was eventually rolled out to other departments with similar needs.</p>
+</li>
+</ul>
+<hr>
+<h3 id="2-how-do-you-ensure-that-your-solutions-are-scalable-and-adaptable-for-future-needs-in-high-performance-computing-1">2. <strong>How do you ensure that your solutions are scalable and adaptable for future needs in high-performance computing?</strong></h3>
+<ul>
+<li>
+<p><strong>Situation</strong>: While working on an HPC project for a biotech company, they needed a scalable GPU-accelerated system to process large sets of genomic data. The challenge was that the company was expecting rapid growth in data processing needs as their research team expanded, and they wanted a solution that could easily scale without requiring a complete system redesign every few years.</p>
+</li>
+<li>
+<p><strong>Task</strong>: My task was to design an HPC architecture that could grow in scale and flexibility, accommodating new GPU technologies and increased data storage needs without requiring frequent costly upgrades or complete reconfigurations of the system.</p>
+</li>
+<li>
+<p><strong>Action</strong>: I took a modular approach to system design, focusing on flexibility at every level. For compute, I chose a GPU-agnostic architecture that would allow for easy upgrades to newer GPUs as they became available, ensuring that we could always integrate the latest hardware without major downtime. I also designed the storage architecture with high scalability in mind, using a distributed parallel file system that could grow seamlessly by adding more nodes. Additionally, I incorporated containerization (using Docker and Kubernetes) to ensure that the system could adapt to new software or workload demands in the future without major disruptions. To future-proof the system, I made sure to choose technologies that had broad industry support and were actively being developed, ensuring ongoing compatibility with upcoming advancements.</p>
+</li>
+<li>
+<p><strong>Result</strong>: The system was successfully deployed, and over the next two years, the company was able to scale their operations by adding new GPUs and storage nodes without significant changes to the original architecture. This approach not only saved the company money but also allowed them to continue running cutting-edge simulations as their needs evolved. The scalability and flexibility of the system became a key selling point when the company expanded its research partnerships, as external collaborators were impressed with the ability to handle diverse workloads efficiently.</p>
+</li>
+</ul>
+<hr>
+<p>These examples show how you can use the <strong>STAR</strong> technique to illustrate your ability to innovate and design scalable, adaptable solutions in the context of high-performance computing. Whether solving specific technical challenges or building solutions that evolve with the organization’s needs, these responses highlight your proactive approach and strategic thinking—both important qualities for a Senior HPC Architect!</p>
+<hr>
+<p>Absolutely! If you&rsquo;re asked to talk about solving a <strong>technical problem</strong> in terms of optimizing performance (such as making a program more scalable or efficient using parallel, distributed, or multi-GPU techniques), you can structure your response with the <strong>STAR</strong> technique in a way that highlights how you approached the problem and systematically improved it. Here&rsquo;s a way to frame this using the steps you provided:</p>
+<hr>
+<h3 id="example-question">Example Question:</h3>
+<p><strong>&ldquo;Tell me about a time when you had to optimize a piece of code or a project for high performance, possibly using parallel, distributed, or multi-GPU techniques. How did you go about solving it?&rdquo;</strong></p>
+<h3 id="star-response">STAR Response:</h3>
+<ul>
+<li>
+<p><strong>Situation</strong>:<br>
+In a previous project, I was tasked with optimizing a deep learning model training process that was running on a single GPU, but was taking an unacceptably long time due to the scale of the data and complexity of the model. The goal was to reduce the training time significantly, ideally allowing the team to iterate faster on experiments and achieve faster time-to-solution.</p>
+</li>
+<li>
+<p><strong>Task</strong>:<br>
+My task was to optimize the model&rsquo;s training process by profiling and parallelizing the code to leverage multiple GPUs, ideally transforming the existing code so that it could scale efficiently across a multi-GPU setup without introducing significant overhead or synchronization issues.</p>
+</li>
+<li>
+<p><strong>Action</strong>:<br>
+To solve this problem, I took a step-by-step approach:</p>
+<ol>
+<li>
+<p><strong>Profiling and Benchmarking</strong>: I first profiled the original code to understand the bottlenecks in terms of CPU/GPU utilization, memory usage, and computation time. I identified that the data loading was one bottleneck and that the model training loop had inefficiencies in how gradients were being aggregated.</p>
+</li>
+<li>
+<p><strong>Parallelization Strategy</strong>: Based on the profiling results, I decided to employ <strong>data parallelism</strong> to split the training data across multiple GPUs. Each GPU would process a subset of the data and compute gradients in parallel, which would then be synchronized across the GPUs.</p>
+</li>
+<li>
+<p><strong>Implementation</strong>: I refactored the code to use <strong>NVIDIA’s NCCL (NVIDIA Collective Communications Library)</strong> for efficient communication and gradient synchronization between GPUs. I also implemented <strong>mixed precision training</strong> to reduce memory overhead and increase throughput, which worked well with the multi-GPU setup.</p>
+</li>
+<li>
+<p><strong>Distributed Training Setup</strong>: To further improve performance, I integrated the model with a <strong>distributed training framework</strong> like <strong>Horovod</strong>, which uses ring-based algorithms for efficient data distribution and gradient synchronization in distributed multi-GPU setups. I also optimized the I/O pipeline by using <strong>NVIDIA DALI (Data Loading Library)</strong> to speed up the data pipeline and reduce CPU-GPU communication overhead.</p>
+</li>
+<li>
+<p><strong>Testing and Optimization</strong>: After applying these changes, I ran multiple test cases, comparing the performance of the single GPU vs. multi-GPU setups. I made adjustments to batch sizes and fine-tuned the distributed training hyperparameters to ensure that the scaling across GPUs did not result in diminishing returns or excessive overhead.</p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Result</strong>:<br>
+The changes led to a significant reduction in training time—about <strong>70% faster</strong> compared to the single-GPU version. Additionally, the refactored system was highly scalable; when we added more GPUs to the cluster, the training time decreased further with minimal impact on the communication overhead. The final system allowed the research team to run more experiments per day, speeding up their model development cycle and ultimately contributing to faster project delivery. The success of this optimization also led to the adoption of similar parallelization techniques for other projects across the team.</p>
+</li>
+</ul>
+<hr>
+<h3 id="key-takeaways-for-this-response">Key Takeaways for This Response:</h3>
+<ul>
+<li><strong>Situation</strong>: Focus on the context, such as the project’s goal (optimizing model training time) and initial performance issues (single GPU bottleneck).</li>
+<li><strong>Task</strong>: Clearly define your objective—optimizing the code to leverage parallelism and multi-GPU setup.</li>
+<li><strong>Action</strong>: This is where you outline the technical steps:
+<ul>
+<li><strong>Profiling the code</strong> to identify bottlenecks.</li>
+<li><strong>Selecting a parallelization strategy</strong> (data parallelism in this case).</li>
+<li><strong>Implementing multi-GPU techniques</strong> (using NCCL and Horovod).</li>
+<li><strong>Optimizing the I/O and memory management</strong> (e.g., using DALI).</li>
+</ul>
+</li>
+<li><strong>Result</strong>: Quantify the impact of your work. How much did performance improve? Was it scalable? What benefits did the team see as a result?</li>
+</ul>
+<p>By detailing how you applied the right techniques at each stage, you demonstrate not only your problem-solving ability but also your technical expertise in applying parallel, distributed, and multi-GPU techniques.</p>
+<hr>
+<p>In addition to these questions, answer these ones also,</p>
+<p>Explain the SELENE architecture? Why are you a perfect fit for NVIDA? What makes you want to work for NVIDIA</p>
+<ul>
+<li>
+<p><a href="https://www.nvidia.com/en-us/on-demand/session/gtcspring21-s31700/">https://www.nvidia.com/en-us/on-demand/session/gtcspring21-s31700/</a></p>
+</li>
+<li>
+<p>NVIDIA&rsquo;s Selene supercomputer is built on the NVIDIA DGX SuperPOD reference architecture. This modular architecture allows for rapid deployment and scaling.
+Features</p>
+<p>Scalable
+Selene&rsquo;s modular design allows for easy scaling up or down to meet user needs.</p>
+</li>
+</ul>
+<p>Plug and play
+Selene&rsquo;s DGX system allows for quick construction in a standard data center.
+High performance
+Selene is a Top10-class supercomputer that can handle large volumes of data.
+Energy efficient
+Selene is one of the most energy-efficient systems ever built.</p>
+<p>Uses</p>
+<pre><code>Research: Selene has been used to study protein docking, quantum chemistry, and the coronavirus.
+AI model training: Selene has been used to train the GauGAN2 AI model, which creates art using artificial intelligence.
+Natural language processing: Selene has been used to train BERT, a natural language processor. 
+</code></pre>
+<p>Deployment</p>
+<pre><code>Selene was constructed in a standard data center in just three weeks. 
+</code></pre>
+<p>Selene was deployed by Argonne National Laboratory to study the coronavirus.</p>
+<ul>
+<li><a href="https://www.nvidia.com/en-us/on-demand/session/supercomputing2020-sc2019/">https://www.nvidia.com/en-us/on-demand/session/supercomputing2020-sc2019/</a></li>
+</ul>
+<hr>
+<p>Another question,</p>
+<ul>
+<li>How would you diagnose a hardware issue with a node?</li>
+<li>What motivates you to work for NVIDIA?</li>
+<li>What makes you a perfect fit for NVIDIA?</li>
+</ul>
+<p>This post is really really important &ndash;&gt; <a href="https://insidehpc.com/2020/02/job-of-the-week-hpc-architect-at-nvidia/">https://insidehpc.com/2020/02/job-of-the-week-hpc-architect-at-nvidia/</a></p>
+<p>NVIDIA Hiring process &ndash;&gt; <a href="https://www.nvidia.com/en-us/about-nvidia/careers/how-we-hire/">https://www.nvidia.com/en-us/about-nvidia/careers/how-we-hire/</a></p>
+<p>A feedback about the interview process for a position og HPC
+_  I&rsquo;m on the HPC admin side and do a fair amount of interviews.</p>
+<p>Usually they would have been given one or two basic interviews by a recruiter and/or project manager before they get to me. I will quiz them on products or technologies they have in their resume that may be relevant to the position as well as general Linux knowledge and concepts and try to assess what their skill level is and ability to pick up new skills quickly as well as personality. Nobody will know everything we need, everyone will need some level of training.</p>
+<p>If I think they are a good candidate then I&rsquo;ll pass them on to do a group interview with the team in person. In the team interview each candidate gets asked the same set of questions, nobody gets extra hard questions or an unfair advantage it&rsquo;s all the same. Afterwards the team reviews how the candidate did on each of the questions and discusses their prospective and/or concerns. If the group says yes then its out of our hands and up to HR to make an offer.</p>
+<p>No Leet code questions anywhere in the process.</p>
+<p>_</p>
+<p>For HPC software engineering, you&rsquo;ll have to know the basics of working with scientific data structures, parallel debugging, parallel profiling, and reasoning about the results of profiling/debugging. A good interviewer will ask open-ended questions to assess your approach to problem solving, not necessarily whether you know the bubble sort algorithm. A few example questions off the dome:</p>
+<pre><code>Implement a basic GEMM. Then suggest some optimizations to make it faster.
+
+Someone files an issue saying &quot;Your app is slow.&quot; How do you troubleshoot this? What tools, what data, etc do you use?
+
+What can you tell me about roofline?
+</code></pre>
+<p>Expect questions that revolve around things like memory, network I/O, scalability, algorithmic intensity, and perhaps hardware topics related to these. Depending on the seniority of the position, you may be expected to ask clarifying questions before answering. Or perhaps you may not be expected to come up with an answer at all, but instead show that you would be able to plan out a way to figuring it out if you had to.</p>
+<p>Good luck!</p>
+<p>A lot of questions and answers there &ndash;&gt; <a href="https://mentorcruise.com/questions/nvidia/">https://mentorcruise.com/questions/nvidia/</a></p>
+<hr>
+<p>_ Behavioral interviews are a crucial part of the hiring process at top companies. Nvidia interview questions on leadership and behavioral psychology are essentially centered around:</p>
+<pre><code>Challenging past projects and the learnings imparted by them
+Team handling and experience with coworkers and peers
+Leadership qualities
+Work-life balance
+Professional and personal challenges that you tackled in the past
+</code></pre>
+<p>Here are some sample Nvidia behavioral interview questions:</p>
+<pre><code>Tell us about the most challenging project you worked on
+Tell us about a time when you had to make a big decision for a crucial client project
+Tell us about a time when you disagreed with your superiors
+Tell us about a conflict you had at your workplace with a coworker
+What, according to you, are important aspects to maintain productivity at the workplace
+How do you avoid distractions at work?
+What lessons have you learned from the most challenging project you worked on?
+</code></pre>
+<p>These Nvidia interview questions will help you understand what to expect at your interview. Practicing 1-2 coding problems for at least 6 weeks before your interview is highly recommended if you wish to beat the tough competition and land that coveted offer!</p>
+<p>Check out this website &ndash;&gt; <a href="https://www.nvidia.com/en-us/high-performance-computing/">https://www.nvidia.com/en-us/high-performance-computing/</a> &amp; <a href="https://www.nvidia.com/en-us/high-performance-computing/hpc-and-ai/">https://www.nvidia.com/en-us/high-performance-computing/hpc-and-ai/</a> &amp; <a href="https://www.nvidia.com/en-us/glossary/high-performance-computing/">https://www.nvidia.com/en-us/glossary/high-performance-computing/</a> &amp; <a href="https://developer.nvidia.com/hpc">https://developer.nvidia.com/hpc</a></p>
+<p><a href="https://www.brightnetwork.co.uk/graduate-jobs/nvidia/hpc-architect-internship-reading-2023">https://www.brightnetwork.co.uk/graduate-jobs/nvidia/hpc-architect-internship-reading-2023</a></p>
+<p>Job description and its explanation &ndash;&gt; <a href="https://www.weka.io/learn/glossary/ai-ml/hpc-architecture/">https://www.weka.io/learn/glossary/ai-ml/hpc-architecture/</a></p>
+<hr>
+<p>Provide engineering solutions to operationalize the latest GPU Computing products and software stacks, ensure technical relationships with internal and external engineering teams, and assisting systems, machine learning/deep learning engineers in building creative solutions based on NVIDIA technology.</p>
+
+  </div>
+</section>
+
+<section id="tag-pane" class="meta">
+  
+  <div class="d-flex flex-column flex-md-row justify-content-between">
+    <h6 class="text-end meta">
+      
+    </h6>
+  </div>
+  
+</section>
+
+
+
+
+
+
+
+<section id="menu-pane" class="menu text-center">
+  
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      
+      
+      <li class="menu-item">
+        <a class="menu-item" href="http://localhost:1313/posts/roadmap-if-im-just-beginning/">&lt; prev</a>
+      </li>
+      
+
+      <li class="menu-item">
+        
+        <span class="menu-item">&nbsp;|&nbsp;</span>
+        
+        <a class="menu-item" href="/posts">posts</a>
+        
+      </li>
+
+      
+      
+    </ul>
+  </nav>
+  
+  <h4 class="text-center mt-3"><a class="menu-item" href="http://localhost:1313/">home</a></h4>
+</section>
+
+<footer class="text-center footer">
+  <hr />
+  
+  <h6 class="text-center copyright">© 2024. Recep Erol. Made with ❤️ in Fayetteville, AR</h6>
+  
+  <h6 class="text-center powered"><a href="https://gohugo.io/">Hugo, themed by </a> <a
+      href="https://github.com/kaapiandcode/hugo-goa">hugo-goa</a> <br> <a href="https://creativecommons.org/version4/" >Some Rights Reserved</a> </h6>
+  
+  
+  <h6>
+    <a href="http://localhost:1313/index.xml" aria-label="RSS Feed"><i class="fas fa-rss" aria-hidden="true"></i></a>
+  </h6>
+  
+  
+
+</footer>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+
+<script>hljs.highlightAll();</script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="/js/custom.js"></script>
+</body>
+
+</html>
+

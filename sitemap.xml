@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</loc>
-    <lastmod>2024-11-28T11:54:34-06:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/posts/</loc>
-    <lastmod>2024-11-28T11:54:34-06:00</lastmod>
+    <loc>https://erolrecep.github.io/about/</loc>
+    <lastmod>2025-06-10T05:47:10-05:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/</loc>
+    <lastmod>2025-06-10T05:47:10-05:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/posts/</loc>
+    <lastmod>2025-01-30T13:08:42-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</loc>
     <lastmod>2024-11-28T11:54:34-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/posts/gnuparallel_for_your_terminal_tasks/</loc>
@@ -19,8 +22,6 @@
   </url><url>
     <loc>https://erolrecep.github.io/posts/notes_for_organizing_workshops/</loc>
     <lastmod>2024-10-13T05:26:01-05:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/about/</loc>
   </url><url>
     <loc>https://erolrecep.github.io/categories/</loc>
   </url><url>
