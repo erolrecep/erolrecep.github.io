@@ -6,8 +6,15 @@
     <description>Recent content on Recep&#39;s Technical Blog</description>
     <generator>Hugo</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 28 Jun 2025 01:26:45 -0500</lastBuildDate>
+    <lastBuildDate>Mon, 11 Aug 2025 10:47:48 -0500</lastBuildDate>
     <atom:link href="https://erolrecep.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PEARC25 Reflections: A Step Forward in HPC and Scientific Computing</title>
+      <link>https://erolrecep.github.io/posts/pearc2025-columbus-oh/</link>
+      <pubDate>Mon, 11 Aug 2025 10:47:48 -0500</pubDate>
+      <guid>https://erolrecep.github.io/posts/pearc2025-columbus-oh/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;pearc25_logo_748.png&#34; alt=&#34;PEARC25 Logo&#34;&gt;&#xA;&lt;em&gt;&lt;!-- raw HTML omitted --&gt;PEARC25 Columbus, OH&lt;!-- raw HTML omitted --&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;This year, I had the opportunity to attend the &lt;a href=&#34;https://pearc.acm.org/pearc25/&#34;&gt;PEARC25&lt;/a&gt; conference, supported by the &lt;a href=&#34;https://pearc.acm.org/pearc25/travel-grants-opportunities/&#34;&gt;ACM Early Career Travel Grant&lt;/a&gt;. While I’ve previously attended SC conferences, PEARC was a first for me. My main goals were to network, deepen my understanding of HPC research, and learn about the latest developments in the scientific computing community especially quantum computing.&lt;/p&gt;&#xA;&lt;p&gt;The HPC community is vast, and I feel fortunate to be part of it. These conferences are invaluable for staying current with state-of-the-art practices and connecting with the people who are pushing the boundaries of science. I am passionate about contributing to this progress and am working toward becoming one of those who help move science forward.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Foundations of a Future Engineer: A Personal Roadmap</title>
       <link>https://erolrecep.github.io/posts/a-personal-cs-education-roadmap/</link>
