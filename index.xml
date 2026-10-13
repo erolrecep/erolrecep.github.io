@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Mon, 11 Aug 2025 10:47:48 -0500</lastBuildDate>
+			<lastBuildDate>Tue, 13 Oct 2026 17:55:00 -0500</lastBuildDate>
 		
 			<atom:link href="https://erolrecep.github.io/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Projects</title>
+				<link>https://erolrecep.github.io/projects/</link>
+				<pubDate>Tue, 13 Oct 2026 17:55:00 -0500</pubDate>
+				<guid>https://erolrecep.github.io/projects/</guid>
+				<description>&lt;p&gt;A curated collection of open-source projects, technical workshops, and high-performance computing experiments:&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;chronological-project-portfolio&#34;&gt;&lt;strong&gt;Chronological Project Portfolio&lt;/strong&gt;&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://github.com/erolrecep/image_processing_workshop&#34;&gt;image_processing_workshop&lt;/a&gt;&lt;/strong&gt; &lt;em&gt;(August 2023)&lt;/em&gt;&lt;br&gt;&#xA;A hands-on mini-workshop designed to introduce audiences to the fundamentals, mathematics, and practical implementations of 2D image processing and computer vision algorithms.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://github.com/erolrecep/GettingStartedwithAHPCC&#34;&gt;GettingStartedwithAHPCC&lt;/a&gt;&lt;/strong&gt; &lt;em&gt;(September 2024)&lt;/em&gt;&lt;br&gt;&#xA;Comprehensive training materials, SLURM batch scripts, and step-by-step guides for users learning cluster computing at the Arkansas High Performance Computing Center (AHPCC).&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://github.com/erolrecep/dev_env_automation&#34;&gt;dev_env_automation&lt;/a&gt;&lt;/strong&gt; &lt;em&gt;(August 2026)&lt;/em&gt;&lt;br&gt;&#xA;Automated shell scripts and setup tooling for configuring reproducible, streamlined development environments on modern macOS and Linux systems.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://github.com/erolrecep/convolution_ops_hpc&#34;&gt;convolution_ops_hpc&lt;/a&gt;&lt;/strong&gt; &lt;em&gt;(August 2026)&lt;/em&gt;&lt;br&gt;&#xA;A benchmarking study exploring different programming languages (C, Python), optimization techniques, and libraries for accelerating 2D image convolution algorithms on HPC hardware.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://github.com/erolrecep/Python_dev_w_uv&#34;&gt;Python_dev_w_uv&lt;/a&gt;&lt;/strong&gt; &lt;em&gt;(September 2026)&lt;/em&gt;&lt;br&gt;&#xA;A modern Python development workflow blueprint demonstrating zero-overhead virtual environment management and package resolution using Astral&amp;rsquo;s ultra-fast &lt;code&gt;uv&lt;/code&gt; tool.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://github.com/erolrecep/VibeCoding-Workshop&#34;&gt;VibeCoding-Workshop&lt;/a&gt;&lt;/strong&gt; &lt;em&gt;(October 2026)&lt;/em&gt;&lt;br&gt;&#xA;Full workshop curriculum on AI-assisted software development: prompt engineering anatomy, iterative model guidance, and full-stack interactive web application development.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+			</item>
 			<item>
 				<title>PEARC25 Reflections: A Step Forward in HPC and Scientific Computing</title>
 				<link>https://erolrecep.github.io/posts/pearc2025-columbus-oh/</link>
@@ -33,13 +40,6 @@
 				<pubDate>Tue, 10 Jun 2025 05:47:10 -0500</pubDate>
 				<guid>https://erolrecep.github.io/about/</guid>
 				<description>&lt;p&gt;Recep Erol, PhD is a deep learning and machine learning expert with extensive experience in high-performance computing and system-level optimization. With over a decade of work at the intersection of AI and computation, he brings a rare ability to understand and optimize the entire software pipeline — from data preprocessing and model design to deployment and runtime tuning.&lt;/p&gt;&#xA;&lt;p&gt;His expertise includes:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Computational performance optimization across CPUs, GPUs, and distributed systems&lt;/li&gt;&#xA;&lt;li&gt;Hardware-aware software engineering, including RAM, I/O, and throughput tuning&lt;/li&gt;&#xA;&lt;li&gt;Model compression, quantization, and efficient inference deployment&lt;/li&gt;&#xA;&lt;li&gt;Building scalable AI workflows tailored to research and production environments&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Recep is known for designing resource-efficient systems that adapt to real-world constraints — whether enabling researchers on HPC clusters or deploying intelligent models under tight hardware budgets. His work reflects a holistic approach to AI development that prioritizes efficiency, scalability, and performance at every layer of the stack.&lt;/p&gt;</description>
-			</item>
-			<item>
-				<title>Projects</title>
-				<link>https://erolrecep.github.io/projects/</link>
-				<pubDate>Tue, 10 Jun 2025 05:47:10 -0500</pubDate>
-				<guid>https://erolrecep.github.io/projects/</guid>
-				<description>&lt;p&gt;A selection of open-source projects, tools, and research implementations:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;&lt;a href=&#34;https://github.com/erolrecep/VibeCoding-Workshop&#34;&gt;VibeCoding-Workshop&lt;/a&gt;&lt;/strong&gt;: Interactive workshop curriculum, prompt engineering guidelines, and full-stack reference projects for AI-assisted development.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;High-Performance Computing &amp;amp; AI&lt;/strong&gt;: Performance optimization, benchmarking, and software acceleration tools for scientific and distributed computing.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Visit my &lt;strong&gt;&lt;a href=&#34;https://github.com/erolrecep&#34;&gt;GitHub Profile&lt;/a&gt;&lt;/strong&gt; for more repositories and active development.&lt;/p&gt;</description>
 			</item>
 			<item>
 				<title>5 days in Atlanta: My Personal Highlights from SC24</title>
