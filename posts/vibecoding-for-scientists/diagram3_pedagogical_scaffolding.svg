@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 500" width="100%" height="100%">
+  <defs>
+    <style>
+      .stage-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; font-weight: 700; }
+      .stage-desc { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; fill: #475569; }
+      .prompt-box { rx: 6px; ry: 6px; fill: #f8fafc; stroke: #e2e8f0; stroke-width: 1px; }
+      .prompt-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 700; fill: #64748b; text-transform: uppercase; }
+      .prompt-text { font-family: "SF Mono", Consolas, Menlo, monospace; font-size: 11px; fill: #334155; }
+      .connector { stroke: #94a3b8; stroke-width: 2.5; fill: none; marker-end: url(#arrow-gray); }
+      .conn-label-bg { rx: 4px; ry: 4px; fill: #ffffff; stroke: #cbd5e1; stroke-width: 1px; }
+      .conn-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 600; fill: #475569; text-anchor: middle; }
+    </style>
+    <marker id="arrow-gray" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#94a3b8" />
+    </marker>
+  </defs>
+
+  <!-- Stage 1 -->
+  <rect x="40" y="20" width="800" height="115" rx="10" ry="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+  <rect x="40" y="20" width="8" height="115" rx="4" ry="0" fill="#64748b" />
+  <text x="65" y="48" class="stage-title" fill="#1e293b">Stage 1: Native Environment Setup &amp; Data Scripting</text>
+  <text x="65" y="70" class="stage-desc">• Configure clean Python 3.12 virtual environment on Apple Silicon (uv / venv)</text>
+  <text x="65" y="90" class="stage-desc">• Standalone script: CSV ingestion, missing-value handling, and summary statistics</text>
+  <text x="65" y="112" class="stage-desc">• Run with local interpreter; verify zero syntax or path errors</text>
+
+  <!-- Arrow 1 -> 2 -->
+  <path d="M 440 135 L 440 180" class="connector" />
+  <rect x="330" y="145" width="220" height="24" class="conn-label-bg" />
+  <text x="440" y="161" class="conn-label">Wrap logic in interactive web UI</text>
+
+  <!-- Stage 2 -->
+  <rect x="40" y="185" width="800" height="115" rx="10" ry="10" fill="#ffffff" stroke="#93c5fd" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+  <rect x="40" y="185" width="8" height="115" rx="4" ry="0" fill="#2563eb" />
+  <text x="65" y="213" class="stage-title" fill="#1d4ed8">Stage 2: Interface Scaffolding &amp; State Management</text>
+  <text x="65" y="235" class="stage-desc">• Transform analytical script into a reactive local browser dashboard (Streamlit / Flask)</text>
+  <text x="65" y="255" class="stage-desc">• Integrate session state: live stopwatch / Pomodoro timer for study and compute sessions</text>
+  <text x="65" y="277" class="stage-desc">• Model provides step-by-step terminal execution instructions and port bindings</text>
+
+  <!-- Arrow 2 -> 3 -->
+  <path d="M 440 300 L 440 345" class="connector" />
+  <rect x="310" y="310" width="260" height="24" class="conn-label-bg" />
+  <text x="440" y="326" class="conn-label">Package for zero-config public deployment</text>
+
+  <!-- Stage 3 -->
+  <rect x="40" y="350" width="800" height="115" rx="10" ry="10" fill="#ffffff" stroke="#86efac" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.03))" />
+  <rect x="40" y="350" width="8" height="115" rx="4" ry="0" fill="#16a34a" />
+  <text x="65" y="378" class="stage-title" fill="#15803d">Stage 3: Packaging &amp; Zero-Config Cloud Deployment</text>
+  <text x="65" y="400" class="stage-desc">• Adapt into self-contained interactive web application (e.g., 2048 game / lab tool)</text>
+  <text x="65" y="420" class="stage-desc">• Package static assets and manifests for automated GitHub Pages / Streamlit Cloud deployment</text>
+  <text x="65" y="442" class="stage-desc">• Non-technical collaborators and club members access immediately via public URL</text>
+</svg>

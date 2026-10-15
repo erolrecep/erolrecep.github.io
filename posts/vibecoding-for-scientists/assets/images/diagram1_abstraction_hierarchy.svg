@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 180" width="100%" height="100%">
+  <defs>
+    <style>
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #1e293b; }
+      .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; fill: #64748b; }
+      .box { rx: 10px; ry: 10px; stroke-width: 1.5px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.04)); }
+      .arrow { stroke: #94a3b8; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 10px; fill: #64748b; text-anchor: middle; }
+    </style>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#94a3b8" />
+    </marker>
+  </defs>
+
+  <!-- Step 1 -->
+  <rect x="20" y="45" width="160" height="75" class="box" fill="#f8fafc" stroke="#cbd5e1" />
+  <text x="100" y="78" text-anchor="middle" class="title">Machine Code</text>
+  <text x="100" y="98" text-anchor="middle" class="subtitle">Binary / Opcodes</text>
+
+  <path d="M 180 82 L 220 82" class="arrow" />
+
+  <!-- Step 2 -->
+  <rect x="225" y="45" width="160" height="75" class="box" fill="#f8fafc" stroke="#cbd5e1" />
+  <text x="305" y="78" text-anchor="middle" class="title">Assembly</text>
+  <text x="305" y="98" text-anchor="middle" class="subtitle">Mnemonic Registers</text>
+
+  <path d="M 385 82 L 425 82" class="arrow" />
+
+  <!-- Step 3 -->
+  <rect x="430" y="45" width="165" height="75" class="box" fill="#f8fafc" stroke="#cbd5e1" />
+  <text x="512" y="78" text-anchor="middle" class="title">Compiled Languages</text>
+  <text x="512" y="98" text-anchor="middle" class="subtitle">Fortran / C / C++</text>
+
+  <path d="M 595 82 L 635 82" class="arrow" />
+
+  <!-- Step 4 -->
+  <rect x="640" y="45" width="165" height="75" class="box" fill="#f8fafc" stroke="#cbd5e1" />
+  <text x="722" y="78" text-anchor="middle" class="title">Interpreted</text>
+  <text x="722" y="98" text-anchor="middle" class="subtitle">Python / R / Julia</text>
+
+  <path d="M 805 82 L 845 82" class="arrow" />
+
+  <!-- Step 5 (Vibe Coding Highlight) -->
+  <rect x="850" y="35" width="150" height="95" class="box" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5" />
+  <text x="925" y="68" text-anchor="middle" class="title" fill="#0369a1">Declarative Intent</text>
+  <text x="925" y="88" text-anchor="middle" class="title" fill="#0284c7">Vibe Coding</text>
+  <text x="925" y="108" text-anchor="middle" class="subtitle" fill="#0369a1">(LLM Agents)</text>
+</svg>
