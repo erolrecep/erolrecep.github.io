@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" width="100%" height="100%">
+  <defs>
+    <style>
+      .lifeline { stroke: #cbd5e1; stroke-width: 1.5; stroke-dasharray: 4,4; }
+      .actor-box { rx: 8px; ry: 8px; stroke-width: 1.5px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.04)); }
+      .actor-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .actor-sub { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; text-anchor: middle; }
+      .seq-arrow { stroke-width: 1.8; fill: none; }
+      .seq-arrow-dash { stroke-width: 1.8; stroke-dasharray: 4,4; fill: none; }
+      .seq-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 500; }
+      .seq-num { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 10px; font-weight: 700; fill: #ffffff; text-anchor: middle; }
+      .num-badge { rx: 8px; ry: 8px; }
+      .phase-rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    </style>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-emerald" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#059669" />
+    </marker>
+    <marker id="arrow-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#7c3aed" />
+    </marker>
+    <marker id="arrow-dark" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#334155" />
+    </marker>
+  </defs>
+
+  <!-- Lifelines -->
+  <line x1="150" y1="90" x2="150" y2="440" class="lifeline" />
+  <line x1="450" y1="90" x2="450" y2="440" class="lifeline" />
+  <line x1="750" y1="90" x2="750" y2="440" class="lifeline" />
+
+  <!-- Actor 1: Scientist -->
+  <rect x="50" y="25" width="200" height="55" class="actor-box" fill="#f8fafc" stroke="#64748b" />
+  <text x="150" y="47" class="actor-title" fill="#1e293b">Human Scientist</text>
+  <text x="150" y="65" class="actor-sub" fill="#64748b">Domain Authority &amp; Invariant Arbiter</text>
+
+  <!-- Actor 2: Agent (RSE) -->
+  <rect x="350" y="25" width="200" height="55" class="actor-box" fill="#eff6ff" stroke="#3b82f6" />
+  <text x="450" y="47" class="actor-title" fill="#1d4ed8">LLM Agent (RSE)</text>
+  <text x="450" y="65" class="actor-sub" fill="#2563eb">Agile Research Software Engineer</text>
+
+  <!-- Actor 3: Runtime Engine -->
+  <rect x="650" y="25" width="200" height="55" class="actor-box" fill="#f0fdf4" stroke="#22c55e" />
+  <text x="750" y="47" class="actor-title" fill="#15803d">Execution Sandbox</text>
+  <text x="750" y="65" class="actor-sub" fill="#16a34a">Unit Test &amp; Compiler Runtime</text>
+
+  <!-- Phase 1: Synthetic Benchmark -->
+  <rect x="80" y="100" width="740" height="150" class="phase-rect" fill="#f8fafc" stroke="#e2e8f0" />
+  <text x="100" y="120" font-family="-apple-system, sans-serif" font-size="10.5px" font-weight="700" fill="#94a3b8" letter-spacing="0.5px">PHASE 1: ZERO-TRUST SYNTHETIC BENCHMARK</text>
+
+  <!-- Msg 1: Scientist -> Agent -->
+  <path d="M 150 140 L 445 140" class="seq-arrow" stroke="#2563eb" marker-end="url(#arrow-blue)" />
+  <rect x="165" y="130" width="16" height="16" class="num-badge" fill="#2563eb" />
+  <text x="173" y="142" class="seq-num">1</text>
+  <text x="190" y="142" class="seq-label" fill="#1e293b">Generate synthetic data with known ground-truth ODE solution</text>
+
+  <!-- Msg 2: Agent -> Engine -->
+  <path d="M 450 170 L 745 170" class="seq-arrow" stroke="#059669" marker-end="url(#arrow-emerald)" />
+  <rect x="465" y="160" width="16" height="16" class="num-badge" fill="#059669" />
+  <text x="473" y="172" class="seq-num">2</text>
+  <text x="490" y="172" class="seq-label" fill="#1e293b">Execute parameter-recovery unit tests against ground truth</text>
+
+  <!-- Msg 3: Engine -> Agent -->
+  <path d="M 750 200 L 455 200" class="seq-arrow-dash" stroke="#059669" marker-end="url(#arrow-emerald)" />
+  <rect x="710" y="190" width="16" height="16" class="num-badge" fill="#059669" />
+  <text x="718" y="202" class="seq-num">3</text>
+  <text x="510" y="196" class="seq-label" fill="#047857">Analytical relative error &lt; 1e-6 (TEST PASSED)</text>
+
+  <!-- Msg 4: Agent -> Scientist -->
+  <path d="M 450 230 L 155 230" class="seq-arrow-dash" stroke="#2563eb" marker-end="url(#arrow-blue)" />
+  <rect x="410" y="220" width="16" height="16" class="num-badge" fill="#2563eb" />
+  <text x="418" y="232" class="seq-num">4</text>
+  <text x="210" y="226" class="seq-label" fill="#1d4ed8">Synthetic benchmark certified: solver logic verified</text>
+
+  <!-- Phase 2: Empirical Data Ingestion -->
+  <rect x="80" y="265" width="740" height="160" class="phase-rect" fill="#fdf4ff" stroke="#f0abfc" />
+  <text x="100" y="285" font-family="-apple-system, sans-serif" font-size="10.5px" font-weight="700" fill="#c084fc" letter-spacing="0.5px">PHASE 2: EMPIRICAL OBSERVATION INGESTION</text>
+
+  <!-- Msg 5: Scientist -> Agent -->
+  <path d="M 150 310 L 445 310" class="seq-arrow" stroke="#7c3aed" marker-end="url(#arrow-purple)" />
+  <rect x="165" y="300" width="16" height="16" class="num-badge" fill="#7c3aed" />
+  <text x="173" y="312" class="seq-num">5</text>
+  <text x="190" y="312" class="seq-label" fill="#581c87">Ingest noisy experimental observations (e.g. sample_42.csv)</text>
+
+  <!-- Msg 6: Agent -> Engine -->
+  <path d="M 450 345 L 745 345" class="seq-arrow" stroke="#7c3aed" marker-end="url(#arrow-purple)" />
+  <rect x="465" y="335" width="16" height="16" class="num-badge" fill="#7c3aed" />
+  <text x="473" y="347" class="seq-num">6</text>
+  <text x="490" y="347" class="seq-label" fill="#581c87">Run calibrated solver with invariant checks on empirical data</text>
+
+  <!-- Msg 7: Engine -> Scientist -->
+  <path d="M 750 385 L 155 385" class="seq-arrow-dash" stroke="#334155" marker-end="url(#arrow-dark)" />
+  <rect x="710" y="375" width="16" height="16" class="num-badge" fill="#334155" />
+  <text x="718" y="387" class="seq-num">7</text>
+  <text x="250" y="380" class="seq-label" fill="#0f172a"><b>Scientifically Validated Inferences, Invariant Logs &amp; Error Bounds</b></text>
+</svg>
