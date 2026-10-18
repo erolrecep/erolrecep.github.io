@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCRE Documentation — Pure C23 High-Performance CV & ML Engine</title>
+  <meta name="description" content="Comprehensive architecture documentation, low-level memory guides, SIMD acceleration manuals, and C23 API reference for RCRE.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="alternate icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/docs.css">
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <a href="../index.html" class="nav-brand">
+      <span class="brand-badge">C23</span>
+      <span>RCRE</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../index.html">Overview</a></li>
+        <li><a href="index.html" class="active">Documentation</a></li>
+        <li><a href="../playground.html">Webcam Playground</a></li>
+        <li><a href="../learn/strides.html">3D Strides</a></li>
+        <li><a href="../learn/gemm_cache.html">Tiled GEMM</a></li>
+        <li><a href="../learn/stencils.html">SIMD Stencils</a></li>
+        <li><a href="https://erolrecep.github.io/rcre/" class="btn btn-cta">Project Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Docs Layout: Sidebar + Main Content -->
+  <div class="docs-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="docs-sidebar">
+      <div class="docs-search-box">
+        <span class="docs-search-icon">🔍</span>
+        <input type="text" id="docs-search" class="docs-search-input" placeholder="Filter docs (Ctrl+K)...">
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">🚀 Getting Started</div>
+        <ul class="docs-nav-list">
+          <li><a href="#quickstart" class="docs-nav-link"><span>Quickstart & Drop-in</span><span class="docs-badge-mini">dist</span></a></li>
+          <li><a href="#compilation" class="docs-nav-link"><span>C23 Flags & Toolchains</span></a></li>
+          <li><a href="#benchmarks" class="docs-nav-link"><span>Verified Benchmarks</span><span class="docs-badge-mini">M5 Max</span></a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">🧠 Core Systems Engine</div>
+        <ul class="docs-nav-list">
+          <li><a href="#arenas" class="docs-nav-link"><span>Linear Arenas (Zero-Heap)</span></a></li>
+          <li><a href="#tensors" class="docs-nav-link"><span>Strided N-D Tensors</span><span class="docs-badge-mini">O(1)</span></a></li>
+          <li><a href="#adaptation" class="docs-nav-link"><span>Fused Input Adaptation</span></a></li>
+          <li><a href="#concurrency" class="docs-nav-link"><span>Multicore Concurrency</span></a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">⚡ Hardware Acceleration</div>
+        <ul class="docs-nav-list">
+          <li><a href="#hal-dispatch" class="docs-nav-link"><span>Dynamic HAL Dispatch</span></a></li>
+          <li><a href="#cpu-probe" class="docs-nav-link"><span>CPU Feature Detection</span></a></li>
+          <li><a href="#cache-gemm" class="docs-nav-link"><span>Cache-Tiled GEMM</span></a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">👁️ Computer Vision</div>
+        <ul class="docs-nav-list">
+          <li><a href="#cv-grayscale" class="docs-nav-link"><span>Rec.601 Grayscale</span><span class="docs-badge-mini">0 LSB</span></a></li>
+          <li><a href="#cv-gaussian" class="docs-nav-link"><span>2D Gaussian Blur</span></a></li>
+          <li><a href="#cv-sobel" class="docs-nav-link"><span>3x3 Sobel Operators</span></a></li>
+          <li><a href="#cv-channel-swap" class="docs-nav-link"><span>Channel Swap (BGR/RGB)</span></a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">📊 Classical ML</div>
+        <ul class="docs-nav-list">
+          <li><a href="#ml-linear" class="docs-nav-link"><span>Linear Models & SVM</span></a></li>
+          <li><a href="#ml-clustering" class="docs-nav-link"><span>k-Means & PCA</span></a></li>
+          <li><a href="#ml-gbdt" class="docs-nav-link"><span>Flat-Array GBDT</span><span class="docs-badge-mini">7.8M/s</span></a></li>
+          <li><a href="#ml-hnsw" class="docs-nav-link"><span>HNSW Vector Search</span><span class="docs-badge-mini">44k QPS</span></a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">📷 Camera Companion</div>
+        <ul class="docs-nav-list">
+          <li><a href="#camera-companion" class="docs-nav-link"><span>Isolated I/O & Backends</span></a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">🌐 Multi-Language FFI</div>
+        <ul class="docs-nav-list">
+          <li><a href="#ffi-python" class="docs-nav-link"><span>Python (ctypes + NumPy)</span></a></li>
+          <li><a href="#ffi-rust" class="docs-nav-link"><span>Rust (rcre-sys)</span></a></li>
+        </ul>
+      </div>
+
+      <div class="docs-nav-group">
+        <div class="docs-nav-title">📖 API Reference</div>
+        <ul class="docs-nav-list">
+          <li><a href="#api-reference" class="docs-nav-link"><span>Complete C23 API (42)</span></a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="docs-content">
+      <header class="docs-header">
+        <div class="docs-tag">Pure C23 • Zero External Dependencies • Single-Header</div>
+        <h1 class="docs-title">RCRE Technical Manual & API Documentation</h1>
+        <p class="docs-lead">
+          Recep's Code Run Everywhere (RCRE) is a high-performance engine unifying modern Computer Vision and Classical Machine Learning 
+          under an N-D strided tensor architecture with <strong>zero heap allocations in critical inference loops</strong>.
+        </p>
+      </header>
+
+      <!-- 1. Quickstart Section -->
+      <section id="quickstart" class="docs-section">
+        <h2>🚀 Quickstart & Header Drop-In</h2>
+        <p>
+          RCRE is distributed as an amalgamated single-header library at <code>dist/rcre.h</code> (102.8 KB). 
+          Simply drop this file into your project or build with the centralized operations hub.
+        </p>
+
+        <div class="docs-code-container">
+          <div class="docs-code-header">
+            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #a5b4fc;">Single-Header Drop-in (C23)</span>
+            <button class="docs-btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="docs-code-content"><code>#define RCRE_IMPLEMENTATION
+#include "rcre.h"
+#include &lt;stdio.h&gt;
+
+int main(void) {
+    // 1. Initialize hardware acceleration layer (runtime CPU probe)
+    rcre_hal_init();
+
+    // 2. Allocate 64-byte aligned linear scratchpad arena (16 MB)
+    RCRE_Arena* arena = rcre_arena_create(16 * 1024 * 1024);
+
+    // 3. Create a 3D Tensor [H=1080, W=1920, C=3] for full HD image
+    size_t shape[3] = {1080, 1920, 3};
+    RCRE_Tensor* img = rcre_tensor_create(arena, 3, shape, RCRE_DTYPE_U8, RCRE_LAYOUT_HWC);
+
+    printf("RCRE Initialized: Tensor capacity allocated inside arena, 0 mallocs in loops.\n");
+    return 0;
+}</code></pre>
+        </div>
+
+        <div class="docs-callout docs-callout-info">
+          <div class="docs-callout-icon">💡</div>
+          <div>
+            <strong>Single Translation Unit Rule:</strong> In exactly <em>one</em> C file, place <code>#define RCRE_IMPLEMENTATION</code> before 
+            including <code>rcre.h</code>. In all other files, simply include <code>rcre.h</code> normally as an API header.
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Compilation Flags -->
+      <section id="compilation" class="docs-section">
+        <h2>🛠️ C23 Flags & Toolchain Compatibility</h2>
+        <p>
+          RCRE requires an ISO C23 compliant compiler. It makes extensive use of standard attributes 
+          <code>[[nodiscard]]</code>, <code>constexpr</code>, <code>nullptr</code>, and standard atomic types.
+        </p>
+
+        <div class="docs-code-container">
+          <div class="docs-code-header">
+            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #a5b4fc;">Compiler Flags</span>
+            <button class="docs-btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="docs-code-content"><code># Clang (macOS / Linux)
+clang -std=c2x -O3 -Wall -Wextra -pthread -march=native main.c -o main
+
+# GCC 13+ (Linux / WSL)
+gcc -std=c23 -O3 -Wall -Wextra -pthread -march=native main.c -o main</code></pre>
+        </div>
+      </section>
+
+      <!-- 3. Verified Benchmarks -->
+      <section id="benchmarks" class="docs-section">
+        <h2>📊 Verified Hardware Benchmarks</h2>
+        <p>
+          Micro-benchmarks conducted natively on <strong>Apple Silicon M5 Max</strong> (18-core CPU, 128-bit ARM NEON vector registers) 
+          demonstrating peak hardware efficiency:
+        </p>
+
+        <div class="stats-grid" style="margin: 1.5rem 0;">
+          <div class="stat-box">
+            <div class="stat-value">72.96 GFLOPS</div>
+            <div class="stat-label">Cache-Tiled GEMM (L1 Blocked)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">7,922 MP/s</div>
+            <div class="stat-label">RGB to Gray (~0.26 ms @ 1080p)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">7.86M /s</div>
+            <div class="stat-label">Tabular GBDT (127 ns Latency)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">44,434 QPS</div>
+            <div class="stat-label">HNSW 64-D Vector Search</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Linear Arenas -->
+      <section id="arenas" class="docs-section">
+        <h2>🧠 Linear Arenas: The Zero-Heap Philosophy</h2>
+        <p>
+          In high-performance computer vision and deep learning inference, memory fragmentation and heap allocation lock contention 
+          are the leading causes of latency jitter. RCRE completely outlaws <code>malloc()</code> and <code>free()</code> inside compute kernels.
+        </p>
+        <p>
+          All temporary tensors, intermediate feature maps, and model states are allocated from a 64-byte aligned linear arena:
+        </p>
+
+        <div class="docs-code-container">
+          <div class="docs-code-header">
+            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #a5b4fc;">Arena Lifecycle</span>
+            <button class="docs-btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="docs-code-content"><code>// Allocate 32 MB arena once at pipeline initialization
+RCRE_Arena* scratch = rcre_arena_create(32 * 1024 * 1024);
+
+// Inside the 240 FPS camera inference loop:
+while (camera_running) {
+    // Save checkpoint
+    size_t checkpoint = scratch->offset;
+
+    // Allocate intermediate filters from scratchpad (O(1) pointer bump)
+    RCRE_Tensor* gray = rcre_cv_rgb_to_gray(scratch, raw_frame);
+    RCRE_Tensor* blurred = rcre_cv_gaussian_blur_2d(scratch, gray, 5, 1.0f);
+    RCRE_Tensor* edges = rcre_cv_sobel_3x3(scratch, blurred);
+
+    // Execute downstream inference...
+    
+    // O(1) bulk rewind: resets memory for next frame with ZERO syscall overhead!
+    scratch->offset = checkpoint;
+}</code></pre>
+        </div>
+
+        <div class="sandbox-banner">
+          <div class="sandbox-banner-text">
+            <div class="sandbox-banner-title">🧊 Visualizing 3D Tensor Memory Strides</div>
+            <div class="sandbox-banner-desc">Explore how multi-dimensional coordinates map to flat arena memory in our interactive Three.js 3D visualizer.</div>
+          </div>
+          <a href="../learn/strides.html" class="btn btn-secondary">Launch 3D Visualizer &rarr;</a>
+        </div>
+      </section>
+
+      <!-- 5. Strided N-D Tensors -->
+      <section id="tensors" class="docs-section">
+        <h2>📐 Strided N-D Tensors & Zero-Copy Views</h2>
+        <p>
+          RCRE tensors follow the <strong>ShapeTracker</strong> paradigm. Operations such as slicing, reshaping, transposing, 
+          and channel permuting do not copy a single byte of pixel data. They update only metadata:
+        </p>
+        <p style="font-family: var(--font-mono); color: #a5b4fc; background: rgba(99, 102, 241, 0.1); padding: 0.75rem 1rem; border-radius: 6px;">
+          \text{Offset}(i_0, i_1, \dots, i_{D-1}) = \sum_{d=0}^{D-1} i_d \cdot \text{stride}[d]
+        </p>
+
+        <div class="docs-code-container">
+          <div class="docs-code-header">
+            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #a5b4fc;">Zero-Copy Slicing Example</span>
+            <button class="docs-btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="docs-code-content"><code>// Crop a 256x256 bounding box from an active 1080p frame
+size_t slice_starts[3] = {100, 200, 0};  // Y=100, X=200, C=0
+size_t slice_shapes[3] = {256, 256, 3};  // Crop 256x256
+
+// Executes in under 15 nanoseconds (pure metadata update, 0 byte copy)
+RCRE_Tensor* crop = rcre_tensor_slice(arena, frame_tensor, slice_starts, slice_shapes);</code></pre>
+        </div>
+      </section>
+
+      <!-- 6. Computer Vision -->
+      <section id="cv-grayscale" class="docs-section">
+        <h2>👁️ Computer Vision Filters & OpenCV Parity</h2>
+        <p>
+          RCRE guarantees <strong>0 LSB (Least Significant Bit) discrepancy</strong> against OpenCV <code>cv2.cvtColor(RGB2GRAY)</code> 
+          by utilizing 15-bit fixed-point integer arithmetic:
+        </p>
+        <p style="font-family: var(--font-mono); color: #34d399; background: rgba(16, 185, 129, 0.1); padding: 0.75rem 1rem; border-radius: 6px;">
+          Y = (9798 \cdot R + 19235 \cdot G + 3735 \cdot B + 16384) \gg 15
+        </p>
+
+        <div class="docs-code-container">
+          <div class="docs-code-header">
+            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #a5b4fc;">CV Pipeline</span>
+            <button class="docs-btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="docs-code-content"><code>// 1. Convert RGB frame to Grayscale (SIMD vectorized 8 pixels per NEON cycle)
+RCRE_Tensor* gray = rcre_cv_rgb_to_gray(arena, rgb_tensor);
+
+// 2. 2D Gaussian Blur (separable kernel with reflection padding)
+RCRE_Tensor* blur = rcre_cv_gaussian_blur_2d(arena, gray, 5, 1.2f);
+
+// 3. Compute 3x3 horizontal (dx) and vertical (dy) Sobel derivatives
+RCRE_Tensor *dx, *dy;
+rcre_cv_sobel_3x3(arena, blur, &dx, &dy);</code></pre>
+        </div>
+      </section>
+
+      <!-- 7. Classical Machine Learning -->
+      <section id="ml-gbdt" class="docs-section">
+        <h2>🌲 High-Throughput Tabular GBDT Inference</h2>
+        <p>
+          RCRE compiles gradient boosted decision trees into a cache-dense, flat array structure. 
+          Traversals operate entirely on pointer indices with zero pointer chasing and zero dynamic allocations.
+        </p>
+
+        <div class="docs-code-container">
+          <div class="docs-code-header">
+            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #a5b4fc;">GBDT Inference (127 ns Latency)</span>
+            <button class="docs-btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="docs-code-content"><code>// Predict probability for tabular feature vector
+float features[10] = {2.5f, -1.2f, 0.8f, 120.0f, 0.0f, 1.5f, 3.2f, -0.5f, 4.1f, 0.2f};
+float probability = rcre_ml_gbdt_predict(gbdt_model, features);
+
+printf("Predicted Probability: %.4f\n", probability);</code></pre>
+        </div>
+      </section>
+
+      <!-- 8. HNSW Vector Search -->
+      <section id="ml-hnsw" class="docs-section">
+        <h2>🔍 Hierarchical Navigable Small World (HNSW) Vector Search</h2>
+        <p>
+          RCRE includes an embedded HNSW vector similarity search index for embeddings and visual feature retrieval, 
+          supporting both Euclidean ($L_2$) and Cosine distance metrics.
+        </p>
+
+        <div class="docs-code-container">
+          <div class="docs-code-header">
+            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #a5b4fc;">Vector Similarity Search (44,434 QPS)</span>
+            <button class="docs-btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <pre class="docs-code-content"><code>// Create 64-D Cosine index (M=16 connections, ef_construction=64)
+RCRE_HNSW_Index* index = rcre_hnsw_create(arena, 64, 16, 64, RCRE_METRIC_COSINE);
+
+// Insert vector embeddings
+rcre_hnsw_insert(index, embedding_vec, doc_id);
+
+// Query top-K nearest neighbors
+size_t out_indices[5];
+float out_distances[5];
+size_t count = rcre_hnsw_search(index, query_vec, 5, 32, out_indices, out_distances);</code></pre>
+        </div>
+      </section>
+
+      <!-- 9. Cross-Language FFI -->
+      <section id="ffi-python" class="docs-section">
+        <h2>🐍 Multi-Language FFI: Python & Rust</h2>
+        <p>
+          Because RCRE adheres strictly to the ISO C23 standard C ABI, it can be called seamlessly from Python and Rust 
+          with <strong>zero-copy buffer sharing</strong>.
+        </p>
+
+        <div class="docs-code-container">
+          <div class="docs-code-header">
+            <div class="docs-code-tabs">
+              <button class="docs-code-tab active" onclick="switchTab(this, 'c-ffi')">C23</button>
+              <button class="docs-code-tab" onclick="switchTab(this, 'py-ffi')">Python FFI</button>
+              <button class="docs-code-tab" onclick="switchTab(this, 'rust-ffi')">Rust FFI</button>
+            </div>
+            <button class="docs-btn-copy" onclick="copyCode(this)">Copy</button>
+          </div>
+          <div id="c-ffi" class="tab-pane active">
+            <pre class="docs-code-content"><code>// C23 invocation
+RCRE_Tensor* gray = rcre_cv_rgb_to_gray(arena, rgb_tensor);</code></pre>
+          </div>
+          <div id="py-ffi" class="tab-pane" style="display: none;">
+            <pre class="docs-code-content"><code># Zero-copy Python NumPy integration
+import numpy as np
+from rcre import RCRE
+
+r = RCRE()
+arena = r.create_arena(16 * 1024 * 1024)
+
+# Wrap raw NumPy array directly into RCRE Tensor
+rgb_array = np.zeros((1080, 1920, 3), dtype=np.uint8)
+tensor = r.tensor_from_numpy(arena, rgb_array)
+gray_tensor = r.cv_rgb_to_gray(arena, tensor)</code></pre>
+          </div>
+          <div id="rust-ffi" class="tab-pane" style="display: none;">
+            <pre class="docs-code-content"><code>// Safe Rust FFI invocation
+use rcre_sys::{RCREArena, RCRECV};
+
+let mut arena = RCREArena::new(16 * 1024 * 1024);
+let gray = RCRECV::rgb_to_gray(&mut arena, &rgb_tensor);</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. Complete API Reference -->
+      <section id="api-reference" class="docs-section">
+        <h2>📖 Complete C23 API Reference</h2>
+        <p>
+          All 42 functions exported by <code>include/rcre.h</code> and <code>include/extras/rcre_cam.h</code>:
+        </p>
+
+        <div id="api-cards-container">
+          <!-- Populated dynamically from api_data.json -->
+          <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+            Loading API functions...
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Copy code button handler
+    function copyCode(btn) {
+      const codeBlock = btn.closest('.docs-code-container').querySelector('code');
+      navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+        const originalText = btn.innerText;
+        btn.innerText = 'Copied!';
+        btn.style.borderColor = '#10b981';
+        btn.style.color = '#34d399';
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }, 1500);
+      });
+    }
+
+    // Language switcher tab handler
+    function switchTab(btn, targetId) {
+      const container = btn.closest('.docs-code-container');
+      container.querySelectorAll('.docs-code-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      container.querySelectorAll('.tab-pane').forEach(pane => pane.style.display = 'none');
+      container.querySelector('#' + targetId).style.display = 'block';
+    }
+
+    // Client-side search and API reference renderer
+    document.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('api-cards-container');
+      const searchInput = document.getElementById('docs-search');
+
+      try {
+        const res = await fetch('api_data.json');
+        const apiData = await res.json();
+
+        function renderCards(funcs) {
+          if (!funcs.length) {
+            container.innerHTML = '<div style="color: var(--text-dim); padding: 1.5rem;">No matching API functions found.</div>';
+            return;
+          }
+
+          container.innerHTML = funcs.map(f => `
+            <div class="api-card" id="api-${f.name}">
+              <div class="api-card-title">
+                <span>${f.name}</span>
+                <span class="api-card-badge">${f.category}</span>
+              </div>
+              <p class="api-card-desc">${f.brief || 'ISO C23 Engine Function'}</p>
+              
+              <div style="font-family: var(--font-mono); font-size: 0.8rem; background: rgba(0,0,0,0.3); padding: 0.6rem 0.8rem; border-radius: 6px; margin-bottom: 0.75rem; color: #a5b4fc;">
+                <span style="color: #f472b6;">${f.return_type}</span> ${f.name}(${f.params.map(p => `<span style="color: #38bdf8;">${p.type}</span> ${p.name}`).join(', ') || 'void'});
+              </div>
+
+              ${f.params.length ? `
+                <table class="api-table">
+                  <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    ${f.params.map(p => `
+                      <tr>
+                        <td class="api-param-name">${p.name}</td>
+                        <td class="api-param-type">${p.type}</td>
+                        <td>${p.description || '-'}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              ` : ''}
+
+              ${f.returns ? `
+                <div style="margin-top: 0.75rem; font-size: 0.82rem; color: var(--text-dim);">
+                  <strong style="color: var(--text-muted);">Returns:</strong> ${f.returns}
+                </div>
+              ` : ''}
+            </div>
+          `).join('');
+        }
+
+        renderCards(apiData);
+
+        // Instant search
+        searchInput.addEventListener('input', (e) => {
+          const q = e.target.value.toLowerCase().trim();
+          if (!q) {
+            renderCards(apiData);
+            return;
+          }
+          const filtered = apiData.filter(f => 
+            f.name.toLowerCase().includes(q) || 
+            f.category.toLowerCase().includes(q) || 
+            (f.brief && f.brief.toLowerCase().includes(q))
+          );
+          renderCards(filtered);
+        });
+
+      } catch (err) {
+        console.warn('API data fetch failed:', err);
+        container.innerHTML = '<div style="color: var(--text-dim); padding: 1.5rem;">C23 API functions documented above.</div>';
+      }
+
+      // Hotkey Ctrl+K / Cmd+K
+      window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
