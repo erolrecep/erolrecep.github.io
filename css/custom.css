@@ -42,3 +42,49 @@ blockquote strong {
   color: #0369a1;
   text-align: center;
 }
+
+/* Terminal Image Cards for Side-by-Side Screenshots */
+.terminal-img-card {
+  background: #0f172a;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.terminal-img-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+}
+
+.terminal-img-wrapper {
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: #090d16;
+}
+
+.terminal-img-wrapper img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.terminal-img-caption {
+  padding: 10px 14px;
+  background: #1e293b;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  margin: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
