@@ -10,6 +10,22 @@
 		
 		
 		
+			<lastBuildDate>Tue, 20 Oct 2026 20:45:00 -0500</lastBuildDate>
+		
 			<atom:link href="https://erolrecep.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Artificial Intelligence</title>
+				<link>https://erolrecep.github.io/categories/artificial-intelligence/</link>
+				<pubDate>Tue, 20 Oct 2026 20:45:00 -0500</pubDate>
+				<guid>https://erolrecep.github.io/categories/artificial-intelligence/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Data Science</title>
+				<link>https://erolrecep.github.io/categories/data-science/</link>
+				<pubDate>Tue, 20 Oct 2026 20:45:00 -0500</pubDate>
+				<guid>https://erolrecep.github.io/categories/data-science/</guid>
+				<description></description>
+			</item>
 	</channel>
 </rss>

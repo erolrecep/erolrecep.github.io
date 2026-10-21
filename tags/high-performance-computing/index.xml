@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>High Performance Computing on Recep&#39;s Technical Blog</title>
+		<link>https://erolrecep.github.io/tags/high-performance-computing/</link>
+		<description>Recent content in High Performance Computing on Recep&#39;s Technical Blog</description>
+		<generator>Hugo</generator>
+		<language>en-US</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 20 Oct 2026 20:45:00 -0500</lastBuildDate>
+		
+			<atom:link href="https://erolrecep.github.io/tags/high-performance-computing/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>From Yesterday to Tomorrow: Why Data Science &#43; AI is Your Unstoppable Superpower</title>
+				<link>https://erolrecep.github.io/posts/data-science-yesterday-tomorrow/</link>
+				<pubDate>Tue, 20 Oct 2026 20:45:00 -0500</pubDate>
+				<guid>https://erolrecep.github.io/posts/data-science-yesterday-tomorrow/</guid>
+				<description>&lt;p&gt;&lt;em&gt;A 15-year journey from commodity laptops and MapReduce to supercomputers, Walmart patents, and foundation models—and why foundational rigor matters more than ever.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;div align=&#34;center&#34;&gt;&#xA;  &lt;img src=&#34;alpine_cockpit_hud.jpg&#34; alt=&#34;A high-speed vehicle cockpit looking out over an alpine mountain pass with telemetry and math HUD&#34; style=&#34;max-width: 100%; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.25); margin: 20px 0;&#34; /&gt;&#xA;  &lt;p&gt;&lt;em&gt;Figure: Navigating the alpine pass with live telemetry, neural path predictions, and data science rigor—keeping the human firmly in the driver’s seat.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;/div&gt;</description>
+			</item>
+	</channel>
+</rss>

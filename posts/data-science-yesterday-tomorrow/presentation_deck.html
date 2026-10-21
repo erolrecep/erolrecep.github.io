@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>From Yesterday to Tomorrow: Data Science, Agentic AI, and the Human in the Driver's Seat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Reveal.js styles -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(148, 163, 184, 0.15);
+      --primary: #38bdf8;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+    .reveal {
+      font-family: 'Inter', sans-serif;
+      font-size: 24px; /* Fix Reveal.js default 40px base size */
+      color: var(--text);
+      background: var(--bg-dark);
+    }
+    .reveal .slides section {
+      text-align: left;
+      padding: 15px 30px;
+      box-sizing: border-box;
+    }
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-transform: none;
+    }
+    .reveal h1 { font-size: 1.85em; line-height: 1.15; color: #fff; margin-bottom: 0.25em; }
+    .reveal h2 { font-size: 1.35em; color: var(--primary); margin-bottom: 0.3em; }
+    .reveal h3 { font-size: 1.05em; color: var(--accent); margin-bottom: 0.25em; }
+    .reveal p, .reveal li {
+      font-size: 0.82em;
+      line-height: 1.48;
+      color: var(--text);
+    }
+    .reveal ul { margin-left: 18px; margin-top: 6px; margin-bottom: 6px; }
+    .reveal strong { color: var(--accent); font-weight: 700; }
+    .reveal em { color: var(--success); font-style: normal; font-weight: 600; }
+    .reveal code {
+      font-family: 'Fira Code', monospace;
+      color: var(--primary);
+      background: rgba(15, 23, 42, 0.8);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.52em;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      margin-bottom: 8px;
+    }
+    .tag.accent { background: rgba(245, 158, 11, 0.15); color: var(--accent); border-color: rgba(245, 158, 11, 0.3); }
+    .tag.success { background: rgba(16, 185, 129, 0.15); color: var(--success); border-color: rgba(16, 185, 129, 0.3); }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px 18px;
+      margin-top: 10px;
+      backdrop-filter: blur(10px);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .quote-box {
+      border-left: 4px solid var(--primary);
+      background: rgba(30, 41, 59, 0.5);
+      padding: 10px 16px;
+      margin: 10px 0;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: #cbd5e1;
+      font-size: 0.85em;
+    }
+    .table-container table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72em;
+      margin-top: 10px;
+    }
+    .table-container th {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      padding: 8px 12px;
+      border: 1px solid var(--card-border);
+      text-align: left;
+    }
+    .table-container td {
+      padding: 8px 12px;
+      border: 1px solid var(--card-border);
+      background: rgba(30, 41, 59, 0.4);
+    }
+    .footer-note {
+      position: absolute;
+      bottom: 10px;
+      left: 30px;
+      font-size: 0.5em;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- SLIDE 1 -->
+      <section>
+        <span class="tag">Keynote Address</span>
+        <h1 style="font-size: 2.1em;">From Yesterday to Tomorrow</h1>
+        <h3 style="color: var(--primary); font-size: 1.3em; margin-bottom: 20px;">Data Science, Agentic AI, and the Human in the Driver's Seat</h3>
+        <p style="color: var(--text-muted); font-size: 0.85em; max-width: 85%;">
+          A 15-Year Retrospective Across Commodity Laptops, Physical Edge UAVs, High-Performance Computing, and Modern Foundation Models.
+        </p>
+        <div class="card" style="margin-top: 30px; display: inline-block;">
+          <p style="margin: 0; font-size: 0.85em;">
+            <strong>Recep Erol</strong>, PhD in AI &bull; <em>Computational Scientist for AI</em><br>
+            <span style="color: var(--text-muted); font-size: 0.9em;">Founder & Curator, <code>awesome-datascience</code></span>
+          </p>
+        </div>
+        <aside class="notes">
+          Welcome everyone. Address the palpable anxiety in the room: What does the future hold for data scientists, students, and researchers in an era of LLMs and autonomous agents? Today, we will unpack 15 years of hard-won lessons to prove why foundational data science combined with AI is your ultimate superpower.
+        </aside>
+      </section>
+
+      <!-- SLIDE 2 -->
+      <section>
+        <span class="tag">Act I: The Genesis</span>
+        <h2>2010: The Spark & The Underpowered Laptop</h2>
+        <div class="grid-2">
+          <div>
+            <ul>
+              <li><strong>The Underground Stack:</strong> Encountered early NumPy, SciPy, and IPython at a local conference.</li>
+              <li><strong>The "Big Data" Storm:</strong> MapReduce, HDFS, Zookeeper, and Hive dominated the headlines.</li>
+              <li><strong>The Physical Constraint:</strong> My student computer couldn't even run the Hortonworks Sandbox virtual machine.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="card">
+              <h3 style="margin-top: 0;">The Self-Taught Pivot</h3>
+              <p>Turned to early Coursera and Udacity MOOCs. Completed <strong>10+ rigorous courses</strong> back-to-back.</p>
+              <div class="quote-box">
+                "Hardware and frameworks are transient. The appetite for self-directed curiosity is your only permanent asset."
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Start with genuine empathy. Tell the students: I was once where you are today. I had a cheap laptop that choked on the default industry VM. But online education and personal drive bridged the gap.
+        </aside>
+      </section>
+
+      <!-- SLIDE 3 -->
+      <section>
+        <span class="tag">Act I: The Genesis</span>
+        <h2>Open Source as a Global Commons: <code>awesome-datascience</code></h2>
+        <div class="grid-2">
+          <div>
+            <p><strong>The Chaos of 2013:</strong></p>
+            <p style="color: var(--text-muted);">
+              Data science resources, papers, and packages were scattered across fragmented mailing lists, blogs, and IRC channels.
+            </p>
+            <p><strong>The Solution:</strong></p>
+            <p>
+              Created an open, curated GitHub repository: <code>awesome-datascience</code>.
+            </p>
+          </div>
+          <div>
+            <div class="card" style="border-color: var(--primary);">
+              <h3 style="margin-top: 0; color: #fff;">The Global Impact</h3>
+              <ul>
+                <li>Tens of thousands of GitHub stars</li>
+                <li>Hundreds of global contributors</li>
+                <li>Keynote talks, podcasts, and global collaborations</li>
+              </ul>
+              <p style="margin-top: 15px; font-size: 0.85em; color: var(--accent);">
+                <strong>Lesson:</strong> Sharing knowledge openly builds career antifragility.
+              </p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Explain how open source was the catalyst. It wasn't just a list; it was an international beacon that connected a student with top researchers around the world.
+        </aside>
+      </section>
+
+      <!-- SLIDE 4 -->
+      <section>
+        <span class="tag">Act I: The Genesis</span>
+        <h2>2012: The "Sexiest Job" & Conway’s Triad</h2>
+        <div class="grid-2">
+          <div>
+            <div class="card" style="text-align: center; font-family: monospace; font-size: 0.85em;">
+              <p style="color: var(--primary);">[ Hacking / Code ]</p>
+              <p>&Delta;</p>
+              <p>[ Math & Stats ] &mdash;&mdash;&mdash;&mdash; [ Domain Context ]</p>
+              <p style="color: #ef4444; font-size: 0.85em; margin-top: 10px;">Missing Math or Domain = <strong>DANGER ZONE</strong></p>
+            </div>
+          </div>
+          <div>
+            <ul>
+              <li><strong>The HBR Boom:</strong> Data Scientist declared the sexiest job of the 21st century.</li>
+              <li><strong>The Timeless Truth:</strong> Code is only one-third of the equation.</li>
+              <li><strong>The 2026 Warning:</strong> In the age of LLMs, anyone can generate code. Missing math or domain knowledge makes you dangerously wrong.</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          Review Drew Conway's 2010 Venn Diagram. Remind the audience that coding has always been only one pillar. When AI makes coding trivial, math and domain knowledge become the deciding factors.
+        </aside>
+      </section>
+
+      <!-- SLIDE 5 -->
+      <section>
+        <span class="tag">Act I: The Genesis</span>
+        <h2>History Repeats: Waves of Automation Panic</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Epoch</th>
+                <th>What Was Automated</th>
+                <th>The Panic</th>
+                <th>What Actually Happened</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>2014</strong></td>
+                <td>Raw numerical loops &rarr; Scikit-Learn</td>
+                <td><em>"Manual coding is dead!"</em></td>
+                <td>Productivity surged; focus moved to feature engineering.</td>
+              </tr>
+              <tr>
+                <td><strong>2018</strong></td>
+                <td>Manual parameter search &rarr; Cloud AutoML</td>
+                <td><em>"Modeling is dead!"</em></td>
+                <td>Focus shifted to data hygiene and metric-to-ROI translation.</td>
+              </tr>
+              <tr>
+                <td><strong>2026</strong></td>
+                <td>Syntax & boilerplate &rarr; Agentic AI</td>
+                <td><em>"Data Science is dead!"</em></td>
+                <td><strong>You are promoted to Principal Investigator.</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <aside class="notes">
+          Normalize the fear. Every few years, people claim the profession is dead because lower-level mechanics are automated. In reality, each wave raises the ceiling of what one scientist can accomplish.
+        </aside>
+      </section>
+
+      <!-- SLIDE 6 -->
+      <section>
+        <span class="tag">Act II: Across the Stack</span>
+        <h2>Layer 1 & 2: Network Sockets to Relational Databases</h2>
+        <div class="grid-2">
+          <div>
+            <ul>
+              <li><strong>Starting at the Wire:</strong> Network programming projects taught packet latency, concurrency, and socket streams.</li>
+              <li><strong>Databases:</strong> SQL query plans, schema normalization, and data mining.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="quote-box">
+              "Data does not originate as a clean CSV. It travels across network boundaries and lands on transactional disks. If you don't understand data provenance, you spend your life debugging preventable upstream errors."
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Emphasize the value of foundational computer science. Real data is messy, distributed, and constrained by networking realities.
+        </aside>
+      </section>
+
+      <!-- SLIDE 7 -->
+      <section>
+        <span class="tag">Act II: Across the Stack</span>
+        <h2>Layer 3: Physical Edge Systems — Computer Vision on UAVs</h2>
+        <div class="grid-2">
+          <div>
+            <div class="card">
+              <h3 style="margin-top: 0;">Unmanned Aerial Vehicles (Drones)</h3>
+              <ul>
+                <li>Real-time image processing on low-power embedded processors</li>
+                <li>Unforgiving memory constraints and strict battery milli-watt budgets</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="border-color: var(--accent);">
+              <h3 style="margin-top: 0; color: var(--accent);">The Lesson</h3>
+              <p>You cannot hide behind an infinite cloud cluster. Algorithmic complexity (<em>O(N)</em> vs <em>O(N&sup2;)</em>) and sensor vibration noise demand real engineering rigor.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Explain how physical systems enforce computational discipline. When compute and power are finite, algorithmic efficiency is non-negotiable.
+        </aside>
+      </section>
+
+      <!-- SLIDE 8 -->
+      <section>
+        <span class="tag">Act II: Across the Stack</span>
+        <h2>Layer 4: High-Stakes Biomedical — Surgical Simulation</h2>
+        <div class="grid-2">
+          <div>
+            <ul>
+              <li><strong>Medical Image Analytics:</strong> 3D anatomical modeling and surgical telemetry analysis.</li>
+              <li><strong>The High-Stakes Environment:</strong> In healthcare, a false positive or an uncalibrated confidence interval impacts human lives.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="card">
+              <h3 style="margin-top: 0; color: var(--success);">The Epistemic Standard</h3>
+              <p>Statistical optimization is not enough. You need <strong>interpretability</strong>, <strong>counterfactual testing</strong>, and <strong>domain validation</strong>.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Contrast toy Kaggle metrics with biomedical reality. In medicine, being 95% confident isn't enough if you cannot explain the failure boundaries to a surgeon.
+        </aside>
+      </section>
+
+      <!-- SLIDE 9 -->
+      <section>
+        <span class="tag">Act II: Across the Stack</span>
+        <h2>Layer 5: Enterprise Impact — A $30B Problem at Walmart</h2>
+        <div class="grid-2">
+          <div>
+            <ul>
+              <li><strong>Enterprise Scale:</strong> Moving from academic prototypes to planet-scale supply chains.</li>
+              <li><strong>The Achievement:</strong> Tackled a massive <strong>$30 Billion operational challenge</strong>, resulting in <strong>two patents owned by Walmart</strong>.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="card">
+              <h3 style="margin-top: 0; color: var(--primary);">Commercial Translation</h3>
+              <p>A machine learning model is useless if it cannot be operationalized into enterprise balance-sheet value.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Share the pride and lessons of working at Walmart scale. Emphasize that business translation and operational alignment are core data science skills.
+        </aside>
+      </section>
+
+      <!-- SLIDE 10 -->
+      <section>
+        <span class="tag">Act II: Across the Stack</span>
+        <h2>The Synthesis: Every Layer Compounds</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3 style="margin-top: 0; font-size: 1.1em;">Networks & DBs</h3>
+            <p style="font-size: 0.8em; color: var(--text-muted);">Taught me data integrity and latency bottlenecks.</p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top: 0; font-size: 1.1em;">Edge & Drones</h3>
+            <p style="font-size: 0.8em; color: var(--text-muted);">Taught me memory ceilings and real-world sensor noise.</p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top: 0; font-size: 1.1em;">Enterprise & Medical</h3>
+            <p style="font-size: 0.8em; color: var(--text-muted);">Taught me ROI translation and life-or-death validation.</p>
+          </div>
+        </div>
+        <div class="quote-box" style="margin-top: 25px;">
+          "No course or project you complete is wasted. Diverse technical layers compound into unshakeable scientific intuition."
+        </div>
+        <aside class="notes">
+          Inspire students who wonder why they have to learn so many different topics. Everything connects.
+        </aside>
+      </section>
+
+      <!-- SLIDE 11 -->
+      <section>
+        <span class="tag">Act III: The Scale Frontier</span>
+        <h2>Entering the World of Supercomputers</h2>
+        <div class="grid-2">
+          <div>
+            <ul>
+              <li><strong>6 Years in Academic HPC:</strong> Deep dive into large-scale computational optimization.</li>
+              <li><strong>The Reality of Petascale Compute:</strong>
+                <ul>
+                  <li>Ultra-low latency InfiniBand interconnects</li>
+                  <li>Distributed parallel filesystems (Lustre/GPFS)</li>
+                  <li>Multi-node MPI & SLURM scheduling</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div class="card">
+              <h3 style="margin-top: 0;">Beyond Single-Node Python</h3>
+              <p>When datasets scale to terabytes, naive loops die. You must master distributed memory and parallel paradigms.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Describe the world of supercomputers. Explain how high-performance computing strips away naive assumptions about memory and speed.
+        </aside>
+      </section>
+
+      <!-- SLIDE 12 -->
+      <section>
+        <span class="tag">Act III: The Scale Frontier</span>
+        <h2>Slashing Processing Time: From Days to Hours</h2>
+        <div class="grid-2">
+          <div>
+            <div class="card" style="border-color: #ef4444;">
+              <h3 style="margin-top: 0; color: #ef4444;">Before</h3>
+              <p>Naive, unprofiled data pipelines taking <strong>several days</strong> per run, stalling scientific discovery.</p>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="border-color: var(--success);">
+              <h3 style="margin-top: 0; color: var(--success);">After</h3>
+              <p>Restructured memory layouts, vectorization, and parallel decomposition: <strong>under 2 hours</strong>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="quote-box">
+          "Brute-force cloud compute is expensive and lazy. Algorithmic optimization is an enduring scientific superpower."
+        </div>
+        <aside class="notes">
+          Explain why throwing compute at a problem is bad practice. True optimization unlocks insights that were computationally impossible before.
+        </aside>
+      </section>
+
+      <!-- SLIDE 13 -->
+      <section>
+        <span class="tag">Act III: The Scale Frontier</span>
+        <h2>Heterogeneous Computing: Balancing CPUs & GPUs</h2>
+        <div class="grid-2">
+          <div>
+            <ul>
+              <li>Modern AI is fundamentally <strong>heterogeneous</strong>:
+                <ul>
+                  <li><strong>Host CPUs:</strong> Complex branching, serial logic, pipeline orchestration.</li>
+                  <li><strong>Device GPUs/Accelerators:</strong> Massive parallel tensor contractions.</li>
+                </ul>
+              </li>
+              <li><strong>The Real Ceiling:</strong> PCIe bus transfer latency and memory hierarchy.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="card">
+              <h3 style="margin-top: 0; color: var(--primary);">Hardware Fluency</h3>
+              <p>You cannot effectively scale modern foundation models if you treat the underlying silicon as a magic black box.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Demystify GPUs. Understanding memory transfers between CPU host and GPU device is essential for training and serving large models.
+        </aside>
+      </section>
+
+      <!-- SLIDE 14 -->
+      <section>
+        <span class="tag">Act III: The Scale Frontier</span>
+        <h2>Green Computing: The Energy-Efficient Computing Mandate</h2>
+        <div class="grid-2">
+          <div>
+            <p>Training frontier models consumes gigawatt-hours of electrical energy.</p>
+            <div class="card">
+              <h3 style="margin-top: 0; color: var(--accent);">The New Metric</h3>
+              <p style="font-size: 1.3em; font-family: monospace;">FLOPs / Watt</p>
+              <p style="font-size: 0.85em; color: var(--text-muted);">Maximizing model intelligence per unit of energy consumed.</p>
+            </div>
+          </div>
+          <div>
+            <ul>
+              <li>Quantization (INT8, FP4) and sparse architectures</li>
+              <li>Pruning, distillation, and efficient attention mechanisms</li>
+              <li>Sustainable AI is one of the highest-impact fields of the next decade</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          Introduce energy efficiency and green computing as an imperative. Accuracy at any cost is no longer acceptable in the real world.
+        </aside>
+      </section>
+
+      <!-- SLIDE 15 -->
+      <section>
+        <span class="tag">Act III: The Scale Frontier</span>
+        <h2>Workforce Development: Democratizing Distributed Systems</h2>
+        <div class="card" style="border-color: var(--primary);">
+          <h3 style="margin-top: 0;">Education Moves Science Forward</h3>
+          <p>
+            Software tools are only as powerful as the community that wields them.
+          </p>
+          <ul>
+            <li>Led national workforce development workshops in HPC and distributed computing.</li>
+            <li>Trained students, domain scientists, and interdisciplinary researchers.</li>
+            <li>Democratizing high-performance computing is essential for equitable scientific breakthroughs.</li>
+          </ul>
+        </div>
+        <aside class="notes">
+          Highlight your passion for teaching and workforce development. Tools don't change the world; trained people wielding tools change the world.
+        </aside>
+      </section>
+
+      <!-- SLIDE 16 -->
+      <section>
+        <span class="tag accent">Act IV: The Driver's Seat</span>
+        <h2>The Parable of the Alpine Pass</h2>
+        <div class="grid-2">
+          <div>
+            <div class="card" style="border-color: #ef4444;">
+              <h3 style="margin-top: 0; color: #ef4444;">Person A: Prompt-Only Passenger</h3>
+              <ul>
+                <li>Knows zero physics; never driven manual.</li>
+                <li>Pushes button: <em>"Car, drive to top fast!"</em></li>
+                <li>Camera blinded by blizzard; black ice undetected.</li>
+                <li><strong>Crashes violently at the hairpin turn.</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="border-color: var(--success);">
+              <h3 style="margin-top: 0; color: var(--success);">Person B: Scientist in the Seat</h3>
+              <ul>
+                <li>Uses cruise control and computerized ABS.</li>
+                <li>Understands traction physics and tire friction.</li>
+                <li>Spots anomalous sensor readings & overrides autopilot.</li>
+                <li><strong>Navigates the pass and reaches the summit.</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Deliver this story with high energy! Show that having a powerful autonomous vehicle does not replace the pilot; it demands a more vigilant pilot.
+        </aside>
+      </section>
+
+      <!-- SLIDE 17 -->
+      <section>
+        <span class="tag accent">Act IV: The Driver's Seat</span>
+        <h2>The Clinical Reality: The 99.7% Model That Kills</h2>
+        <div class="card">
+          <p><strong>The Task:</strong> Predict cancer patient remission from 50,000 hospital records.</p>
+          <p><strong>The AI Agent Result:</strong> Generates code in 45s, achieves a staggering <strong>99.7% ROC-AUC</strong>.</p>
+          <div class="card" style="background: rgba(15, 23, 42, 0.9); border-color: var(--accent);">
+            <p style="margin: 0; color: var(--accent);">Top Predictive Feature: <code>DISCH_CODE_902</code></p>
+            <p style="margin: 5px 0 0 0; font-size: 0.85em; color: var(--text-muted);">
+              Hospital Clerk: <em>"Oh, that's the billing code we enter into the accounting system when a patient is formally discharged in full remission!"</em>
+            </p>
+          </div>
+          <p style="color: #ef4444; font-weight: bold; margin-top: 15px;">
+            Target Leakage. The model didn't cure cancer—it memorized an administrative timestamp.
+          </p>
+        </div>
+        <aside class="notes">
+          Walk through the horror of deploying this model. Non-technical managers would celebrate the 99.7% AUC. Only a data scientist with domain skepticism catches the fatal flaw.
+        </aside>
+      </section>
+
+      <!-- SLIDE 18 -->
+      <section>
+        <span class="tag accent">Act IV: The Driver's Seat</span>
+        <h2>Why "AI-Only" Knowledge is Hollow</h2>
+        <div class="grid-2">
+          <div>
+            <ul>
+              <li><strong>Prompting is a commodity:</strong> Anyone can generate a script.</li>
+              <li><strong>The Verification Gap:</strong> You cannot audit what you do not understand.</li>
+              <li>An LLM cannot detect:
+                <ul>
+                  <li>Target leakage & lookahead bias</li>
+                  <li>Confounders & Simpson's Paradox</li>
+                  <li>Distributional drift in production</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div class="quote-box" style="border-left-color: var(--accent);">
+              "Prompt knowledge alone is hollow. But Foundational Data Science + Modern AI is an unstoppable superpower."
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Be honest and direct. Dismantle the myth that prompt engineering is a standalone career. Emphasize that verification is where the real value lies.
+        </aside>
+      </section>
+
+      <!-- SLIDE 19 -->
+      <section>
+        <span class="tag success">Act IV: The Driver's Seat</span>
+        <h2>The Reactive Revolution: Marimo.io</h2>
+        <div class="grid-2">
+          <div>
+            <div class="card" style="border-color: #ef4444;">
+              <h3 style="margin-top: 0; color: #ef4444;">Legacy Jupyter Notebooks</h3>
+              <p style="font-size: 0.85em;">Out-of-order execution, hidden global states, unreproducible scratchpads. AI hallucinates on stale memory.</p>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="border-color: var(--success);">
+              <h3 style="margin-top: 0; color: var(--success);">Marimo Reactive DAG</h3>
+              <p style="font-size: 0.85em;">Deterministic, pure Python files, Git-friendly, upstream changes automatically propagate downstream. AI is natively contextual.</p>
+            </div>
+          </div>
+        </div>
+        <div class="quote-box" style="margin-top: 20px;">
+          "Marimo represents the modern archetype: deterministic, reproducible, and built for AI-assisted empirical science."
+        </div>
+        <aside class="notes">
+          Introduce Marimo as the modern standard. Explain why reproducible computational DAGs prevent the chaos of out-of-order notebook cells.
+        </aside>
+      </section>
+
+      <!-- SLIDE 20 -->
+      <section>
+        <span class="tag success">Act IV: The Driver's Seat</span>
+        <h2>The Dynamic Duo: Data Science &times; Agentic AI</h2>
+        <div class="card" style="text-align: center;">
+          <div style="padding: 15px; border-bottom: 1px solid var(--card-border);">
+            <strong style="color: var(--primary); font-size: 1.1em;">HUMAN SCIENTIST IN THE DRIVER'S SEAT</strong><br>
+            <span style="font-size: 0.85em; color: var(--text-muted);">
+              Hypotheses Formulation &bull; Causal Directed Acyclic Graphs &bull; Domain Truth &bull; Ethical Verification
+            </span>
+          </div>
+          <div style="padding: 10px; color: var(--accent); font-weight: bold;">
+            &darr; Orchestrates & Audits &darr;
+          </div>
+          <div style="padding: 15px; background: rgba(15, 23, 42, 0.7); border-radius: 8px;">
+            <strong style="color: var(--success); font-size: 1.1em;">AGENTIC AI ENGINE & REACTIVE TOOLS</strong><br>
+            <span style="font-size: 0.85em; color: var(--text-muted);">
+              Rapid Code Synthesis &bull; Marimo Execution &bull; Hyperparameter Search &bull; Automated Data Munging
+            </span>
+          </div>
+        </div>
+        <p style="text-align: center; margin-top: 15px; font-weight: 600;">
+          You are not being replaced. You are being promoted to <em>Principal Investigator</em>.
+        </p>
+        <aside class="notes">
+          This is the core emotional climax of the presentation. Let this slide sink in. Reframe AI from a threat into an acceleration engine.
+        </aside>
+      </section>
+
+      <!-- SLIDE 21 -->
+      <section>
+        <span class="tag">Act V: The Playbook</span>
+        <h2>The Future Skill Matrix: Where to Invest Your Time</h2>
+        <div class="grid-2">
+          <div class="card" style="border-color: #ef4444;">
+            <h3 style="margin-top: 0; color: #ef4444;">Depreciating Skills</h3>
+            <ul>
+              <li>Memorizing Pandas/SQL syntax flags</li>
+              <li>Writing routine data-cleaning boilerplate</li>
+              <li>Manual hyperparameter grid loops</li>
+            </ul>
+          </div>
+          <div class="card" style="border-color: var(--success);">
+            <h3 style="margin-top: 0; color: var(--success);">Appreciating Skills</h3>
+            <ul>
+              <li><strong>Linear Algebra:</strong> Embeddings, SVD, projections</li>
+              <li><strong>Probability:</strong> Causal DAGs, Bayesian updating</li>
+              <li><strong>Systems:</strong> Relational schemas, GPU memory limits</li>
+              <li><strong>Domain Expertise:</strong> Biology, Logistics, Finance</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          Give students actionable advice on how to allocate their study hours this semester. Math, systems, and domain depth are permanent assets.
+        </aside>
+      </section>
+
+      <!-- SLIDE 22 -->
+      <section>
+        <span class="tag">Act V: The Playbook</span>
+        <h2>The Living Portfolio: Beyond the Titanic Dataset</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3 style="margin-top: 0; font-size: 1.1em; color: var(--primary);">1. Messy Data</h3>
+            <p style="font-size: 0.8em; color: var(--text-muted);">
+              Scrape real city transit APIs, sensor streams, or messy government archives. Show you can handle raw reality.
+            </p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top: 0; font-size: 1.1em; color: var(--primary);">2. Live Reactive Demos</h3>
+            <p style="font-size: 0.8em; color: var(--text-muted);">
+              Deploy interactive Marimo or Streamlit apps. Let employers and professors tweak parameters live.
+            </p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top: 0; font-size: 1.1em; color: var(--primary);">3. Failure Post-Mortems</h3>
+            <p style="font-size: 0.8em; color: var(--text-muted);">
+              Publish writeups explaining where your model failed, how you found data leakage, and how you fixed it.
+            </p>
+          </div>
+        </div>
+        <p style="margin-top: 20px; text-align: center; color: var(--accent); font-weight: bold;">
+          Employers hire forensic investigators who understand edge cases—not tutorial copy-pasters.
+        </p>
+        <aside class="notes">
+          Kill the Titanic dataset! Tell students how to stand out in the top 1% by showing failure diagnosis and live interactive demos.
+        </aside>
+      </section>
+
+      <!-- SLIDE 23 -->
+      <section>
+        <span class="tag">Act V: The Playbook</span>
+        <h2>The Outreach Algorithm: High-Signal Networking</h2>
+        <div class="card">
+          <p><strong>Step 1: Read Preprints:</strong> Scan arXiv and bioRxiv for papers that genuinely excite you.</p>
+          <p><strong>Step 2: Clone & Reproduce:</strong> Run their code; if you find a bug or edge case, document it.</p>
+          <p><strong>Step 3: Send an Informed Value-First Email:</strong></p>
+          <div class="quote-box" style="font-size: 0.8em;">
+            "Dear Dr. [Name], I read your paper on [Topic]. I replicated your experiments using a reactive Marimo notebook and noticed this interesting edge case in convergence... Are you accepting research assistants?"
+          </div>
+        </div>
+        <aside class="notes">
+          Share your personal story of emailing researchers early in your career. Informed, substantive outreach cuts through spam every time.
+        </aside>
+      </section>
+
+      <!-- SLIDE 24 -->
+      <section>
+        <span class="tag">Act V: The Playbook</span>
+        <h2>The Humble Truth: Continuous Learning is Non-Negotiable</h2>
+        <div class="card" style="border-color: var(--accent);">
+          <ul>
+            <li>I earned my <strong>PhD in Artificial Intelligence</strong>.</li>
+            <li>I lead research as a <strong>Computational Scientist for AI</strong>.</li>
+            <li><strong>Yet, if I stop learning for six months, I will become obsolete.</strong></li>
+          </ul>
+        </div>
+        <div class="quote-box" style="margin-top: 25px;">
+          "Technology will never stop evolving. Lifelong learning is not a penalty you pay—it is the greatest privilege of being a scientist."
+        </div>
+        <aside class="notes">
+          Share this with warmth and vulnerability. Everyone in the audience is on the same lifelong learning journey.
+        </aside>
+      </section>
+
+      <!-- SLIDE 25 -->
+      <section style="text-align: center;">
+        <span class="tag success">Take the Wheel</span>
+        <h1 style="font-size: 2.2em; margin-bottom: 10px;">Take the Wheel: Drive Into Tomorrow</h1>
+        <p style="color: var(--text-muted); font-size: 0.95em; max-width: 80%; margin: 0 auto 30px auto;">
+          Do not fear AI. Master the foundations, embrace modern agentic tools, and stay firmly in the driver’s seat.
+        </p>
+        <div class="card" style="display: inline-block; text-align: left; max-width: 600px;">
+          <h3 style="margin-top: 0; color: var(--primary);">Join Our Hands-On Workshop:</h3>
+          <p style="font-size: 0.85em; margin: 4px 0;"><strong>Interactive Marimo Notebooks:</strong> <code>github.com/erolrecep/from-yesterday-to-tomorrow-ds</code></p>
+          <p style="font-size: 0.85em; margin: 4px 0;"><strong>Curated Ecosystem:</strong> <code>github.com/academic/awesome-datascience</code></p>
+          <p style="font-size: 0.85em; margin: 4px 0;"><strong>Contact:</strong> <code>recep.90@gmail.com</code> | <code>@erolrecep</code></p>
+        </div>
+        <aside class="notes">
+          Thank the audience warmly, open the floor for questions, and transition into the hands-on workshop!
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js script and plugins -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      controls: true,
+      progress: true,
+      center: false,
+      width: 1200,
+      height: 700,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 1.5,
+      transition: 'slide',
+      plugins: [ RevealNotes, RevealHighlight ]
+    });
+  </script>
+</body>
+</html>
