@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>SLURM on Recep&#39;s Technical Blog</title>
+		<link>https://erolrecep.github.io/tags/slurm/</link>
+		<description>Recent content in SLURM on Recep&#39;s Technical Blog</description>
+		<generator>Hugo</generator>
+		<language>en-US</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 13 Oct 2024 05:26:01 -0500</lastBuildDate>
+		
+			<atom:link href="https://erolrecep.github.io/tags/slurm/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Notes for Organizing a Workshop</title>
+				<link>https://erolrecep.github.io/posts/notes_for_organizing_workshops/</link>
+				<pubDate>Sun, 13 Oct 2024 05:26:01 -0500</pubDate>
+				<guid>https://erolrecep.github.io/posts/notes_for_organizing_workshops/</guid>
+				<description>&lt;p&gt;&lt;strong&gt;TL;DR:&lt;/strong&gt;&lt;br&gt;&#xA;This post shares insights on organizing a technical workshop on a university campus. As an HPC admin and AI facilitator, I’ve organized several workshops and technical training sessions for HPC users. Here’s a roadmap of what to do &lt;em&gt;before&lt;/em&gt;, &lt;em&gt;during&lt;/em&gt;, and &lt;em&gt;after&lt;/em&gt; a workshop, along with tips and tricks to make life easier for both you and the attendees. These are my personal views.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;strong&gt;From ML Engineer to HPC Admin&lt;/strong&gt;&lt;br&gt;&#xA;After working as a machine learning engineer in various companies over a decade, I decided to switch my career to high-performance computing (HPC) and supercomputing centers. Upon completing my PhD, I reflected on my background and realized that the role of an HPC admin and AI facilitator fit perfectly with my skill set. I had also spent years in academia, teaching multiple courses, preparing quizzes and assignments, and mentoring over 100 graduate students in programming, problem-solving, data science, machine learning, and AI. These experiences motivated me to pursue this path.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

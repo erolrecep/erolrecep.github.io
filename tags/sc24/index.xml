@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>SC24 on Recep&#39;s Technical Blog</title>
+		<link>https://erolrecep.github.io/tags/sc24/</link>
+		<description>Recent content in SC24 on Recep&#39;s Technical Blog</description>
+		<generator>Hugo</generator>
+		<language>en-US</language>
+		
+		
+		
+		
+			<lastBuildDate>Thu, 28 Nov 2024 11:54:34 -0600</lastBuildDate>
+		
+			<atom:link href="https://erolrecep.github.io/tags/sc24/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>5 days in Atlanta: My Personal Highlights from SC24</title>
+				<link>https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</link>
+				<pubDate>Thu, 28 Nov 2024 11:54:34 -0600</pubDate>
+				<guid>https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</guid>
+				<description>&lt;p&gt;&lt;figure&gt;&lt;img src=&#34;https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/sc24_600x375.png&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;em&gt;&lt;small&gt;SC24 Logo&lt;/small&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt; &lt;/p&gt;&#xA;&lt;p&gt;Over the past three years, I’ve had the privilege of attending the Supercomputing (SC) Conference to stay informed about the latest developments, changes, and scientific advancements in the field of supercomputing. In preparation for these experiences, I dedicated myself to building a strong foundation: reading books, taking courses, constructing a mini edge cluster to mimic an HPC center setup, and conducting numerous experiments to explore how different technologies and tools compare.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

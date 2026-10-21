@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Research Software Engineering on Recep&#39;s Technical Blog</title>
+		<link>https://erolrecep.github.io/tags/research-software-engineering/</link>
+		<description>Recent content in Research Software Engineering on Recep&#39;s Technical Blog</description>
+		<generator>Hugo</generator>
+		<language>en-US</language>
+		
+		
+		
+		
+			<lastBuildDate>Fri, 16 Oct 2026 12:08:00 -0500</lastBuildDate>
+		
+			<atom:link href="https://erolrecep.github.io/tags/research-software-engineering/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Vibe Coding for Scientists and Researchers</title>
+				<link>https://erolrecep.github.io/posts/vibecoding-for-scientists-researchers/</link>
+				<pubDate>Fri, 16 Oct 2026 12:08:00 -0500</pubDate>
+				<guid>https://erolrecep.github.io/posts/vibecoding-for-scientists-researchers/</guid>
+				<description>&lt;p&gt;&lt;em&gt;Moving Science Forward with a New Way of Practice&lt;/em&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;&#xA;&lt;p&gt;In empirical research, progress is frequently constrained not by the breadth of human scientific imagination, but by the friction of computational implementation. While the broader tech community has embraced &amp;ldquo;vibe coding&amp;rdquo; as a rapid prototyping methodology for consumer applications, this article formalizes &lt;strong&gt;vibe coding habits for scientists and researchers&lt;/strong&gt; as a disciplined, hypothesis-driven workflow for computational scholars, graduate students, and faculty. By coupling declarative natural language intent with zero-trust synthetic benchmarking, invariant assertion, and automated provenance tracking, researchers can compress months of pipeline engineering into hours without compromising scientific reproducibility or mathematical validity.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

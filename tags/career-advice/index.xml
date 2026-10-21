@@ -20,5 +20,26 @@
 				<guid>https://erolrecep.github.io/posts/data-science-yesterday-tomorrow/</guid>
 				<description>&lt;p&gt;&lt;em&gt;A 15-year journey from commodity laptops and MapReduce to supercomputers, $30B problem, and foundation models—and why foundational rigor matters more than ever.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;div align=&#34;center&#34;&gt;&#xA;  &lt;img src=&#34;alpine_cockpit_hud.jpg&#34; alt=&#34;A high-speed vehicle cockpit looking out over an alpine mountain pass with telemetry and math HUD&#34; style=&#34;max-width: 100%; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.25); margin: 20px 0;&#34; /&gt;&#xA;  &lt;p&gt;&lt;em&gt;Figure: Navigating the alpine pass with live telemetry, neural path predictions, and data science rigor—keeping the human firmly in the driver’s seat.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;/div&gt;</description>
 			</item>
+			<item>
+				<title>Foundations of a Future Engineer: A Personal Roadmap</title>
+				<link>https://erolrecep.github.io/posts/a-personal-cs-education-roadmap/</link>
+				<pubDate>Sat, 28 Jun 2025 01:26:45 -0500</pubDate>
+				<guid>https://erolrecep.github.io/posts/a-personal-cs-education-roadmap/</guid>
+				<description>&lt;p&gt;&lt;img src=&#34;image_01.png&#34; alt=&#34;A CS Student Studying&#34;&gt;&#xA;&lt;em&gt;&lt;small&gt;A Computer Science Student Studying&lt;/small&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;Embarking on a new academic or career journey is exciting, but it can also feel overwhelming. Whether you&amp;rsquo;re just starting university or already a student looking for direction, here’s a roadmap I’ve crafted based on personal experience, habits, and observations. It’s meant to inspire, guide, and ground you as you grow in this fast-changing domain, especially in computer science where the pace of change is intense and constant.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>5 days in Atlanta: My Personal Highlights from SC24</title>
+				<link>https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</link>
+				<pubDate>Thu, 28 Nov 2024 11:54:34 -0600</pubDate>
+				<guid>https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</guid>
+				<description>&lt;p&gt;&lt;figure&gt;&lt;img src=&#34;https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/sc24_600x375.png&#34;&gt;&#xA;&lt;/figure&gt;&#xA;&#xA;&lt;em&gt;&lt;small&gt;SC24 Logo&lt;/small&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt; &lt;/p&gt;&#xA;&lt;p&gt;Over the past three years, I’ve had the privilege of attending the Supercomputing (SC) Conference to stay informed about the latest developments, changes, and scientific advancements in the field of supercomputing. In preparation for these experiences, I dedicated myself to building a strong foundation: reading books, taking courses, constructing a mini edge cluster to mimic an HPC center setup, and conducting numerous experiments to explore how different technologies and tools compare.&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Notes for Organizing a Workshop</title>
+				<link>https://erolrecep.github.io/posts/notes_for_organizing_workshops/</link>
+				<pubDate>Sun, 13 Oct 2024 05:26:01 -0500</pubDate>
+				<guid>https://erolrecep.github.io/posts/notes_for_organizing_workshops/</guid>
+				<description>&lt;p&gt;&lt;strong&gt;TL;DR:&lt;/strong&gt;&lt;br&gt;&#xA;This post shares insights on organizing a technical workshop on a university campus. As an HPC admin and AI facilitator, I’ve organized several workshops and technical training sessions for HPC users. Here’s a roadmap of what to do &lt;em&gt;before&lt;/em&gt;, &lt;em&gt;during&lt;/em&gt;, and &lt;em&gt;after&lt;/em&gt; a workshop, along with tips and tricks to make life easier for both you and the attendees. These are my personal views.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;strong&gt;From ML Engineer to HPC Admin&lt;/strong&gt;&lt;br&gt;&#xA;After working as a machine learning engineer in various companies over a decade, I decided to switch my career to high-performance computing (HPC) and supercomputing centers. Upon completing my PhD, I reflected on my background and realized that the role of an HPC admin and AI facilitator fit perfectly with my skill set. I had also spent years in academia, teaching multiple courses, preparing quizzes and assignments, and mentoring over 100 graduate students in programming, problem-solving, data science, machine learning, and AI. These experiences motivated me to pursue this path.&lt;/p&gt;</description>
+			</item>
 	</channel>
 </rss>
