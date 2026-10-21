@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 540" width="980" height="540">
+  <defs>
+    <style>
+      .window { fill: #181825; }
+      .titlebar { fill: #1e1e2e; }
+      .title-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; fill: #a6adc8; text-anchor: middle; font-weight: 500; }
+      .term-text { font-family: "JetBrains Mono", "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 12.5px; }
+      .c-cyan { fill: #00d2d3; }
+      .c-green { fill: #2ecc71; }
+      .c-bright-green { fill: #55efc4; }
+      .c-white { fill: #f8fafc; }
+      .c-gray { fill: #64748b; }
+      .c-dim { fill: #475569; }
+      .c-yellow { fill: #fed330; }
+      .c-magenta { fill: #fd79a8; }
+      .c-orange { fill: #fa8231; }
+      .c-blue { fill: #45aaf2; }
+    </style>
+  </defs>
+
+  <!-- Window Frame -->
+  <rect x="0" y="0" width="980" height="540" rx="10" fill="#181825" stroke="#313244" stroke-width="1"/>
+  
+  <!-- Titlebar -->
+  <path d="M 0 10 Q 0 0 10 0 L 970 0 Q 980 0 980 10 L 980 38 L 0 38 Z" fill="#1e1e2e"/>
+  <line x1="0" y1="38" x2="980" y2="38" stroke="#313244" stroke-width="1"/>
+
+  <!-- Traffic Lights -->
+  <circle cx="20" cy="19" r="6" fill="#ff5f56" stroke="#e0443e" stroke-width="0.5"/>
+  <circle cx="40" cy="19" r="6" fill="#ffbd2e" stroke="#dea123" stroke-width="0.5"/>
+  <circle cx="60" cy="19" r="6" fill="#27c93f" stroke="#1aab29" stroke-width="0.5"/>
+
+  <!-- Title -->
+  <text x="490" y="24" class="title-text">📁 erolrecep — htop — htop — 105×45</text>
+
+  <!-- CPU Cores Section (4 Columns) -->
+  <g class="term-text" xml:space="preserve" transform="translate(20, 58)">
+    <!-- Col 1: 0, 1, 2, 3 -->
+    <text x="0" y="0"><tspan class="c-cyan"> 0</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="0" y="18"><tspan class="c-cyan"> 1</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="0" y="36"><tspan class="c-cyan"> 2</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="0" y="54"><tspan class="c-cyan"> 3</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+
+    <!-- Col 2: 4, 5, 6 -->
+    <text x="245" y="0"><tspan class="c-cyan"> 4</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="245" y="18"><tspan class="c-cyan"> 5</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="245" y="36"><tspan class="c-cyan"> 6</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+
+    <!-- Col 3: 7, 8, 9, 10 -->
+    <text x="490" y="0"><tspan class="c-cyan"> 7</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="490" y="18"><tspan class="c-cyan"> 8</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="490" y="36"><tspan class="c-cyan"> 9</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="490" y="54"><tspan class="c-cyan">10</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+
+    <!-- Col 4: 11, 12, 13 -->
+    <text x="735" y="0"><tspan class="c-cyan">11</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="735" y="18"><tspan class="c-cyan">12</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="735" y="36"><tspan class="c-cyan">13</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||</tspan><tspan class="c-white" font-weight="bold">100.0%</tspan><tspan class="c-gray">]</tspan></text>
+  </g>
+
+  <!-- Memory, Swap & System Stats -->
+  <g class="term-text" xml:space="preserve" transform="translate(20, 134)">
+    <text x="0" y="0"><tspan class="c-cyan">Mem</tspan><tspan class="c-gray">[</tspan><tspan class="c-green">||||||||||||||||||||||||||||||||||||</tspan><tspan class="c-white"> 14.1G/36.0G</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="490" y="0"><tspan class="c-cyan">Tasks: </tspan><tspan class="c-white" font-weight="bold">731</tspan><tspan class="c-gray">, </tspan><tspan class="c-green">3353</tspan><tspan class="c-gray"> thr, </tspan><tspan class="c-cyan">0</tspan><tspan class="c-gray"> kthr; </tspan><tspan class="c-bright-green" font-weight="bold">14 running</tspan></text>
+
+    <text x="0" y="18"><tspan class="c-cyan">Swp</tspan><tspan class="c-gray">[</tspan><tspan class="c-dim">                              </tspan><tspan class="c-white">     0K/0K</tspan><tspan class="c-gray">]</tspan></text>
+    <text x="490" y="18"><tspan class="c-cyan">Load average: </tspan><tspan class="c-magenta" font-weight="bold">140.62</tspan> <tspan class="c-cyan">90.17</tspan> <tspan class="c-green">44.04</tspan></text>
+
+    <text x="490" y="36"><tspan class="c-cyan">Uptime: </tspan><tspan class="c-white">11 days, </tspan><tspan class="c-bright-green" font-weight="bold">02:41:20</tspan></text>
+  </g>
+
+  <!-- Process List Tab & Header -->
+  <g transform="translate(0, 192)">
+    <rect x="0" y="0" width="980" height="22" fill="#00b894"/>
+    <text x="20" y="16" class="term-text" xml:space="preserve" fill="#052e24" font-weight="bold">  PID USER      PRI  NI  VIRT   RES S  CPU% MEM%    TIME+ Command</text>
+  </g>
+
+  <!-- Process Rows -->
+  <g class="term-text" xml:space="preserve" transform="translate(0, 214)">
+    <rect x="0" y="0" width="980" height="21" fill="#00cec9"/>
+    <text x="20" y="15" fill="#002d34" font-weight="bold"> 3306 erolrecep  17   0  396G 2433M ? 128.0  6.6  8:06.00 ffmpeg -i Elliot Hacks His Boss' Phone | Mr.</text>
+    <text x="20" y="36"><tspan class="c-white"> 3309 erolrecep  17   0  397G 2233M ? </tspan><tspan class="c-magenta" font-weight="bold">120.2</tspan><tspan class="c-white">  6.1  7:47.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Genious hacker takes control of an a</tspan></text>
+    <text x="20" y="57"><tspan class="c-white"> 3414 erolrecep  17   0  394G  864M ? </tspan><tspan class="c-magenta" font-weight="bold">113.2</tspan><tspan class="c-white">  2.3  0:41.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Sand storm party at Burning man @OK</tspan></text>
+    <text x="20" y="78"><tspan class="c-white"> 3314 erolrecep  17   0  393G  717M ? </tspan><tspan class="c-magenta" font-weight="bold">111.7</tspan><tspan class="c-white">  2.4  5:16.00 </tspan><tspan class="c-yellow">/bin/zsh</tspan><tspan class="c-white"> -c </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i "How to scrape the web f</tspan></text>
+    <text x="20" y="99"><tspan class="c-white"> 3311 erolrecep  17   0  393G  717M ? </tspan><tspan class="c-magenta" font-weight="bold">110.7</tspan><tspan class="c-white">  1.9  4:04.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Hacking Harvard's Faceboooks and buil</tspan></text>
+    <text x="20" y="120"><tspan class="c-white"> 3312 erolrecep  17   0  394G  831M ? </tspan><tspan class="c-magenta" font-weight="bold">104.8</tspan><tspan class="c-white">  2.3  4:57.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Hacking Steel Mountain | Mr. Robot </tspan></text>
+    <text x="20" y="141"><tspan class="c-white"> 3305 erolrecep  17   0  394G  863M ? </tspan><tspan class="c-magenta" font-weight="bold">100.1</tspan><tspan class="c-white">  2.3  4:52.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Elliot Hacks A Pedophile | Mr. Robo</tspan></text>
+    <text x="20" y="162"><tspan class="c-white"> 3313 erolrecep  17   0  394G  880M ? </tspan><tspan class="c-green" font-weight="bold"> 94.8</tspan><tspan class="c-white">  2.4  4:12.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Hi-jacking Internet With A Pringles </tspan></text>
+    <text x="20" y="183"><tspan class="c-white"> 3307 erolrecep  17   0  393G  845M ? </tspan><tspan class="c-green" font-weight="bold"> 90.9</tspan><tspan class="c-white">  2.3  4:02.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Elliot Wins A Hacker Tournament | M</tspan></text>
+    <text x="20" y="204"><tspan class="c-white"> 3310 erolrecep  17   0  394G  889M ? </tspan><tspan class="c-green" font-weight="bold"> 77.2</tspan><tspan class="c-white">  2.4  3:15.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Hack.lu 2018 LT - GANNet - You Broke</tspan></text>
+    <text x="20" y="225"><tspan class="c-white"> 3302 erolrecep  17   0  393G  879M ? </tspan><tspan class="c-green" font-weight="bold"> 76.8</tspan><tspan class="c-white">  2.4  3:54.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i 10 Morning Routine Habits of Success</tspan></text>
+    <text x="20" y="246"><tspan class="c-white"> 3411 erolrecep  17   0  393G  159M ? </tspan><tspan class="c-green" font-weight="bold"> 67.9</tspan><tspan class="c-white">  0.4  0:25.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Nakış işlemeyi biliyorsunuz diye her</tspan></text>
+    <text x="20" y="267"><tspan class="c-white"> 3308 erolrecep  17   0  393G  892M ? </tspan><tspan class="c-green" font-weight="bold"> 61.0</tspan><tspan class="c-white">  2.4  2:22.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Fast pow [GrMNJE6ogyQU].webm Fast pow</tspan></text>
+    <text x="20" y="288"><tspan class="c-white"> 3304 erolrecep  17   0  393G  911M ? </tspan><tspan class="c-green" font-weight="bold"> 56.5</tspan><tspan class="c-white">  2.5  4:23.00 </tspan><tspan class="c-cyan">ffmpeg</tspan><tspan class="c-white"> -i Demo: Accelerate Deep Learning Infe</tspan></text>
+  </g>
+</svg>

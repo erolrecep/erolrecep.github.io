@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 940" width="980" height="940">
+  <defs>
+    <style>
+      .window { fill: #181825; }
+      .titlebar { fill: #1e1e2e; }
+      .title-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; fill: #a6adc8; text-anchor: middle; font-weight: 500; }
+      .term-text { font-family: "JetBrains Mono", "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 13px; }
+      .c-prompt-arrow { fill: #2ecc71; font-weight: bold; }
+      .c-dir { fill: #c084fc; font-weight: bold; }
+      .c-cmd { fill: #f8fafc; font-weight: bold; }
+      .c-text { fill: #e2e8f0; }
+      .c-dim { fill: #94a3b8; }
+      .c-bib-tag { fill: #fbbf24; font-weight: bold; }
+      .c-bib-key { fill: #38bdf8; }
+      .c-bib-field { fill: #818cf8; }
+      .c-bib-val { fill: #4ade80; }
+      .c-accent { fill: #f43f5e; font-weight: bold; }
+      .c-url { fill: #38bdf8; text-decoration: underline; }
+      .c-success { fill: #22c55e; font-weight: bold; }
+      .c-highlight { fill: #fde047; font-weight: bold; }
+    </style>
+  </defs>
+
+  <!-- Window Frame -->
+  <rect x="0" y="0" width="980" height="940" rx="10" fill="#181825" stroke="#313244" stroke-width="1"/>
+  
+  <!-- Titlebar -->
+  <path d="M 0 10 Q 0 0 10 0 L 970 0 Q 980 0 980 10 L 980 38 L 0 38 Z" fill="#1e1e2e"/>
+  <line x1="0" y1="38" x2="980" y2="38" stroke="#313244" stroke-width="1"/>
+
+  <!-- Traffic Lights -->
+  <circle cx="20" cy="19" r="6" fill="#ff5f56" stroke="#e0443e" stroke-width="0.5"/>
+  <circle cx="40" cy="19" r="6" fill="#ffbd2e" stroke="#dea123" stroke-width="0.5"/>
+  <circle cx="60" cy="19" r="6" fill="#27c93f" stroke="#1aab29" stroke-width="0.5"/>
+
+  <!-- Title -->
+  <text x="490" y="24" class="title-text">Movies — zsh — 80×32</text>
+
+  <!-- Terminal Content -->
+  <g class="term-text" xml:space="preserve" transform="translate(24, 62)">
+    <!-- Command 1 -->
+    <text x="0" y="0"><tspan class="c-prompt-arrow">➜  </tspan><tspan class="c-dir">Movies  </tspan><tspan class="c-cmd">parallel --citation</tspan></text>
+    
+    <text x="0" y="22" class="c-text">Academic tradition requires you to cite works you base your article on.</text>
+    <text x="0" y="42" class="c-text">If you use programs that use GNU Parallel to process data for an article in a</text>
+    <text x="0" y="62" class="c-text">scientific publication, please cite:</text>
+
+    <!-- BibTeX Block -->
+    <text x="0" y="100"><tspan class="c-bib-tag">@software</tspan><tspan class="c-dim">{</tspan><tspan class="c-bib-key">tange_2024_13357237</tspan><tspan class="c-dim">,</tspan></text>
+    <text x="0" y="120"><tspan class="c-bib-field">      author       </tspan><tspan class="c-dim">= {</tspan><tspan class="c-text">Tange, Ole</tspan><tspan class="c-dim">},</tspan></text>
+    <text x="0" y="140"><tspan class="c-bib-field">      title        </tspan><tspan class="c-dim">= {</tspan><tspan class="c-bib-val">GNU Parallel 20240822 ('Southport')</tspan><tspan class="c-dim">},</tspan></text>
+    <text x="0" y="160"><tspan class="c-bib-field">      month        </tspan><tspan class="c-dim">= </tspan><tspan class="c-text">Aug</tspan><tspan class="c-dim">,</tspan></text>
+    <text x="0" y="180"><tspan class="c-bib-field">      year         </tspan><tspan class="c-dim">= </tspan><tspan class="c-text">2023</tspan><tspan class="c-dim">,</tspan></text>
+    <text x="0" y="200"><tspan class="c-bib-field">      note         </tspan><tspan class="c-dim">= {{</tspan><tspan class="c-text">GNU Parallel is a general parallelizer to run</tspan></text>
+    <text x="0" y="220"><tspan class="c-text">                       multiple serial command line programs in parallel</tspan></text>
+    <text x="0" y="240"><tspan class="c-text">                       without changing them.</tspan><tspan class="c-dim">}},</tspan></text>
+    <text x="0" y="260"><tspan class="c-bib-field">      publisher    </tspan><tspan class="c-dim">= {</tspan><tspan class="c-text">Zenodo</tspan><tspan class="c-dim">},</tspan></text>
+    <text x="0" y="280"><tspan class="c-bib-field">      doi          </tspan><tspan class="c-dim">= {</tspan><tspan class="c-bib-val">10.5281/zenodo.13357237</tspan><tspan class="c-dim">},</tspan></text>
+    <text x="0" y="300"><tspan class="c-bib-field">      url          </tspan><tspan class="c-dim">= {</tspan><tspan class="c-url">https://doi.org/10.5281/zenodo.13357237</tspan><tspan class="c-dim">}</tspan></text>
+    <text x="0" y="320" class="c-dim">}</text>
+
+    <text x="0" y="358" class="c-dim">(Feel free to use \nocite{tange_2024_13357237})</text>
+
+    <text x="0" y="396" class="c-text">This helps funding further development; <tspan class="c-accent">AND IT WON'T COST YOU A CENT.</tspan></text>
+    <text x="0" y="416" class="c-text">If you pay 10000 EUR you should feel free to use GNU Parallel without citing.</text>
+
+    <text x="0" y="454" class="c-dim">More about funding GNU Parallel and the citation notice:</text>
+    <text x="0" y="474" class="c-url">https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html</text>
+    <text x="0" y="494" class="c-url">https://www.gnu.org/software/parallel/parallel_design.html#citation-notice</text>
+    <text x="0" y="514" class="c-url">https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt</text>
+
+    <!-- Prompt Interactive Flow -->
+    <text x="0" y="556" class="c-dim">Type: 'will cite' and press enter.</text>
+    <text x="0" y="576" class="c-dim">&gt; </text>
+
+    <text x="0" y="608" class="c-dim">Type: 'will cite' and press enter.</text>
+    <text x="0" y="628"><tspan class="c-dim">&gt; </tspan><tspan class="c-success">will cite</tspan></text>
+
+    <text x="0" y="666" class="c-text">Thank you for your support: You are the reason why there is funding to</text>
+    <text x="0" y="686" class="c-text">continue maintaining GNU Parallel. On behalf of future versions of</text>
+    <text x="0" y="706" class="c-text">GNU Parallel, which would not exist without your support:</text>
+
+    <text x="0" y="744"><tspan class="c-highlight">  THANK YOU SO MUCH</tspan></text>
+
+    <text x="0" y="782" class="c-dim">It is really appreciated. The citation notice is now silenced.</text>
+
+    <!-- Next Command -->
+    <text x="0" y="824"><tspan class="c-prompt-arrow">➜  </tspan><tspan class="c-dir">Movies  </tspan><tspan class="c-cmd">parallel ffmpeg -i {} {.}.mp4 ::: *.webm</tspan></text>
+    <text x="0" y="844" class="c-dim">ffmpeg version 7.0.2 Copyright (c) 2000-2024 the FFmpeg developers</text>
+  </g>
+</svg>
