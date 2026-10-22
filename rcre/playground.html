@@ -1,0 +1,2490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCRE Playground — Live In-Browser Webcam & CV/ML Pipeline</title>
+  <meta name="description" content="In-browser live webcam processing playground demonstrating real-time Rec.601 Grayscale, Gaussian Blur, Sobel derivatives, and PCA image compression test with filesystem storage.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .pipeline-step-pill {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+    }
+    .pipeline-step-active {
+      border-color: var(--accent-indigo);
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+    }
+
+    /* Camera Viewport & Shutter Flash */
+    .shutter-flash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 50;
+      transition: opacity 0.25s ease-out;
+    }
+    .shutter-flash.flashing {
+      opacity: 0.92;
+      transition: none;
+    }
+
+    /* Viewport Action Bar */
+    .viewport-action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1.25rem;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .action-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .action-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .btn-photo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.6rem 1.15rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-photo:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.55);
+    }
+    .btn-photo:active {
+      transform: translateY(0);
+    }
+    .btn-kbd {
+      font-size: 0.7rem;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      color: #fff;
+    }
+    .save-option-group {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .mini-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .select-sm {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      color: var(--text-main);
+      padding: 0.4rem 0.65rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      outline: none;
+    }
+    .select-sm:focus {
+      border-color: var(--accent-indigo);
+    }
+
+    /* Snapshot Gallery Drawer */
+    .snapshot-gallery-drawer {
+      margin-top: 1rem;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+    .snapshot-gallery-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-glass);
+    }
+    .gallery-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .gallery-count {
+      font-size: 0.75rem;
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-mono);
+    }
+    .btn-text-action {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .btn-text-action:hover {
+      color: var(--accent-rose);
+    }
+    .snapshot-scroll {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 0.25rem 0;
+      min-height: 120px;
+      align-items: center;
+    }
+    .empty-gallery-msg {
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      text-align: center;
+      width: 100%;
+      padding: 1.5rem;
+    }
+    .snapshot-card {
+      flex: 0 0 170px;
+      background: rgba(10, 13, 20, 0.8);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .snapshot-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-indigo);
+    }
+    .snapshot-thumb {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      background: #000;
+      display: block;
+      cursor: pointer;
+    }
+    .snapshot-info {
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .snapshot-time {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+    .snapshot-meta {
+      font-size: 0.7rem;
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+    }
+    .snapshot-card-actions {
+      display: flex;
+      gap: 0.35rem;
+      margin-top: 0.35rem;
+    }
+    .btn-card-action {
+      flex: 1;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      color: var(--text-main);
+      padding: 0.25rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-card-action:hover {
+      background: var(--accent-indigo);
+      color: #fff;
+    }
+    .btn-card-pca {
+      background: rgba(99, 102, 241, 0.25);
+      border-color: rgba(99, 102, 241, 0.5);
+      color: #c7d2fe;
+    }
+    .btn-card-pca:hover {
+      background: var(--accent-indigo);
+      color: #fff;
+    }
+
+    /* Toast Notification */
+    .toast-notification {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--accent-emerald);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(16, 185, 129, 0.3);
+      color: var(--text-main);
+      padding: 0.85rem 1.25rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.88rem;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast-notification.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .toast-icon {
+      font-size: 1.25rem;
+    }
+    .toast-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .toast-title {
+      font-weight: 700;
+      color: #fff;
+    }
+    .toast-desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* PCA Lab Section */
+    .pca-lab-section {
+      margin-top: 4rem;
+      border-top: 1px solid var(--border-glass);
+      padding-top: 3rem;
+    }
+    .pca-studio-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 1024px) {
+      .pca-studio-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .pca-display-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .pca-tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-card);
+      padding: 0.4rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-glass);
+      overflow-x: auto;
+    }
+    .pca-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.5rem 0.9rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .pca-tab-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-glass);
+    }
+    .pca-tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-violet));
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.4);
+    }
+    .pca-tab-content {
+      display: none;
+    }
+    .pca-tab-content.active {
+      display: block;
+    }
+
+    /* Split Viewport */
+    .split-viewport-box {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      background: #000;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-glass);
+      overflow: hidden;
+      cursor: ew-resize;
+      user-select: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+    .split-viewport-box canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .split-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--accent-cyan);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .split-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.9);
+      border: 2px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+    }
+    .split-tag {
+      position: absolute;
+      top: 1rem;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glass);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      color: var(--text-main);
+      z-index: 5;
+    }
+    .split-tag.left { left: 1rem; }
+    .split-tag.right { right: 1rem; }
+
+    /* Side by side */
+    .side-by-side-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 640px) {
+      .side-by-side-grid { grid-template-columns: 1fr; }
+    }
+    .side-canvas-box {
+      background: #000;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-glass);
+      overflow: hidden;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .side-canvas-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+      font-family: var(--font-mono);
+    }
+    .side-canvas-box canvas {
+      width: 100%;
+      height: 240px;
+      object-fit: contain;
+    }
+
+    /* Error Heatmap */
+    .error-viewport-box {
+      position: relative;
+      background: #000;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-glass);
+      overflow: hidden;
+      height: 480px;
+    }
+    .error-viewport-box canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .heatmap-legend {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glass);
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      width: 280px;
+    }
+    .legend-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .legend-color-bar {
+      height: 10px;
+      border-radius: 4px;
+      background: linear-gradient(to right, #000000, #06b6d4, #f59e0b, #ef4444);
+    }
+    .legend-markers {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    /* Basis Patches Gallery */
+    .basis-panel-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+    .basis-panel-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .basis-patches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 0.75rem;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+    .basis-patch-card {
+      background: rgba(10, 13, 20, 0.8);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .basis-patch-card:hover {
+      transform: scale(1.06);
+      border-color: var(--accent-cyan);
+    }
+    .basis-canvas {
+      width: 56px;
+      height: 56px;
+      image-rendering: pixelated;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .basis-name {
+      font-size: 0.7rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
+    }
+    .basis-var {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    /* Telemetry Cards */
+    .pca-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.75rem;
+    }
+    .pca-metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .pca-metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .pca-metric-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      letter-spacing: -0.02em;
+    }
+    .pca-metric-sub {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    /* Export Bar */
+    .pca-export-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* Component Presets */
+    .component-presets {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      margin-top: 0.35rem;
+    }
+    .btn-preset {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      color: var(--text-muted);
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-preset:hover, .btn-preset.active {
+      background: rgba(99, 102, 241, 0.25);
+      border-color: var(--accent-indigo);
+      color: #c7d2fe;
+    }
+
+    /* Sweep Table */
+    .sweep-table-container {
+      max-height: 240px;
+      overflow-y: auto;
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm);
+      background: rgba(10, 13, 20, 0.6);
+      margin-top: 0.75rem;
+    }
+    .sweep-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      text-align: left;
+    }
+    .sweep-table th {
+      background: rgba(30, 41, 59, 0.8);
+      color: var(--text-muted);
+      padding: 0.4rem 0.5rem;
+      position: sticky;
+      top: 0;
+      font-size: 0.7rem;
+      border-bottom: 1px solid var(--border-glass);
+    }
+    .sweep-table td {
+      padding: 0.35rem 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+    }
+    .sweep-table tr:hover {
+      background: rgba(99, 102, 241, 0.1);
+    }
+    .badge-status {
+      display: inline-block;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+    .badge-status.excellent { background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); }
+    .badge-status.high { background: rgba(6, 182, 212, 0.2); color: var(--accent-cyan); }
+    .badge-status.balanced { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; }
+    .badge-status.lossy { background: rgba(245, 158, 11, 0.2); color: var(--accent-amber); }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html" class="nav-brand">
+      <span class="brand-badge">C23</span>
+      <span>RCRE</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="docs/index.html">Documentation</a></li>
+        <li><a href="playground.html" class="active">Webcam Playground</a></li>
+        <li><a href="learn/strides.html">3D Strides</a></li>
+        <li><a href="learn/gemm_cache.html">Tiled GEMM</a></li>
+        <li><a href="learn/stencils.html">SIMD Stencils</a></li>
+        <li><a href="https://erolrecep.github.io/rcre/" class="btn btn-cta">Project Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="section-header">
+      <div class="section-tag">Visualizer 4: Full Pipeline Trace & Codec Lab</div>
+      <h1 class="section-title">Live In-Browser Webcam Playground & PCA Lab</h1>
+      <p style="color: var(--text-muted); max-width: 760px; margin: 0.5rem auto 0;">
+        Experience RCRE's zero-copy CV filter and ML inference pipeline directly in your browser. 
+        Take high-resolution photos saved directly to your filesystem, and test real-time PCA image compression with rate-distortion benchmarks.
+      </p>
+    </div>
+
+    <div class="playground-layout">
+      <!-- Left Column: Live Viewport Canvas & Actions -->
+      <div class="viewport-column">
+        <div class="canvas-viewport" id="viewport-box">
+          <div class="viewport-overlay">
+            <span class="overlay-badge" id="camera-source-badge">
+              <span class="badge-dot"></span>
+              <span id="cam-source-text">Synthetic Moving Colorbars</span>
+            </span>
+            <span class="overlay-badge" id="live-fps-badge">FPS: 60.0 (16.6 ms)</span>
+            <span class="overlay-badge" id="gbdt-prediction-badge">GBDT: High Contrast (98.4%)</span>
+          </div>
+          <canvas id="output-canvas" width="640" height="480"></canvas>
+          <video id="webcam-video" playsinline autoplay muted style="display: none;"></video>
+          <!-- Shutter Flash Overlay -->
+          <div class="shutter-flash" id="shutter-flash"></div>
+        </div>
+
+        <!-- Take Photo Action Bar -->
+        <div class="viewport-action-bar">
+          <div class="action-bar-left">
+            <button class="btn btn-photo" id="btn-take-photo" title="Take a photo and store directly to filesystem (Spacebar)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span>Take Photo</span>
+              <span class="btn-kbd">Space</span>
+            </button>
+
+            <div class="save-option-group">
+              <label for="select-capture-target" class="mini-label">Target:</label>
+              <select id="select-capture-target" class="select-sm">
+                <option value="processed" selected>Filtered Frame</option>
+                <option value="raw">Raw Sensor Frame</option>
+              </select>
+            </div>
+
+            <div class="save-option-group">
+              <label for="select-save-format" class="mini-label">Format:</label>
+              <select id="select-save-format" class="select-sm">
+                <option value="png" selected>PNG (Lossless)</option>
+                <option value="jpeg">JPEG (High Q)</option>
+                <option value="bmp">BMP (Bitmap)</option>
+              </select>
+            </div>
+
+            <div class="save-option-group">
+              <label for="select-save-method" class="mini-label">Save To:</label>
+              <select id="select-save-method" class="select-sm">
+                <option value="fs_api" selected>Filesystem Picker</option>
+                <option value="download">Auto-Save (Downloads)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="action-bar-right">
+            <a href="#pca-lab-section" class="btn btn-secondary btn-sm" id="btn-jump-pca">
+              <span>🔬 Jump to PCA Lab &darr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Recent Snapshots Drawer -->
+        <div class="snapshot-gallery-drawer" id="snapshot-gallery-drawer">
+          <div class="snapshot-gallery-header">
+            <div class="gallery-title">
+              <span>📁 Captured Photos (Stored to Filesystem)</span>
+              <span class="gallery-count" id="gallery-count">0 photos</span>
+            </div>
+            <div class="gallery-actions">
+              <button class="btn-text-action" id="btn-clear-gallery">Clear Tray</button>
+            </div>
+          </div>
+          <div class="snapshot-scroll" id="snapshot-scroll">
+            <div class="empty-gallery-msg" id="empty-gallery-msg">
+              No photos captured yet. Click <strong>Take Photo</strong> or press <strong>Space</strong> to take a photo and store it directly to your filesystem!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Controls & Pipeline Inspector -->
+      <div class="control-panel">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">Pipeline Controls</h3>
+
+        <div class="control-group">
+          <label class="control-label" for="select-video-source">Video Ingestion Source</label>
+          <select id="select-video-source">
+            <option value="synthetic" selected>Synthetic Test Pattern (Dummy)</option>
+            <option value="webcam">Live Hardware WebCam (WebRTC)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="select-filter-stage">Active Pipeline Stage</label>
+          <select id="select-filter-stage">
+            <option value="sobel" selected>Stage 4: 3x3 Sobel Edge Magnitude</option>
+            <option value="gaussian">Stage 3: Separable Gaussian Blur</option>
+            <option value="grayscale">Stage 2: Rec.601 Grayscale (15-bit)</option>
+            <option value="raw">Stage 1: Raw Video Frame (RGB)</option>
+            <option value="pca">Stage 5: Live PCA Compression & Quantization</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Gaussian Sigma (&sigma;)</span>
+            <span class="control-value" id="val-blur-sigma">1.2</span>
+          </div>
+          <input type="range" id="slider-blur-sigma" min="0.5" max="3.0" step="0.1" value="1.2">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Edge Intensity Threshold</span>
+            <span class="control-value" id="val-edge-thresh">35</span>
+          </div>
+          <input type="range" id="slider-edge-thresh" min="5" max="100" step="5" value="35">
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border-glass); margin: 0.5rem 0;">
+
+        <!-- Pipeline Diagnostics -->
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">Memory & Trace</h3>
+
+        <div class="pipeline-step-pill pipeline-step-active">
+          <span>1. Ingest Tensor [480, 640, 3]</span>
+          <span style="color: var(--accent-cyan);">900 KB</span>
+        </div>
+        <div class="pipeline-step-pill pipeline-step-active">
+          <span>2. Grayscale Tensor [480, 640]</span>
+          <span style="color: var(--accent-cyan);">300 KB</span>
+        </div>
+        <div class="pipeline-step-pill pipeline-step-active">
+          <span>3. Gaussian Blur Tensor</span>
+          <span style="color: var(--accent-cyan);">300 KB</span>
+        </div>
+        <div class="pipeline-step-pill pipeline-step-active">
+          <span>4. Sobel Edges (dx, dy)</span>
+          <span style="color: var(--accent-cyan);">600 KB</span>
+        </div>
+        <div class="pipeline-step-pill pipeline-step-active">
+          <span>5. GBDT Decision Inference</span>
+          <span style="color: var(--accent-emerald);">&lt; 1 &mu;s</span>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.7); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+            <span>Linear Arena Allocation:</span>
+            <span style="font-family: var(--font-mono); color: var(--accent-emerald);">3.2 MB / 32 MB (10%)</span>
+          </div>
+          <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem;">Zero heap re-allocations in loop.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Interactive PCA Image Compression Test Lab -->
+    <section class="pca-lab-section" id="pca-lab-section">
+      <div class="section-header">
+        <div class="section-tag">C23 Dimensionality Reduction Codec</div>
+        <h2 class="section-title">🔬 PCA Image Compression Test Lab</h2>
+        <p style="color: var(--text-muted); max-width: 820px; margin: 0.5rem auto 0;">
+          Test RCRE's zero-dependency Principal Component Analysis (RPCA) spatial block codec. 
+          Compress photos into orthogonal low-dimensional subspace bases with 8-bit uniform quantization, 
+          inspect learned eigen-basis patches, evaluate rate-distortion curves (PSNR vs. Bitrate), 
+          and export bitstreams matching the C23 CLI engine (<code style="font-family: var(--font-mono); color: var(--accent-cyan);">rcre-pca</code>).
+        </p>
+      </div>
+
+      <!-- Studio Layout: Left Viewports, Right Controls -->
+      <div class="pca-studio-grid">
+        <!-- Left Column: Display Viewports & Basis Patches -->
+        <div class="pca-display-panel">
+          <!-- View Mode Tabs -->
+          <div class="pca-tabs-nav">
+            <button class="pca-tab-btn active" data-tab="tab-split">
+              <span>Split Comparison (Original vs Recon)</span>
+            </button>
+            <button class="pca-tab-btn" data-tab="tab-side">
+              <span>Side-by-Side</span>
+            </button>
+            <button class="pca-tab-btn" data-tab="tab-error">
+              <span>Error Heatmap (&times;5)</span>
+            </button>
+            <button class="pca-tab-btn" data-tab="tab-basis">
+              <span>Learned Eigen-Bases (<span id="tab-basis-k">12</span>)</span>
+            </button>
+          </div>
+
+          <!-- Tab 1: Split Slider Viewport -->
+          <div class="pca-tab-content active" id="tab-split">
+            <div class="split-viewport-box" id="split-box">
+              <canvas id="pca-split-canvas" width="640" height="480"></canvas>
+              <div class="split-divider" id="split-divider">
+                <div class="split-handle">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/><polyline points="19 18 13 12 19 6"/></svg>
+                </div>
+              </div>
+              <div class="split-tag left">Original Reference</div>
+              <div class="split-tag right">PCA Reconstructed (<span id="tag-recon-k">K=12</span>)</div>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-dim); text-align: center; margin-top: 0.5rem;">
+              Drag divider left/right or hover over image to inspect pixel-level fidelity
+            </div>
+          </div>
+
+          <!-- Tab 2: Side-by-Side Viewport -->
+          <div class="pca-tab-content" id="tab-side">
+            <div class="side-by-side-grid">
+              <div class="side-canvas-box">
+                <div class="side-canvas-label">Original Reference Frame</div>
+                <canvas id="pca-orig-canvas" width="320" height="240"></canvas>
+              </div>
+              <div class="side-canvas-box">
+                <div class="side-canvas-label">Reconstructed Image (<span id="side-recon-k">K=12</span>)</div>
+                <canvas id="pca-recon-canvas" width="320" height="240"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: Error Heatmap Viewport -->
+          <div class="pca-tab-content" id="tab-error">
+            <div class="error-viewport-box">
+              <canvas id="pca-error-canvas" width="640" height="480"></canvas>
+              <div class="heatmap-legend">
+                <span class="legend-label">Residual Magnitude |I - &#206;|:</span>
+                <span class="legend-color-bar"></span>
+                <div class="legend-markers">
+                  <span>0 (Exact)</span>
+                  <span>Low</span>
+                  <span>Med</span>
+                  <span>High (&ge;50)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 4: Learned Eigen-Basis Patch Gallery -->
+          <div class="pca-tab-content" id="tab-basis">
+            <div class="basis-panel-container">
+              <div class="basis-panel-desc">
+                Top principal component eigenvectors <span style="font-family: var(--font-mono); color: var(--accent-cyan);">W &isin; &#8477;<sup>K &times; D</sup></span> reshaped into spatial filter patches. 
+                Observe how PCA learns DC luminance, directional gradients, and high-frequency textures directly from image pixel statistics.
+              </div>
+              <div class="basis-patches-grid" id="basis-patches-grid">
+                <!-- Dynamically populated basis canvases -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Telemetry & Performance Cards -->
+          <div class="pca-metrics-grid">
+            <div class="pca-metric-card">
+              <div class="pca-metric-label">PSNR Fidelity</div>
+              <div class="pca-metric-value" id="val-pca-psnr" style="color: var(--accent-emerald);">-- dB</div>
+              <div class="pca-metric-sub" id="val-pca-psnr-status">Ready</div>
+            </div>
+            <div class="pca-metric-card">
+              <div class="pca-metric-label">Compression Ratio</div>
+              <div class="pca-metric-value" id="val-pca-ratio" style="color: var(--accent-cyan);">-- &times;</div>
+              <div class="pca-metric-sub" id="val-pca-savings">--% space savings</div>
+            </div>
+            <div class="pca-metric-card">
+              <div class="pca-metric-label">Mean Squared Error</div>
+              <div class="pca-metric-value" id="val-pca-mse" style="color: var(--accent-indigo);">--</div>
+              <div class="pca-metric-sub">L2 residual norm</div>
+            </div>
+            <div class="pca-metric-card">
+              <div class="pca-metric-label">Bitstream Size</div>
+              <div class="pca-metric-value" id="val-pca-bytes" style="color: var(--accent-amber);">-- KB</div>
+              <div class="pca-metric-sub" id="val-pca-bpp">-- bpp</div>
+            </div>
+            <div class="pca-metric-card">
+              <div class="pca-metric-label">Compute Latency</div>
+              <div class="pca-metric-value" id="val-pca-latency" style="color: var(--text-main);">-- ms</div>
+              <div class="pca-metric-sub" id="val-pca-latency-sub">Fit + Quant + Recon</div>
+            </div>
+          </div>
+
+          <!-- Export & Storage Actions to Filesystem -->
+          <div class="pca-export-bar">
+            <button class="btn btn-cta" id="btn-save-recon-photo">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              <span>Save Reconstructed Photo to Filesystem</span>
+            </button>
+            <button class="btn btn-secondary" id="btn-save-rpca-binary" title="Export exact RCRE C23 binary bitstream compatible with rcre-pca CLI">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+              <span>Save .rpca Bitstream to Filesystem</span>
+            </button>
+            <button class="btn btn-secondary" id="btn-save-comparison-report">
+              <span>Save Comparison PNG</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Parameter Tuning & Benchmark -->
+        <div class="control-panel">
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">Compression Settings</h3>
+
+          <div class="control-group">
+            <label class="control-label" for="select-pca-source">Test Image Input</label>
+            <select id="select-pca-source">
+              <option value="live" selected>Live Camera / Test Frame</option>
+              <option value="last_photo">Latest Taken Photo</option>
+              <option value="upload">Upload Image from Filesystem...</option>
+              <option value="preset_bars">Synthetic Colorbars Pattern</option>
+              <option value="preset_texture">High-Frequency Grid Texture</option>
+            </select>
+            <input type="file" id="pca-file-input" accept="image/*" style="display: none;">
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Components Retained (K)</span>
+              <span class="control-value" id="val-pca-k">12</span>
+            </div>
+            <input type="range" id="slider-pca-k" min="1" max="64" value="12">
+            <div class="component-presets">
+              <button class="btn-preset" data-k="2">K=2 (Max Comp)</button>
+              <button class="btn-preset" data-k="8">K=8 (Balanced)</button>
+              <button class="btn-preset active" data-k="12">K=12 (RCRE Demo)</button>
+              <button class="btn-preset" data-k="24">K=24 (High Q)</button>
+              <button class="btn-preset" data-k="48">K=48 (Near-Lossless)</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="select-pca-block">Patch Dimension (B &times; B)</label>
+            <select id="select-pca-block">
+              <option value="4">4 &times; 4 Patches (D = 16 / 48)</option>
+              <option value="8" selected>8 &times; 8 Patches (D = 64 / 192, Standard)</option>
+              <option value="16">16 &times; 16 Patches (D = 256 / 768)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="select-pca-color">Color Mode</label>
+            <select id="select-pca-color">
+              <option value="rgb" selected>Full Color RGB (24-bit)</option>
+              <option value="gray">Rec.601 Grayscale (8-bit)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label class="toggle-switch">
+              <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">8-bit Uniform Quantization</span>
+              <input type="checkbox" id="check-pca-quant" class="toggle-input" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <div style="font-size: 0.75rem; color: var(--text-dim);">
+              Matches RCRE uint8_t min/max .rpca bitstream specification.
+            </div>
+          </div>
+
+          <button class="btn btn-photo" id="btn-run-pca-compression" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+            <span>⚡ Recompute Compression</span>
+          </button>
+
+          <hr style="border: none; border-top: 1px solid var(--border-glass); margin: 0.5rem 0;">
+
+          <!-- Automated Rate-Distortion Sweep -->
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">Rate-Distortion Benchmark</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">
+            Sweep K values from 2 to 64 to evaluate PSNR vs. Bitrate curves (identical to <code style="font-family: var(--font-mono); color: var(--accent-cyan);">rcre-pca --benchmark</code>).
+          </p>
+
+          <button class="btn btn-secondary" id="btn-run-pca-sweep" style="width: 100%; justify-content: center;">
+            <span>📈 Run Automated Benchmark Sweep</span>
+          </button>
+
+          <div class="sweep-table-container" id="sweep-table-container" style="display: none;">
+            <table class="sweep-table" id="sweep-table">
+              <thead>
+                <tr>
+                  <th>K</th>
+                  <th>Payload</th>
+                  <th>Ratio</th>
+                  <th>PSNR</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody id="sweep-table-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Floating Toast Notification -->
+  <div class="toast-notification" id="toast-notification">
+    <div class="toast-icon">📸</div>
+    <div class="toast-text">
+      <div class="toast-title" id="toast-title">Photo Saved to Filesystem</div>
+      <div class="toast-desc" id="toast-desc">rcre_photo.png</div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 RCRE Project — <a href="index.html">Back to Home</a></p>
+  </footer>
+
+  <script>
+    /* ===================================================================
+       1. Core Elements & Live Pipeline State
+       =================================================================== */
+    const canvas = document.getElementById('output-canvas');
+    const ctx = canvas.getContext('2d');
+    const video = document.getElementById('webcam-video');
+    const shutterFlash = document.getElementById('shutter-flash');
+
+    let videoSource = 'synthetic';
+    let filterStage = 'sobel';
+    let blurSigma = 1.2;
+    let edgeThreshold = 35;
+
+    let frameCount = 0;
+    let lastTime = performance.now();
+    let fps = 60.0;
+    let syntheticFrame = 0;
+
+    // Buffer canvases for pipeline stages
+    const offscreenCanvas = document.createElement('canvas');
+    offscreenCanvas.width = 640;
+    offscreenCanvas.height = 480;
+    const offCtx = offscreenCanvas.getContext('2d');
+
+    // Recent captured snapshots store
+    const capturedSnapshots = [];
+
+    // Synthesized pleasant camera shutter click sound
+    function playCameraShutterSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const audioCtx = new AudioContext();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.09);
+      } catch (e) {}
+    }
+
+    // Toast notification helper
+    let toastTimeout = null;
+    function showToast(title, desc) {
+      const toast = document.getElementById('toast-notification');
+      document.getElementById('toast-title').innerText = title;
+      document.getElementById('toast-desc').innerText = desc || '';
+      toast.classList.add('show');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    /* ===================================================================
+       2. RCRE C23 Fixed-Point Kernels (Rec.601, Sobel)
+       =================================================================== */
+    // 15-bit fixed point coefficients matching RCRE C23 kernels:
+    // (9798 * R + 19235 * G + 3735 * B + 16384) >> 15
+    function applyRec601Grayscale(pixels, W, H) {
+      for (let i = 0; i < W * H; ++i) {
+        const idx = i * 4;
+        const r = pixels[idx + 0];
+        const g = pixels[idx + 1];
+        const b = pixels[idx + 2];
+        const gray = (9798 * r + 19235 * g + 3735 * b + 16384) >> 15;
+        pixels[idx + 0] = gray;
+        pixels[idx + 1] = gray;
+        pixels[idx + 2] = gray;
+      }
+    }
+
+    // 3x3 Spatial Sobel Filter
+    function applySobel(pixels, W, H, thresh) {
+      const copy = new Uint8Array(pixels);
+      let edgeCount = 0;
+
+      for (let y = 1; y < H - 1; ++y) {
+        for (let x = 1; x < W - 1; ++x) {
+          const idx = (y * W + x) * 4;
+
+          // Sobel dx
+          const p00 = copy[((y - 1) * W + (x - 1)) * 4];
+          const p02 = copy[((y - 1) * W + (x + 1)) * 4];
+          const p10 = copy[(y * W + (x - 1)) * 4];
+          const p12 = copy[(y * W + (x + 1)) * 4];
+          const p20 = copy[((y + 1) * W + (x - 1)) * 4];
+          const p22 = copy[((y + 1) * W + (x + 1)) * 4];
+          const dx = (-p00 + p02) + 2 * (-p10 + p12) + (-p20 + p22);
+
+          // Sobel dy
+          const p01 = copy[((y - 1) * W + x) * 4];
+          const p21 = copy[((y + 1) * W + x) * 4];
+          const dy = (-p00 - 2 * p01 - p02) + (p20 + 2 * p21 + p22);
+
+          const mag = Math.min(255, Math.abs(dx) + Math.abs(dy));
+          const val = mag > thresh ? Math.min(255, mag * 1.5) : 0;
+
+          if (val > 100) edgeCount++;
+
+          pixels[idx + 0] = val;
+          pixels[idx + 1] = val;
+          pixels[idx + 2] = val;
+        }
+      }
+
+      // GBDT classification inference based on edge density
+      const edgeDensity = edgeCount / ((W - 2) * (H - 2));
+      let gbdtClass = "Low Detail / Smooth";
+      if (edgeDensity > 0.12) {
+        gbdtClass = "High Structural Edges";
+      } else if (edgeDensity > 0.05) {
+        gbdtClass = "Medium Detail";
+      }
+      document.getElementById('gbdt-prediction-badge').innerText = 
+        `GBDT: ${gbdtClass} (${(edgeDensity * 100).toFixed(1)}% edges)`;
+    }
+
+    /* ===================================================================
+       3. Main Camera & Synthetic Render Pipeline
+       =================================================================== */
+    let livePcaCachedResult = null;
+    let livePcaLastUpdate = 0;
+
+    function renderPipeline() {
+      const W = canvas.width;
+      const H = canvas.height;
+
+      if (videoSource === 'webcam' && video.readyState === video.HAVE_ENOUGH_DATA) {
+        offCtx.drawImage(video, 0, 0, W, H);
+      } else {
+        // Generate Synthetic Animated Moving Color Bars
+        syntheticFrame++;
+        const imgData = offCtx.createImageData(W, H);
+        const data = imgData.data;
+        for (let y = 0; y < H; ++y) {
+          for (let x = 0; x < W; ++x) {
+            const idx = (y * W + x) * 4;
+            data[idx + 0] = (x + syntheticFrame * 3) % 256;
+            data[idx + 1] = (y + syntheticFrame * 2) % 256;
+            data[idx + 2] = (x + y + syntheticFrame) % 256;
+            data[idx + 3] = 255;
+          }
+        }
+        offCtx.putImageData(imgData, 0, 0);
+      }
+
+      // Process pipeline stages
+      const frameImg = offCtx.getImageData(0, 0, W, H);
+      const pixels = frameImg.data;
+
+      if (filterStage === 'raw') {
+        ctx.putImageData(frameImg, 0, 0);
+      } else if (filterStage === 'grayscale') {
+        applyRec601Grayscale(pixels, W, H);
+        ctx.putImageData(frameImg, 0, 0);
+      } else if (filterStage === 'gaussian') {
+        applyRec601Grayscale(pixels, W, H);
+        ctx.putImageData(frameImg, 0, 0);
+        ctx.filter = `blur(${blurSigma * 1.5}px)`;
+        ctx.drawImage(offscreenCanvas, 0, 0);
+        ctx.filter = 'none';
+      } else if (filterStage === 'sobel') {
+        applyRec601Grayscale(pixels, W, H);
+        applySobel(pixels, W, H, edgeThreshold);
+        ctx.putImageData(frameImg, 0, 0);
+      } else if (filterStage === 'pca') {
+        // Live PCA Compression Preview
+        const nowMs = performance.now();
+        if (!livePcaCachedResult || (nowMs - livePcaLastUpdate > 120)) {
+          // Downsample for high-speed live stream encoding preview
+          const livePreview = runPcaCompressionEngine(pixels, W, H, 8, 8, true, true);
+          livePcaCachedResult = livePreview.reconImgData;
+          livePcaLastUpdate = nowMs;
+          document.getElementById('gbdt-prediction-badge').innerText = 
+            `RPCA Live: ${livePreview.psnr.toFixed(1)} dB (${livePreview.compRatio.toFixed(1)}x)`;
+        }
+        if (livePcaCachedResult) {
+          ctx.putImageData(livePcaCachedResult, 0, 0);
+        }
+      }
+
+      // Measure Frame Rate
+      frameCount++;
+      const now = performance.now();
+      if (now - lastTime >= 500) {
+        fps = (frameCount * 1000) / (now - lastTime);
+        document.getElementById('live-fps-badge').innerText = 
+          `FPS: ${fps.toFixed(1)} (${(1000 / (fps > 0 ? fps : 1)).toFixed(1)} ms)`;
+        frameCount = 0;
+        lastTime = now;
+      }
+
+      requestAnimationFrame(renderPipeline);
+    }
+
+    /* ===================================================================
+       4. Take Photo & Store Directly to Filesystem
+       =================================================================== */
+    async function saveBlobToFilesystem(blob, defaultFilename, description, extension) {
+      const saveMethod = document.getElementById('select-save-method').value;
+
+      // 1. Try File System Access API if supported and requested
+      if (window.showSaveFilePicker && saveMethod === 'fs_api') {
+        try {
+          const mimeType = blob.type || 'application/octet-stream';
+          const acceptObj = {};
+          acceptObj[mimeType] = [extension];
+
+          const handle = await window.showSaveFilePicker({
+            suggestedName: defaultFilename,
+            types: [{
+              description: description || 'File',
+              accept: acceptObj
+            }]
+          });
+          const writable = await handle.createWritable();
+          await writable.write(blob);
+          await writable.close();
+          showToast('Stored to Filesystem', handle.name || defaultFilename);
+          return true;
+        } catch (err) {
+          if (err.name === 'AbortError') {
+            // User cancelled picker dialog
+            return false;
+          }
+          console.warn('File System Access API failed, using download fallback:', err);
+        }
+      }
+
+      // 2. Direct browser filesystem download fallback
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = defaultFilename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 2500);
+      showToast('Stored to Filesystem (Downloads)', defaultFilename);
+      return true;
+    }
+
+    // Convert canvas to BMP blob (standard 24-bit uncompressed BMP matching RCRE C23)
+    function canvasToBmpBlob(c) {
+      const W = c.width;
+      const H = c.height;
+      const ctx = c.getContext('2d');
+      const imgData = ctx.getImageData(0, 0, W, H);
+      const data = imgData.data;
+
+      const rowBytes = Math.floor((24 * W + 31) / 32) * 4;
+      const pixelArraySize = rowBytes * H;
+      const fileSize = 54 + pixelArraySize;
+
+      const buffer = new ArrayBuffer(fileSize);
+      const view = new DataView(buffer);
+
+      // BMP Header (14 bytes)
+      view.setUint16(0, 0x4D42, false); // "BM"
+      view.setUint32(2, fileSize, true);
+      view.setUint16(6, 0, true);
+      view.setUint16(8, 0, true);
+      view.setUint32(10, 54, true); // offset
+
+      // DIB Header (40 bytes - BITMAPINFOHEADER)
+      view.setUint32(14, 40, true);
+      view.setInt32(18, W, true);
+      view.setInt32(22, H, true); // bottom-up
+      view.setUint16(26, 1, true); // color planes
+      view.setUint16(28, 24, true); // 24 bpp
+      view.setUint32(30, 0, true); // BI_RGB no compression
+      view.setUint32(34, pixelArraySize, true);
+      view.setInt32(38, 2835, true); // 72 DPI
+      view.setInt32(42, 2835, true);
+      view.setUint32(46, 0, true);
+      view.setUint32(50, 0, true);
+
+      // Pixel Data (BGR bottom-up)
+      const u8 = new Uint8Array(buffer);
+      for (let y = 0; y < H; y++) {
+        const srcY = H - 1 - y;
+        const rowOffset = 54 + y * rowBytes;
+        for (let x = 0; x < W; x++) {
+          const srcIdx = (srcY * W + x) * 4;
+          const dstIdx = rowOffset + x * 3;
+          u8[dstIdx + 0] = data[srcIdx + 2]; // B
+          u8[dstIdx + 1] = data[srcIdx + 1]; // G
+          u8[dstIdx + 2] = data[srcIdx + 0]; // R
+        }
+      }
+
+      return new Blob([buffer], { type: 'image/bmp' });
+    }
+
+    async function takePhoto() {
+      // 1. Shutter flash effect & audio click
+      shutterFlash.classList.add('flashing');
+      playCameraShutterSound();
+      setTimeout(() => {
+        shutterFlash.classList.remove('flashing');
+      }, 150);
+
+      // 2. Select capture target
+      const target = document.getElementById('select-capture-target').value;
+      const format = document.getElementById('select-save-format').value;
+      const W = canvas.width;
+      const H = canvas.height;
+
+      const snapCanvas = document.createElement('canvas');
+      snapCanvas.width = W;
+      snapCanvas.height = H;
+      const snapCtx = snapCanvas.getContext('2d');
+
+      if (target === 'raw') {
+        snapCtx.drawImage(offscreenCanvas, 0, 0);
+      } else {
+        snapCtx.drawImage(canvas, 0, 0);
+      }
+
+      // Generate timestamped filename
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const ts = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+      const ext = format === 'jpeg' ? '.jpg' : (format === 'bmp' ? '.bmp' : '.png');
+      const filename = `rcre_photo_${ts}${ext}`;
+
+      // Convert to requested blob
+      let blob = null;
+      let mimeType = 'image/png';
+      if (format === 'jpeg') {
+        mimeType = 'image/jpeg';
+        blob = await new Promise(r => snapCanvas.toBlob(r, 'image/jpeg', 0.95));
+      } else if (format === 'bmp') {
+        mimeType = 'image/bmp';
+        blob = canvasToBmpBlob(snapCanvas);
+      } else {
+        blob = await new Promise(r => snapCanvas.toBlob(r, 'image/png'));
+      }
+
+      // Store directly to filesystem
+      await saveBlobToFilesystem(blob, filename, `${format.toUpperCase()} Image`, ext);
+
+      // Add to recent snapshots tray
+      const thumbUrl = snapCanvas.toDataURL('image/jpeg', 0.85);
+      const snapItem = {
+        id: ts,
+        filename: filename,
+        dataUrl: thumbUrl,
+        blob: blob,
+        format: format,
+        ext: ext,
+        canvas: snapCanvas,
+        time: now.toLocaleTimeString(),
+        sizeKb: (blob.size / 1024).toFixed(1)
+      };
+      capturedSnapshots.unshift(snapItem);
+      renderSnapshotsGallery();
+    }
+
+    function renderSnapshotsGallery() {
+      const scroll = document.getElementById('snapshot-scroll');
+      const countBadge = document.getElementById('gallery-count');
+      countBadge.innerText = `${capturedSnapshots.length} photo${capturedSnapshots.length === 1 ? '' : 's'}`;
+
+      if (capturedSnapshots.length === 0) {
+        scroll.innerHTML = `<div class="empty-gallery-msg">No photos captured yet. Click <strong>Take Photo</strong> or press <strong>Space</strong> to take a photo and store it directly to your filesystem!</div>`;
+        return;
+      }
+
+      scroll.innerHTML = '';
+      capturedSnapshots.forEach((snap, idx) => {
+        const card = document.createElement('div');
+        card.className = 'snapshot-card';
+        card.innerHTML = `
+          <img src="${snap.dataUrl}" class="snapshot-thumb" title="Click to test PCA compression" />
+          <div class="snapshot-info">
+            <div class="snapshot-time">${snap.time}</div>
+            <div class="snapshot-meta">640&times;480 &bull; ${snap.sizeKb} KB</div>
+            <div class="snapshot-card-actions">
+              <button class="btn-card-action" data-action="save" data-idx="${idx}" title="Save to Filesystem">💾 Save</button>
+              <button class="btn-card-action btn-card-pca" data-action="pca" data-idx="${idx}" title="Test PCA Compression on this photo">🔬 PCA</button>
+              <button class="btn-card-action" data-action="delete" data-idx="${idx}" title="Remove from tray">✕</button>
+            </div>
+          </div>
+        `;
+
+        // Card button handlers
+        card.querySelector('.snapshot-thumb').addEventListener('click', () => {
+          loadSnapshotIntoPca(idx);
+        });
+
+        card.querySelectorAll('.btn-card-action').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const action = e.target.getAttribute('data-action');
+            const targetIdx = parseInt(e.target.getAttribute('data-idx'));
+            if (action === 'save') {
+              const item = capturedSnapshots[targetIdx];
+              await saveBlobToFilesystem(item.blob, item.filename, `${item.format.toUpperCase()} Image`, item.ext);
+            } else if (action === 'pca') {
+              loadSnapshotIntoPca(targetIdx);
+            } else if (action === 'delete') {
+              capturedSnapshots.splice(targetIdx, 1);
+              renderSnapshotsGallery();
+            }
+          });
+        });
+
+        scroll.appendChild(card);
+      });
+    }
+
+    function loadSnapshotIntoPca(idx) {
+      const snap = capturedSnapshots[idx];
+      if (!snap) return;
+      currentPcaSourceImage = snap.canvas;
+      document.getElementById('select-pca-source').value = 'last_photo';
+      runPcaCompression();
+      // Scroll smoothly to PCA lab
+      document.getElementById('pca-lab-section').scrollIntoView({ behavior: 'smooth' });
+      showToast('Loaded Snapshot into PCA Lab', snap.filename);
+    }
+
+    document.getElementById('btn-take-photo').addEventListener('click', takePhoto);
+    document.getElementById('btn-clear-gallery').addEventListener('click', () => {
+      capturedSnapshots.length = 0;
+      renderSnapshotsGallery();
+    });
+
+    // Keyboard shortcut: Spacebar triggers Take Photo (when not inside inputs)
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT') {
+        e.preventDefault();
+        takePhoto();
+      }
+    });
+
+    /* ===================================================================
+       5. Zero-Dependency PCA Image Compression & Quantization Engine
+       (Exact algorithmic match with RCRE C23 pca_compressor.c & cluster.c)
+       =================================================================== */
+    let currentPcaSourceImage = null;
+    let currentPcaResult = null;
+
+    // Split Viewport drag slider state
+    let splitPos = 0.5;
+    let isDraggingSplit = false;
+
+    function runPcaCompressionEngine(pixels, W, H, blockSize, numComponents, isColor, useQuant) {
+      const t0 = performance.now();
+      const C = isColor ? 3 : 1;
+      const B = blockSize;
+      const nPatchesX = Math.ceil(W / B);
+      const nPatchesY = Math.ceil(H / B);
+      const N = nPatchesX * nPatchesY;
+      const D = B * B * C;
+      let K = Math.min(numComponents, D);
+
+      // 1. Extract Patches into X [N x D]
+      const X = new Float32Array(N * D);
+      let patchIdx = 0;
+      for (let py = 0; py < nPatchesY; py++) {
+        for (let px = 0; px < nPatchesX; px++) {
+          let elIdx = patchIdx * D;
+          for (let ly = 0; ly < B; ly++) {
+            let y = py * B + ly;
+            if (y >= H) y = H - 1; // clamp border
+            for (let lx = 0; lx < B; lx++) {
+              let x = px * B + lx;
+              if (x >= W) x = W - 1; // clamp border
+              const pIdx = (y * W + x) * 4;
+              if (C === 3) {
+                X[elIdx++] = pixels[pIdx + 0];
+                X[elIdx++] = pixels[pIdx + 1];
+                X[elIdx++] = pixels[pIdx + 2];
+              } else {
+                const gray = (9798 * pixels[pIdx] + 19235 * pixels[pIdx + 1] + 3735 * pixels[pIdx + 2] + 16384) >> 15;
+                X[elIdx++] = gray;
+              }
+            }
+          }
+          patchIdx++;
+        }
+      }
+
+      // 2. Mean centering
+      const mean = new Float32Array(D);
+      const invN = 1.0 / N;
+      for (let i = 0; i < N; i++) {
+        const offset = i * D;
+        for (let d = 0; d < D; d++) {
+          mean[d] += X[offset + d];
+        }
+      }
+      for (let d = 0; d < D; d++) {
+        mean[d] *= invN;
+      }
+
+      const X_centered = new Float32Array(N * D);
+      for (let i = 0; i < N; i++) {
+        const offset = i * D;
+        for (let d = 0; d < D; d++) {
+          X_centered[offset + d] = X[offset + d] - mean[d];
+        }
+      }
+
+      // 3. Covariance Matrix C [D x D]
+      const Cov = new Float32Array(D * D);
+      const invNMinus1 = N > 1 ? 1.0 / (N - 1) : 1.0;
+      for (let i = 0; i < N; i++) {
+        const offset = i * D;
+        for (let r = 0; r < D; r++) {
+          const xr = X_centered[offset + r];
+          const rOffset = r * D;
+          for (let c = r; c < D; c++) {
+            Cov[rOffset + c] += xr * X_centered[offset + c];
+          }
+        }
+      }
+
+      let totalVariance = 0;
+      for (let r = 0; r < D; r++) {
+        const rOffset = r * D;
+        totalVariance += Cov[rOffset + r] * invNMinus1;
+        for (let c = r; c < D; c++) {
+          const val = Cov[rOffset + c] * invNMinus1;
+          Cov[rOffset + c] = val;
+          Cov[c * D + r] = val; // symmetric
+        }
+      }
+
+      // 4. Power Iteration with Deflation for Top K Eigenvectors
+      const components = new Float32Array(K * D);
+      const eigenvalues = new Float32Array(K);
+      const v = new Float32Array(D);
+      const w = new Float32Array(D);
+      const C_work = new Float32Array(Cov);
+
+      for (let comp = 0; comp < K; comp++) {
+        // Deterministic initial seed matching RCRE
+        for (let d = 0; d < D; d++) {
+          v[d] = (((d + comp) % 5) + 1) * 0.2;
+        }
+
+        // Power iteration
+        for (let iter = 0; iter < 40; iter++) {
+          // w = C * v
+          for (let r = 0; r < D; r++) {
+            let sum = 0;
+            const rOffset = r * D;
+            for (let c = 0; c < D; c++) {
+              sum += C_work[rOffset + c] * v[c];
+            }
+            w[r] = sum;
+          }
+
+          // Gram-Schmidt orthogonalization
+          for (let prev = 0; prev < comp; prev++) {
+            let proj = 0;
+            const prevOffset = prev * D;
+            for (let d = 0; d < D; d++) {
+              proj += w[d] * components[prevOffset + d];
+            }
+            for (let d = 0; d < D; d++) {
+              w[d] -= proj * components[prevOffset + d];
+            }
+          }
+
+          // Normalize
+          let normSq = 0;
+          for (let d = 0; d < D; d++) {
+            normSq += w[d] * w[d];
+          }
+          if (normSq < 1e-4 || Math.sqrt(normSq) < 1e-3) {
+            for (let d = 0; d < D; d++) v[d] = 0;
+            break;
+          }
+          const invNorm = 1.0 / Math.sqrt(normSq);
+          for (let d = 0; d < D; d++) {
+            v[d] = w[d] * invNorm;
+          }
+        }
+
+        // Store component
+        const compOffset = comp * D;
+        for (let d = 0; d < D; d++) {
+          components[compOffset + d] = v[d];
+        }
+
+        // Compute eigenvalue lambda = v^T * C * v
+        for (let r = 0; r < D; r++) {
+          let sum = 0;
+          const rOffset = r * D;
+          for (let c = 0; c < D; c++) {
+            sum += C_work[rOffset + c] * v[c];
+          }
+          w[r] = sum;
+        }
+        let lambda = 0;
+        for (let d = 0; d < D; d++) {
+          lambda += v[d] * w[d];
+        }
+        if (lambda < 1e-4) {
+          lambda = 0;
+          for (let d = 0; d < D; d++) components[compOffset + d] = 0;
+        }
+        eigenvalues[comp] = lambda;
+
+        // Deflate Covariance matrix: C = C - lambda * (v * v^T)
+        for (let r = 0; r < D; r++) {
+          const rOffset = r * D;
+          const vr = v[r];
+          for (let c = 0; c < D; c++) {
+            C_work[rOffset + c] -= lambda * vr * v[c];
+          }
+        }
+      }
+
+      // 5. Projection onto principal components: P = X_centered * components^T
+      const proj = new Float32Array(N * K);
+      for (let i = 0; i < N; i++) {
+        const xOffset = i * D;
+        const pOffset = i * K;
+        for (let comp = 0; comp < K; comp++) {
+          const cOffset = comp * D;
+          let sum = 0;
+          for (let d = 0; d < D; d++) {
+            sum += X_centered[xOffset + d] * components[cOffset + d];
+          }
+          proj[pOffset + comp] = sum;
+        }
+      }
+
+      // 6. 8-bit Uniform Quantization (exact RCRE .rpca specification)
+      const scaleMin = new Float32Array(K);
+      const scaleMax = new Float32Array(K);
+      const quantData = new Uint8Array(N * K);
+      const dequantProj = new Float32Array(N * K);
+
+      for (let comp = 0; comp < K; comp++) {
+        let minVal = Infinity;
+        let maxVal = -Infinity;
+        for (let i = 0; i < N; i++) {
+          const val = proj[i * K + comp];
+          if (val < minVal) minVal = val;
+          if (val > maxVal) maxVal = val;
+        }
+        scaleMin[comp] = minVal;
+        scaleMax[comp] = maxVal;
+        const range = maxVal - minVal;
+
+        for (let i = 0; i < N; i++) {
+          const idx = i * K + comp;
+          const val = proj[idx];
+          if (useQuant) {
+            const q = range > 1e-6 ? Math.round(255 * (val - minVal) / range) : 0;
+            const clamped = Math.max(0, Math.min(255, q));
+            quantData[idx] = clamped;
+            dequantProj[idx] = minVal + (clamped / 255.0) * range;
+          } else {
+            dequantProj[idx] = val;
+          }
+        }
+      }
+
+      // 7. Reconstruction via Inverse PCA Transform: X_recon = dequantProj * components + mean
+      const reconImgData = new ImageData(W, H);
+      const reconPixels = reconImgData.data;
+
+      // Initialize alpha
+      for (let i = 3; i < W * H * 4; i += 4) {
+        reconPixels[i] = 255;
+      }
+
+      patchIdx = 0;
+      for (let py = 0; py < nPatchesY; py++) {
+        for (let px = 0; px < nPatchesX; px++) {
+          const pOffset = patchIdx * K;
+          let elIdx = 0;
+
+          for (let ly = 0; ly < B; ly++) {
+            const y = py * B + ly;
+            if (y >= H) {
+              elIdx += B * C;
+              continue;
+            }
+            for (let lx = 0; lx < B; lx++) {
+              const x = px * B + lx;
+              if (x >= W) {
+                elIdx += C;
+                continue;
+              }
+              const pixelIdx = (y * W + x) * 4;
+
+              if (C === 3) {
+                for (let c = 0; c < 3; c++) {
+                  let val = mean[elIdx];
+                  for (let comp = 0; comp < K; comp++) {
+                    val += dequantProj[pOffset + comp] * components[comp * D + elIdx];
+                  }
+                  reconPixels[pixelIdx + c] = Math.max(0, Math.min(255, Math.round(val)));
+                  elIdx++;
+                }
+              } else {
+                let val = mean[elIdx];
+                for (let comp = 0; comp < K; comp++) {
+                  val += dequantProj[pOffset + comp] * components[comp * D + elIdx];
+                }
+                const clamped = Math.max(0, Math.min(255, Math.round(val)));
+                reconPixels[pixelIdx + 0] = clamped;
+                reconPixels[pixelIdx + 1] = clamped;
+                reconPixels[pixelIdx + 2] = clamped;
+                elIdx++;
+              }
+            }
+          }
+          patchIdx++;
+        }
+      }
+
+      // 8. Evaluation Metrics (MSE, PSNR, Sizes)
+      let sse = 0;
+      let totalPixels = 0;
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          const idx = (y * W + x) * 4;
+          if (C === 3) {
+            for (let c = 0; c < 3; c++) {
+              const diff = pixels[idx + c] - reconPixels[idx + c];
+              sse += diff * diff;
+              totalPixels++;
+            }
+          } else {
+            const origGray = (9798 * pixels[idx] + 19235 * pixels[idx + 1] + 3735 * pixels[idx + 2] + 16384) >> 15;
+            const diff = origGray - reconPixels[idx];
+            sse += diff * diff;
+            totalPixels++;
+          }
+        }
+      }
+
+      const mse = totalPixels > 0 ? sse / totalPixels : 0;
+      const psnr = mse > 1e-9 ? 10 * Math.log10((255 * 255) / mse) : 99.99;
+
+      // Uncompressed raw bytes vs RCRE .rpca bitstream bytes
+      const rawBytes = W * H * C;
+      const rpcaHeaderBytes = 44;
+      const rpcaMeanBytes = D * 4;
+      const rpcaCompBytes = K * D * 4;
+      const rpcaScalesBytes = 2 * K * 4;
+      const rpcaQuantBytes = N * K;
+      const compBytes = rpcaHeaderBytes + rpcaMeanBytes + rpcaCompBytes + rpcaScalesBytes + rpcaQuantBytes;
+
+      const compRatio = rawBytes / compBytes;
+      const savingsPct = Math.max(0, (1.0 - compBytes / rawBytes) * 100);
+      const bpp = (compBytes * 8) / (W * H);
+      const latencyMs = performance.now() - t0;
+
+      return {
+        W, H, C, B, N, D, K,
+        nPatchesX, nPatchesY,
+        mean, components, eigenvalues, totalVariance,
+        scaleMin, scaleMax, quantData,
+        reconImgData, mse, psnr,
+        rawBytes, compBytes, compRatio, savingsPct, bpp,
+        latencyMs
+      };
+    }
+
+    // Build standalone binary .rpca blob matching RCRE C23 exactly
+    function createRpcaBlob(res) {
+      const buffer = new ArrayBuffer(res.compBytes);
+      const u32 = new Uint32Array(buffer, 0, 11);
+      u32[0] = 0x41435052; // "RPCA"
+      u32[1] = res.W;
+      u32[2] = res.H;
+      u32[3] = res.C;
+      u32[4] = res.B;
+      u32[5] = res.K;
+      u32[6] = 8; // quant_bits
+      u32[7] = res.nPatchesX;
+      u32[8] = res.nPatchesY;
+      u32[9] = res.N;
+      u32[10] = res.D;
+
+      let byteOffset = 44;
+      new Float32Array(buffer, byteOffset, res.D).set(res.mean);
+      byteOffset += res.D * 4;
+
+      new Float32Array(buffer, byteOffset, res.K * res.D).set(res.components);
+      byteOffset += res.K * res.D * 4;
+
+      new Float32Array(buffer, byteOffset, res.K).set(res.scaleMin);
+      byteOffset += res.K * 4;
+
+      new Float32Array(buffer, byteOffset, res.K).set(res.scaleMax);
+      byteOffset += res.K * 4;
+
+      new Uint8Array(buffer, byteOffset, res.N * res.K).set(res.quantData);
+
+      return new Blob([buffer], { type: 'application/octet-stream' });
+    }
+
+    /* ===================================================================
+       6. PCA Studio View Rendering (Split Slider, Error, Basis Grid)
+       =================================================================== */
+    function getPcaInputPixels() {
+      const srcType = document.getElementById('select-pca-source').value;
+      const W = 640;
+      const H = 480;
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = W;
+      tempCanvas.height = H;
+      const tempCtx = tempCanvas.getContext('2d');
+
+      if (srcType === 'live') {
+        tempCtx.drawImage(offscreenCanvas, 0, 0, W, H);
+      } else if (srcType === 'last_photo' && currentPcaSourceImage) {
+        tempCtx.drawImage(currentPcaSourceImage, 0, 0, W, H);
+      } else if (srcType === 'preset_texture') {
+        // High frequency micro-checkerboard and gradients
+        const img = tempCtx.createImageData(W, H);
+        const d = img.data;
+        for (let y = 0; y < H; y++) {
+          for (let x = 0; x < W; x++) {
+            const idx = (y * W + x) * 4;
+            const checker = ((Math.floor(x / 8) + Math.floor(y / 8)) % 2) * 80;
+            const wave = Math.sin(x * 0.05) * Math.cos(y * 0.05) * 60;
+            d[idx + 0] = Math.min(255, Math.max(0, 128 + checker + wave));
+            d[idx + 1] = Math.min(255, Math.max(0, 100 + checker - wave));
+            d[idx + 2] = Math.min(255, Math.max(0, 160 - checker + wave * 0.5));
+            d[idx + 3] = 255;
+          }
+        }
+        tempCtx.putImageData(img, 0, 0);
+      } else if (srcType === 'preset_bars') {
+        // Standard high-contrast test color bars
+        const img = tempCtx.createImageData(W, H);
+        const d = img.data;
+        const colors = [
+          [255, 255, 255], [255, 255, 0], [0, 255, 255], [0, 255, 0],
+          [255, 0, 255], [255, 0, 0], [0, 0, 255], [0, 0, 0]
+        ];
+        const barW = W / colors.length;
+        for (let y = 0; y < H; y++) {
+          for (let x = 0; x < W; x++) {
+            const idx = (y * W + x) * 4;
+            const cIdx = Math.min(colors.length - 1, Math.floor(x / barW));
+            d[idx + 0] = colors[cIdx][0];
+            d[idx + 1] = colors[cIdx][1];
+            d[idx + 2] = colors[cIdx][2];
+            d[idx + 3] = 255;
+          }
+        }
+        tempCtx.putImageData(img, 0, 0);
+      } else {
+        // Fallback to live canvas
+        tempCtx.drawImage(offscreenCanvas, 0, 0, W, H);
+      }
+
+      return {
+        canvas: tempCanvas,
+        imgData: tempCtx.getImageData(0, 0, W, H)
+      };
+    }
+
+    function runPcaCompression() {
+      const input = getPcaInputPixels();
+      const origPixels = input.imgData.data;
+      const W = input.imgData.width;
+      const H = input.imgData.height;
+
+      const B = parseInt(document.getElementById('select-pca-block').value);
+      const K = parseInt(document.getElementById('slider-pca-k').value);
+      const isColor = document.getElementById('select-pca-color').value === 'rgb';
+      const useQuant = document.getElementById('check-pca-quant').checked;
+
+      // Run compression
+      const res = runPcaCompressionEngine(origPixels, W, H, B, K, isColor, useQuant);
+      currentPcaResult = { res, inputCanvas: input.canvas, origPixels };
+
+      // Update UI Telemetry Cards
+      document.getElementById('val-pca-psnr').innerText = `${res.psnr.toFixed(2)} dB`;
+      document.getElementById('val-pca-psnr-status').innerText = 
+        res.psnr >= 36 ? 'Pristine Fidelity' : (res.psnr >= 28 ? 'High Quality' : 'Lossy Approximation');
+      document.getElementById('val-pca-psnr-status').className = 
+        `pca-metric-sub ${res.psnr >= 36 ? 'badge-psnr-good' : (res.psnr >= 28 ? 'badge-psnr-med' : 'badge-psnr-low')}`;
+
+      document.getElementById('val-pca-ratio').innerText = `${res.compRatio.toFixed(2)}\u00D7`;
+      document.getElementById('val-pca-savings').innerText = `${res.savingsPct.toFixed(1)}% bitstream savings`;
+
+      document.getElementById('val-pca-mse').innerText = res.mse.toFixed(2);
+      document.getElementById('val-pca-bytes').innerText = `${(res.compBytes / 1024).toFixed(1)} KB`;
+      document.getElementById('val-pca-bpp').innerText = `${res.bpp.toFixed(2)} bpp (vs ${res.C * 8} bpp raw)`;
+      document.getElementById('val-pca-latency').innerText = `${res.latencyMs.toFixed(1)} ms`;
+
+      document.getElementById('tag-recon-k').innerText = `K=${res.K}`;
+      document.getElementById('side-recon-k').innerText = `K=${res.K}`;
+      document.getElementById('tab-basis-k').innerText = res.K;
+
+      // Render Display Views
+      renderSplitView();
+      renderSideBySideView();
+      renderErrorHeatmap();
+      renderBasisGallery();
+    }
+
+    // Tab 1: Render Interactive Split Slider Viewport
+    function renderSplitView() {
+      if (!currentPcaResult) return;
+      const splitCanvas = document.getElementById('pca-split-canvas');
+      const sCtx = splitCanvas.getContext('2d');
+      const W = splitCanvas.width;
+      const H = splitCanvas.height;
+
+      const { res, inputCanvas } = currentPcaResult;
+
+      // Draw original on left, recon on right
+      sCtx.clearRect(0, 0, W, H);
+      sCtx.drawImage(inputCanvas, 0, 0, W, H);
+
+      // Clip right side for reconstructed image
+      const splitX = Math.round(W * splitPos);
+      sCtx.save();
+      sCtx.beginPath();
+      sCtx.rect(splitX, 0, W - splitX, H);
+      sCtx.clip();
+
+      // Draw reconstructed image
+      const tempRecon = document.createElement('canvas');
+      tempRecon.width = res.W;
+      tempRecon.height = res.H;
+      tempRecon.getContext('2d').putImageData(res.reconImgData, 0, 0);
+      sCtx.drawImage(tempRecon, 0, 0, W, H);
+      sCtx.restore();
+
+      // Position divider
+      const divider = document.getElementById('split-divider');
+      divider.style.left = `${splitPos * 100}%`;
+    }
+
+    // Tab 2: Render Side-by-Side Viewport
+    function renderSideBySideView() {
+      if (!currentPcaResult) return;
+      const { res, inputCanvas } = currentPcaResult;
+
+      const origCanvas = document.getElementById('pca-orig-canvas');
+      origCanvas.getContext('2d').drawImage(inputCanvas, 0, 0, origCanvas.width, origCanvas.height);
+
+      const reconCanvas = document.getElementById('pca-recon-canvas');
+      const tempRecon = document.createElement('canvas');
+      tempRecon.width = res.W;
+      tempRecon.height = res.H;
+      tempRecon.getContext('2d').putImageData(res.reconImgData, 0, 0);
+      reconCanvas.getContext('2d').drawImage(tempRecon, 0, 0, reconCanvas.width, reconCanvas.height);
+    }
+
+    // Tab 3: Render Amplified Error Heatmap
+    function renderErrorHeatmap() {
+      if (!currentPcaResult) return;
+      const { res, origPixels } = currentPcaResult;
+      const errCanvas = document.getElementById('pca-error-canvas');
+      const eCtx = errCanvas.getContext('2d');
+      const W = res.W;
+      const H = res.H;
+      const reconPixels = res.reconImgData.data;
+
+      const errImg = eCtx.createImageData(W, H);
+      const eData = errImg.data;
+
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          const idx = (y * W + x) * 4;
+          let diff = 0;
+          if (res.C === 3) {
+            const dr = Math.abs(origPixels[idx + 0] - reconPixels[idx + 0]);
+            const dg = Math.abs(origPixels[idx + 1] - reconPixels[idx + 1]);
+            const db = Math.abs(origPixels[idx + 2] - reconPixels[idx + 2]);
+            diff = (dr + dg + db) / 3.0;
+          } else {
+            const origGray = (9798 * origPixels[idx] + 19235 * origPixels[idx + 1] + 3735 * origPixels[idx + 2] + 16384) >> 15;
+            diff = Math.abs(origGray - reconPixels[idx]);
+          }
+
+          // Amplify error 5x and map to Inferno colormap
+          const amp = Math.min(255, diff * 5.0);
+          const t = amp / 255.0;
+
+          // Pseudo-inferno gradient: Black -> Cyan -> Orange/Yellow -> Red
+          let r = 0, g = 0, b = 0;
+          if (t < 0.33) {
+            const s = t / 0.33;
+            r = Math.round(0);
+            g = Math.round(s * 182);
+            b = Math.round(s * 212);
+          } else if (t < 0.66) {
+            const s = (t - 0.33) / 0.33;
+            r = Math.round(s * 245);
+            g = Math.round(182 - s * 24);
+            b = Math.round(212 * (1 - s));
+          } else {
+            const s = (t - 0.66) / 0.34;
+            r = Math.round(245 + s * 10);
+            g = Math.round(158 * (1 - s));
+            b = 0;
+          }
+
+          eData[idx + 0] = r;
+          eData[idx + 1] = g;
+          eData[idx + 2] = b;
+          eData[idx + 3] = 255;
+        }
+      }
+
+      eCtx.putImageData(errImg, 0, 0);
+    }
+
+    // Tab 4: Render Learned Principal Eigen-Basis Patch Gallery
+    function renderBasisGallery() {
+      if (!currentPcaResult) return;
+      const { res } = currentPcaResult;
+      const grid = document.getElementById('basis-patches-grid');
+      grid.innerHTML = '';
+
+      const B = res.B;
+      const D = res.D;
+      const K = res.K;
+      const C = res.C;
+
+      for (let comp = 0; comp < K; comp++) {
+        const compOffset = comp * D;
+
+        // Find min and max of component eigenvector for contrast normalization
+        let minVal = Infinity;
+        let maxVal = -Infinity;
+        for (let d = 0; d < D; d++) {
+          const val = res.components[compOffset + d];
+          if (val < minVal) minVal = val;
+          if (val > maxVal) maxVal = val;
+        }
+        const range = maxVal - minVal;
+
+        // Create mini canvas
+        const pCanvas = document.createElement('canvas');
+        pCanvas.width = B;
+        pCanvas.height = B;
+        pCanvas.className = 'basis-canvas';
+        const pCtx = pCanvas.getContext('2d');
+        const pImg = pCtx.createImageData(B, B);
+        const pData = pImg.data;
+
+        let elIdx = 0;
+        for (let ly = 0; ly < B; ly++) {
+          for (let lx = 0; lx < B; lx++) {
+            const pIdx = (ly * B + lx) * 4;
+            if (C === 3) {
+              const r = range > 1e-6 ? Math.round(255 * (res.components[compOffset + elIdx + 0] - minVal) / range) : 128;
+              const g = range > 1e-6 ? Math.round(255 * (res.components[compOffset + elIdx + 1] - minVal) / range) : 128;
+              const b = range > 1e-6 ? Math.round(255 * (res.components[compOffset + elIdx + 2] - minVal) / range) : 128;
+              pData[pIdx + 0] = r;
+              pData[pIdx + 1] = g;
+              pData[pIdx + 2] = b;
+              pData[pIdx + 3] = 255;
+              elIdx += 3;
+            } else {
+              const val = range > 1e-6 ? Math.round(255 * (res.components[compOffset + elIdx] - minVal) / range) : 128;
+              pData[pIdx + 0] = val;
+              pData[pIdx + 1] = val;
+              pData[pIdx + 2] = val;
+              pData[pIdx + 3] = 255;
+              elIdx += 1;
+            }
+          }
+        }
+        pCtx.putImageData(pImg, 0, 0);
+
+        // Variance percentage explained
+        const varPct = res.totalVariance > 1e-9 ? ((res.eigenvalues[comp] / res.totalVariance) * 100).toFixed(1) : '0.0';
+
+        const card = document.createElement('div');
+        card.className = 'basis-patch-card';
+        card.title = `Principal Component #${comp + 1}: Explains ${varPct}% of variance`;
+        card.appendChild(pCanvas);
+
+        const nameSpan = document.createElement('div');
+        nameSpan.className = 'basis-name';
+        nameSpan.innerText = `PC ${comp + 1}`;
+        card.appendChild(nameSpan);
+
+        const varSpan = document.createElement('div');
+        varSpan.className = 'basis-var';
+        varSpan.innerText = `${varPct}% var`;
+        card.appendChild(varSpan);
+
+        grid.appendChild(card);
+      }
+    }
+
+    /* ===================================================================
+       7. Split-View Drag & Interaction Listeners
+       =================================================================== */
+    const splitBox = document.getElementById('split-box');
+
+    function updateSplitPosition(e) {
+      const rect = splitBox.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+      if (clientX === undefined) return;
+      let pos = (clientX - rect.left) / rect.width;
+      pos = Math.max(0.02, Math.min(0.98, pos));
+      splitPos = pos;
+      renderSplitView();
+    }
+
+    splitBox.addEventListener('mousedown', (e) => {
+      isDraggingSplit = true;
+      updateSplitPosition(e);
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isDraggingSplit) {
+        updateSplitPosition(e);
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDraggingSplit = false;
+    });
+
+    splitBox.addEventListener('touchstart', (e) => {
+      isDraggingSplit = true;
+      updateSplitPosition(e);
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (isDraggingSplit) {
+        updateSplitPosition(e);
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      isDraggingSplit = false;
+    });
+
+    /* ===================================================================
+       8. Tab Switching & Controls
+       =================================================================== */
+    document.querySelectorAll('.pca-tab-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.pca-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.pca-tab-content').forEach(c => c.classList.remove('active'));
+
+        const targetId = btn.getAttribute('data-tab');
+        btn.classList.add('active');
+        const targetContent = document.getElementById(targetId);
+        if (targetContent) targetContent.classList.add('active');
+
+        // Re-render corresponding view
+        if (targetId === 'tab-split') renderSplitView();
+        else if (targetId === 'tab-side') renderSideBySideView();
+        else if (targetId === 'tab-error') renderErrorHeatmap();
+        else if (targetId === 'tab-basis') renderBasisGallery();
+      });
+    });
+
+    // Slider K listener
+    const sliderK = document.getElementById('slider-pca-k');
+    const valK = document.getElementById('val-pca-k');
+    sliderK.addEventListener('input', (e) => {
+      const k = parseInt(e.target.value);
+      valK.innerText = k;
+      document.querySelectorAll('.btn-preset').forEach(b => {
+        b.classList.toggle('active', parseInt(b.getAttribute('data-k')) === k);
+      });
+      runPcaCompression();
+    });
+
+    // Component presets
+    document.querySelectorAll('.btn-preset').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const k = parseInt(btn.getAttribute('data-k'));
+        sliderK.value = k;
+        valK.innerText = k;
+        document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        runPcaCompression();
+      });
+    });
+
+    // Block size, color mode, quantization changes
+    document.getElementById('select-pca-block').addEventListener('change', runPcaCompression);
+    document.getElementById('select-pca-color').addEventListener('change', runPcaCompression);
+    document.getElementById('check-pca-quant').addEventListener('change', runPcaCompression);
+    document.getElementById('btn-run-pca-compression').addEventListener('click', runPcaCompression);
+
+    // Source image selector & custom upload
+    const selectPcaSource = document.getElementById('select-pca-source');
+    const pcaFileInput = document.getElementById('pca-file-input');
+
+    selectPcaSource.addEventListener('change', (e) => {
+      if (e.target.value === 'upload') {
+        pcaFileInput.click();
+      } else {
+        runPcaCompression();
+      }
+    });
+
+    pcaFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const c = document.createElement('canvas');
+          c.width = img.width;
+          c.height = img.height;
+          c.getContext('2d').drawImage(img, 0, 0);
+          currentPcaSourceImage = c;
+          runPcaCompression();
+          showToast('Loaded Uploaded Image', `${file.name} (${img.width}x${img.height})`);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    /* ===================================================================
+       9. Filesystem Storage Actions for PCA Reconstructed Image & Bitstream
+       =================================================================== */
+    // Save Reconstructed Photo to Filesystem (.png)
+    document.getElementById('btn-save-recon-photo').addEventListener('click', async () => {
+      if (!currentPcaResult) return;
+      const { res } = currentPcaResult;
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = res.W;
+      tempCanvas.height = res.H;
+      tempCanvas.getContext('2d').putImageData(res.reconImgData, 0, 0);
+
+      const blob = await new Promise(r => tempCanvas.toBlob(r, 'image/png'));
+      const filename = `rcre_pca_recon_K${res.K}_B${res.B}_${Math.round(res.psnr)}dB.png`;
+      await saveBlobToFilesystem(blob, filename, 'PNG Image', '.png');
+    });
+
+    // Save .rpca Binary Bitstream to Filesystem (Exact match with C23 CLI engine)
+    document.getElementById('btn-save-rpca-binary').addEventListener('click', async () => {
+      if (!currentPcaResult) return;
+      const { res } = currentPcaResult;
+      const blob = createRpcaBlob(res);
+      const filename = `rcre_bitstream_K${res.K}_B${res.B}.rpca`;
+      await saveBlobToFilesystem(blob, filename, 'RCRE PCA Bitstream (.rpca)', '.rpca');
+    });
+
+    // Save Comparison PNG to Filesystem (Side-by-side Original vs Recon)
+    document.getElementById('btn-save-comparison-report').addEventListener('click', async () => {
+      if (!currentPcaResult) return;
+      const { res, inputCanvas } = currentPcaResult;
+      const compCanvas = document.createElement('canvas');
+      compCanvas.width = res.W * 2;
+      compCanvas.height = res.H + 40;
+      const cCtx = compCanvas.getContext('2d');
+
+      // Dark background banner
+      cCtx.fillStyle = '#0a0d14';
+      cCtx.fillRect(0, 0, compCanvas.width, compCanvas.height);
+
+      // Header Banner
+      cCtx.fillStyle = '#f8fafc';
+      cCtx.font = 'bold 16px Inter, sans-serif';
+      cCtx.fillText('RCRE PCA Codec Comparison Report', 20, 26);
+      cCtx.font = '13px "JetBrains Mono", monospace';
+      cCtx.fillStyle = '#06b6d4';
+      cCtx.fillText(`PSNR: ${res.psnr.toFixed(2)} dB | Ratio: ${res.compRatio.toFixed(2)}x | K=${res.K} | Block: ${res.B}x${res.B}`, 380, 26);
+
+      // Draw original on left
+      cCtx.drawImage(inputCanvas, 0, 40, res.W, res.H);
+
+      // Draw reconstructed on right
+      const tempRecon = document.createElement('canvas');
+      tempRecon.width = res.W;
+      tempRecon.height = res.H;
+      tempRecon.getContext('2d').putImageData(res.reconImgData, 0, 0);
+      cCtx.drawImage(tempRecon, res.W, 40, res.W, res.H);
+
+      const blob = await new Promise(r => compCanvas.toBlob(r, 'image/png'));
+      const filename = `rcre_pca_comparison_K${res.K}.png`;
+      await saveBlobToFilesystem(blob, filename, 'PNG Image', '.png');
+    });
+
+    /* ===================================================================
+       10. Automated Rate-Distortion Sweep Benchmark
+       (Mirrors rcre-pca --benchmark across K = [2, 4, 8, 12, 16, 24, 32, 48, 64])
+       =================================================================== */
+    document.getElementById('btn-run-pca-sweep').addEventListener('click', () => {
+      const input = getPcaInputPixels();
+      const origPixels = input.imgData.data;
+      const W = input.imgData.width;
+      const H = input.imgData.height;
+      const B = parseInt(document.getElementById('select-pca-block').value);
+      const isColor = document.getElementById('select-pca-color').value === 'rgb';
+      const useQuant = document.getElementById('check-pca-quant').checked;
+
+      const container = document.getElementById('sweep-table-container');
+      const tbody = document.getElementById('sweep-table-body');
+      tbody.innerHTML = '';
+      container.style.display = 'block';
+
+      const sweepKs = [2, 4, 8, 12, 16, 24, 32, 48, 64];
+      const maxDim = B * B * (isColor ? 3 : 1);
+
+      sweepKs.forEach(k => {
+        if (k > maxDim) return;
+        const res = runPcaCompressionEngine(origPixels, W, H, B, k, isColor, useQuant);
+
+        let statusClass = 'balanced';
+        if (res.psnr >= 38) statusClass = 'excellent';
+        else if (res.psnr >= 30) statusClass = 'high';
+        else if (res.psnr < 26) statusClass = 'lossy';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight: 700; color: var(--accent-cyan);">K=${k}</td>
+          <td>${(res.compBytes / 1024).toFixed(1)} KB</td>
+          <td style="color: var(--accent-indigo); font-weight: 600;">${res.compRatio.toFixed(2)}&times;</td>
+          <td><span class="badge-status ${statusClass}">${res.psnr.toFixed(2)} dB</span></td>
+          <td style="color: var(--text-dim);">${res.latencyMs.toFixed(1)} ms</td>
+        `;
+        tr.style.cursor = 'pointer';
+        tr.title = `Click to load K=${k} into viewports`;
+        tr.addEventListener('click', () => {
+          sliderK.value = k;
+          valK.innerText = k;
+          runPcaCompression();
+        });
+        tbody.appendChild(tr);
+      });
+
+      showToast('Rate-Distortion Benchmark Complete', `Evaluated ${sweepKs.length} component configurations`);
+    });
+
+    /* ===================================================================
+       11. Camera Selector & Initialization
+       =================================================================== */
+    document.getElementById('select-video-source').addEventListener('change', async (e) => {
+      videoSource = e.target.value;
+      if (videoSource === 'webcam') {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: 640, height: 480 }
+          });
+          video.srcObject = stream;
+          document.getElementById('cam-source-text').innerText = 'Live Hardware Webcam (WebRTC)';
+        } catch (err) {
+          alert('Unable to access hardware webcam. Reverting to synthetic test pattern.');
+          videoSource = 'synthetic';
+          e.target.value = 'synthetic';
+          document.getElementById('cam-source-text').innerText = 'Synthetic Moving Colorbars';
+        }
+      } else {
+        if (video.srcObject) {
+          video.srcObject.getTracks().forEach(t => t.stop());
+        }
+        document.getElementById('cam-source-text').innerText = 'Synthetic Moving Colorbars';
+      }
+    });
+
+    document.getElementById('select-filter-stage').addEventListener('change', (e) => {
+      filterStage = e.target.value;
+    });
+
+    document.getElementById('slider-blur-sigma').addEventListener('input', (e) => {
+      blurSigma = parseFloat(e.target.value);
+      document.getElementById('val-blur-sigma').innerText = blurSigma.toFixed(1);
+    });
+
+    document.getElementById('slider-edge-thresh').addEventListener('input', (e) => {
+      edgeThreshold = parseInt(e.target.value);
+      document.getElementById('val-edge-thresh').innerText = edgeThreshold;
+    });
+
+    // Start video pipeline and initial PCA compression run
+    renderPipeline();
+    setTimeout(() => {
+      runPcaCompression();
+    }, 200);
+  </script>
+</body>
+</html>
