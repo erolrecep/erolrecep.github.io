@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCRE — Recep's Code Run Everywhere | Pure C23 CV & ML Engine</title>
+  <meta name="description" content="A single-header, zero-dependency C23 engine unifying modern Computer Vision and Classical Machine Learning across Edge, HPC, and WebAssembly.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <a href="index.html" class="nav-brand">
+      <span class="brand-badge">C23</span>
+      <span>RCRE</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Overview</a></li>
+        <li><a href="docs/index.html">Documentation</a></li>
+        <li><a href="playground.html">Webcam Playground</a></li>
+        <li><a href="learn/strides.html">3D Strides</a></li>
+        <li><a href="learn/gemm_cache.html">Tiled GEMM</a></li>
+        <li><a href="learn/stencils.html">SIMD Stencils</a></li>
+        <li><a href="https://erolrecep.github.io/rcre/" class="btn btn-cta">Project Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero">
+      <div class="hero-pill">
+        <span>⚡ Hardware Acceleration on Apple M5 Max & x86 AVX2</span>
+      </div>
+      <h1 class="hero-title">
+        High-Performance CV & ML.<br>
+        <span class="hero-gradient-text">Zero Dependencies. Pure C23.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Recep's Code Run Everywhere (RCRE) unifies strided N-D tensors, multicore work-stealing concurrency, 
+        bit-exact OpenCV parity, and classical machine learning with <strong>zero heap allocations</strong> in critical inference loops.
+      </p>
+      <div class="hero-actions">
+        <a href="playground.html" class="btn btn-primary" id="hero-btn-playground">
+          <span>🚀 Launch Webcam Playground</span>
+        </a>
+        <a href="learn/strides.html" class="btn btn-secondary" id="hero-btn-learn">
+          <span>🎮 Explore Interactive Visualizers</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Benchmark Statistics -->
+    <section class="container">
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-value" id="stat-gemm">72.96 GFLOPS</div>
+          <div class="stat-label">Cache-Tiled GEMM (Apple M5 Max)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-rgb">7,922 MP/s</div>
+          <div class="stat-label">RGB to Gray (~3,800 FPS @ 1080p)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-gbdt">7.86M /s</div>
+          <div class="stat-label">GBDT Inferences (127 ns Latency)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-hnsw">44,434 QPS</div>
+          <div class="stat-label">HNSW Vector Search (64-D)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Educational "Learn" Showdown Cards -->
+    <section class="container">
+      <div class="section-header">
+        <div class="section-tag">Interactive Education</div>
+        <h2 class="section-title">The "Learn" Visualizer Showdown</h2>
+      </div>
+      <div class="cards-grid">
+        <div class="card" id="card-strides">
+          <div class="card-icon">🧊</div>
+          <h3 class="card-title">3D Tensor Strides & Memory Layout</h3>
+          <p class="card-desc">
+            Interactive Three.js 3D voxel grid visualizing how $(H, W, C)$ maps to flat 1D memory. 
+            Toggle layouts and watch $\mathcal{O}(1)$ slicing incur zero byte copies.
+          </p>
+          <div class="card-footer">
+            <span class="card-tag">Three.js 3D</span>
+            <a href="learn/strides.html" class="card-link">Launch Visualizer &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" id="card-gemm">
+          <div class="card-icon">⚡</div>
+          <h3 class="card-title">Tiled GEMM & Cache Hierarchy</h3>
+          <p class="card-desc">
+            Animated memory hierarchy demonstrating RAM, L3, L1 cache, and CPU vector registers. 
+            Learn why register blocking yields $10\times$ speedups over naive matrix multiplication.
+          </p>
+          <div class="card-footer">
+            <span class="card-tag">Canvas2D Simulation</span>
+            <a href="learn/gemm_cache.html" class="card-link">Launch Visualizer &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" id="card-stencils">
+          <div class="card-icon">🎯</div>
+          <h3 class="card-title">Sliding Stencils & SIMD Lanes</h3>
+          <p class="card-desc">
+            Visualizes $3 \times 3$ Gaussian blur and Sobel filters sliding over pixels with 
+            128-bit (NEON/WASM) and 256-bit (AVX2) vector registers processing parallel lanes.
+          </p>
+          <div class="card-footer">
+            <span class="card-tag">SIMD Lanes</span>
+            <a href="learn/stencils.html" class="card-link">Launch Visualizer &rarr;</a>
+          </div>
+        </div>
+
+        <div class="card" id="card-playground">
+          <div class="card-icon">🔬</div>
+          <h3 class="card-title">Webcam Playground & PCA Lab</h3>
+          <p class="card-desc">
+            Live 5-stage vision pipeline with photo snapshot filesystem storage, interactive PCA image 
+            compression, split-slider comparison, error heatmaps, and `.rpca` bitstream export.
+          </p>
+          <div class="card-footer">
+            <span class="card-tag">Live Camera & Codec</span>
+            <a href="playground.html" class="card-link">Launch Studio &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Architecture Highlights -->
+    <section class="container">
+      <div class="section-header">
+        <div class="section-tag">Core Principles</div>
+        <h2 class="section-title">Architected for Speed & Reliability</h2>
+      </div>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <h3 class="card-title">Zero Dynamic Allocations</h3>
+          <p class="card-desc">
+            All algorithms operate strictly inside 64-byte aligned linear scratchpad memory arenas (`RCRE_Arena`). 
+            Inference loops never invoke `malloc`, guaranteeing deterministic real-time latency.
+          </p>
+          <div class="card-footer">
+            <span class="card-tag">Deterministic RT</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🔬</div>
+          <h3 class="card-title">OpenCV & Scikit-Learn Parity</h3>
+          <p class="card-desc">
+            15-bit fixed-point integer color kernels deliver <strong>0 LSB difference</strong> against OpenCV `cv2.cvtColor`. 
+            Linear SVM, k-Means, and PCA match Scikit-Learn within float tolerance ($\epsilon \le 10^{-4}$).
+          </p>
+          <div class="card-footer">
+            <span class="card-tag">100% Bit-Exact</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">📷</div>
+          <h3 class="card-title">Zero-Copy Hardware Camera Ingestion</h3>
+          <p class="card-desc">
+            Segregated companion driver module (`rcre_cam.h`) with native macOS AVFoundation, Linux V4L2, 
+            and WebRTC browser backends streaming 1080p frames directly into tensor memory.
+          </p>
+          <div class="card-footer">
+            <span class="card-tag">Companion Driver</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quickstart Section -->
+    <section class="container">
+      <div class="section-header">
+        <div class="section-tag">Integration</div>
+        <h2 class="section-title">Drop-In Single-Header C23</h2>
+      </div>
+      <div class="code-snippet">
+<pre><code>// 1. Include RCRE single-header implementation
+#define RCRE_IMPLEMENTATION
+#include "rcre.h"
+
+int main(void) {
+    // 2. Initialize 64-byte aligned linear memory arena (no malloc in loops!)
+    RCRE_Arena* arena = rcre_arena_create(32 * 1024 * 1024);
+
+    // 3. Create strided 3D image tensor [480, 640, 3] U8
+    size_t shape[3] = {480, 640, 3};
+    RCRE_Tensor img = rcre_tensor_create(shape, 3, RCRE_DTYPE_U8, RCRE_LAYOUT_HWC, arena);
+
+    // 4. Execute SIMD-accelerated Rec.601 Grayscale & Gaussian Blur
+    size_t gray_shape[2] = {480, 640};
+    RCRE_Tensor gray = rcre_tensor_create(gray_shape, 2, RCRE_DTYPE_U8, RCRE_LAYOUT_HWC, arena);
+    rcre_cv_rgb_to_gray(&img, &gray);
+
+    rcre_arena_destroy(arena);
+    return 0;
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 RCRE Project — Recep's Code Run Everywhere. Available under GNU AGPLv3 & Commercial Dual License.</p>
+  </footer>
+</body>
+</html>

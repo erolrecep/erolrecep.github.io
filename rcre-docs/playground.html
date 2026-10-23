@@ -1300,6 +1300,21 @@
     /* ===================================================================
        4. Take Photo & Store Directly to Filesystem
        =================================================================== */
+
+    /**
+     * @brief Persist an in-memory binary Blob directly to the user's local filesystem.
+     * 
+     * Uses the modern W3C File System Access API (`window.showSaveFilePicker`) when supported
+     * and chosen, prompting the user for their desired directory and filename.
+     * Falls back seamlessly to an asynchronous anchor download blob trigger for
+     * browsers without File System Access API support (e.g. Firefox, Safari).
+     *
+     * @param {Blob} blob - The binary data payload (PNG, JPEG, BMP, or RPCA bitstream)
+     * @param {string} defaultFilename - Suggested filename (e.g., "rcre_photo_20261022.png")
+     * @param {string} description - Human-readable file type description
+     * @param {string} extension - File extension with leading dot (e.g., ".png", ".rpca")
+     * @return {Promise<boolean>} True if saved successfully, false if cancelled by user
+     */
     async function saveBlobToFilesystem(blob, defaultFilename, description, extension) {
       const saveMethod = document.getElementById('select-save-method').value;
 
@@ -1344,7 +1359,16 @@
       return true;
     }
 
-    // Convert canvas to BMP blob (standard 24-bit uncompressed BMP matching RCRE C23)
+    /**
+     * @brief Serialize canvas image data into a standard uncompressed 24-bit BMP binary blob.
+     * 
+     * Conforms to the standard Windows BITMAPINFOHEADER format (54-byte header) and
+     * bottom-up BGR row ordering with 4-byte boundary padding, exactly matching RCRE's
+     * C23 `rcre_save_bmp()` engine in `src/extras/rcre_image_io.h`.
+     *
+     * @param {HTMLCanvasElement} c - Source canvas element
+     * @return {Blob} 24-bit uncompressed BMP binary blob
+     */
     function canvasToBmpBlob(c) {
       const W = c.width;
       const H = c.height;
@@ -1549,6 +1573,30 @@
     let splitPos = 0.5;
     let isDraggingSplit = false;
 
+    /**
+     * @brief Zero-Dependency Client-Side PCA Image Compression & Quantization Engine.
+     * 
+     * Mathematically mirrors RCRE's C23 pipeline:
+     *   1. Patch Extraction: Subdivides W x H image into non-overlapping B x B patches (D = B * B * C).
+     *   2. Centering: Computes empirical mean vector mu in R^D, centering data matrix X_c = X - mu.
+     *   3. Covariance: Computes empirical covariance matrix Cov = (1 / (N - 1)) * X_c^T * X_c.
+     *   4. Power Iteration & Deflation: Extracts top K principal orthogonal eigenvectors W in R^(K x D)
+     *      with Gram-Schmidt orthogonalization and robust numerical variance thresholding.
+     *   5. Subspace Projection: Computes projection coefficients P = X_c * W^T in R^(N x K).
+     *   6. 8-Bit Uniform Quantization: Quantizes P to uint8 with per-component [min, max] scales,
+     *      matching the RCRE .rpca bitstream specification.
+     *   7. Inverse Reconstruction: Dequantizes coefficients and synthesizes reconstructed image X_recon = P * W + mu.
+     *   8. Rate-Distortion Evaluation: Computes objective MSE, PSNR (dB), payload bytes, compression ratio, and bpp.
+     *
+     * @param {Uint8ClampedArray} pixels - Raw RGBA image buffer (length W * H * 4)
+     * @param {number} W - Image width in pixels
+     * @param {number} H - Image height in pixels
+     * @param {number} blockSize - Spatial patch dimension B (4, 8, or 16)
+     * @param {number} numComponents - Number of principal components K to retain
+     * @param {boolean} isColor - True for 3-channel RGB (D = B*B*3), false for Rec.601 Grayscale (D = B*B)
+     * @param {boolean} useQuant - True for 8-bit uniform quantization, false for raw float projection
+     * @return {Object} Compression results container with reconImgData, MSE, PSNR, ratios, and eigenvectors
+     */
     function runPcaCompressionEngine(pixels, W, H, blockSize, numComponents, isColor, useQuant) {
       const t0 = performance.now();
       const C = isColor ? 3 : 1;
@@ -1870,7 +1918,34 @@
       };
     }
 
-    // Build standalone binary .rpca blob matching RCRE C23 exactly
+    /**
+     * @brief Build a standalone binary .rpca file blob conforming 100% to RCRE C23 specifications.
+     * 
+     * Binary Format Layout:
+     *   - Header (44 bytes = 11 x uint32_t):
+     *       [0]: Magic Number 0x41435052 ("RPCA" Little Endian)
+     *       [1]: Width W
+     *       [2]: Height H
+     *       [3]: Channels C (1=Gray, 3=RGB)
+     *       [4]: Block Size B (e.g. 8)
+     *       [5]: Num Components K
+     *       [6]: Quant Bits (8)
+     *       [7]: Patches X = ceil(W / B)
+     *       [8]: Patches Y = ceil(H / B)
+     *       [9]: Total Patches N = Patches X * Patches Y
+     *      [10]: Patch Dimension D = B * B * C
+     *   - Mean Vector: Float32Array[D] (D * 4 bytes)
+     *   - Component Eigenvectors: Float32Array[K * D] (K * D * 4 bytes)
+     *   - Scale Minima: Float32Array[K] (K * 4 bytes)
+     *   - Scale Maxima: Float32Array[K] (K * 4 bytes)
+     *   - Quantized Projection Data: Uint8Array[N * K] (N * K bytes)
+     *
+     * This binary bitstream can be directly saved to disk and loaded by the RCRE C23 CLI
+     * (`rcre-pca --decompress <file.rpca> <output.bmp>`).
+     *
+     * @param {Object} res - Compression result object
+     * @return {Blob} Binary application/octet-stream blob matching RCRE C23 .rpca layout
+     */
     function createRpcaBlob(res) {
       const buffer = new ArrayBuffer(res.compBytes);
       const u32 = new Uint32Array(buffer, 0, 11);
