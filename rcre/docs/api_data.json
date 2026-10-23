@@ -1,0 +1,1654 @@
+[
+  {
+    "name": "rcre_arena_create",
+    "return_type": "RCRE_Arena*",
+    "brief": "Creates a contiguous linear memory arena.",
+    "params": [
+      {
+        "name": "capacity",
+        "type": "size_t",
+        "description": "Maximum allocation capacity in bytes."
+      }
+    ],
+    "returns": "Pointer to newly initialized RCRE_Arena, or NULL on failure.",
+    "category": "Memory & Arenas",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_arena_alloc",
+    "return_type": "void*",
+    "brief": "Allocates an aligned buffer from the linear scratchpad arena.",
+    "params": [
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": "Active scratchpad arena."
+      },
+      {
+        "name": "size",
+        "type": "size_t",
+        "description": "Number of bytes requested."
+      },
+      {
+        "name": "align",
+        "type": "size_t",
+        "description": "Alignment boundary (must be power of two, defaults to 64)."
+      }
+    ],
+    "returns": "Aligned memory pointer, or NULL if arena capacity exceeded.",
+    "category": "Memory & Arenas",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_arena_reset",
+    "return_type": "void",
+    "brief": "Resets the arena offset back to zero in O(1) time without freeing OS memory.",
+    "params": [
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Memory & Arenas",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_arena_destroy",
+    "return_type": "void",
+    "brief": "Releases the arena memory buffer back to the operating system.",
+    "params": [
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Memory & Arenas",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_tensor_create",
+    "return_type": "RCRE_Tensor",
+    "brief": "Allocates a new contiguous tensor inside caller-supplied arena.",
+    "params": [
+      {
+        "name": "shape",
+        "type": "const size_t*",
+        "description": ""
+      },
+      {
+        "name": "ndim",
+        "type": "uint8_t",
+        "description": ""
+      },
+      {
+        "name": "dtype",
+        "type": "RCRE_DType",
+        "description": ""
+      },
+      {
+        "name": "layout",
+        "type": "RCRE_Layout",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Strided Tensors",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_tensor_from_buffer",
+    "return_type": "RCRE_Tensor",
+    "brief": "Wraps an existing external memory buffer into an RCRE_Tensor view.",
+    "params": [
+      {
+        "name": "data",
+        "type": "void*",
+        "description": ""
+      },
+      {
+        "name": "shape",
+        "type": "const size_t*",
+        "description": ""
+      },
+      {
+        "name": "ndim",
+        "type": "uint8_t",
+        "description": ""
+      },
+      {
+        "name": "dtype",
+        "type": "RCRE_DType",
+        "description": ""
+      },
+      {
+        "name": "layout",
+        "type": "RCRE_Layout",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Strided Tensors",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_tensor_slice",
+    "return_type": "RCRE_Tensor",
+    "brief": "O(1) slicing view operation: updates offsets and shape without copying.",
+    "params": [
+      {
+        "name": "src",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "starts",
+        "type": "const size_t*",
+        "description": ""
+      },
+      {
+        "name": "ends",
+        "type": "const size_t*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Strided Tensors",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_tensor_reshape",
+    "return_type": "RCRE_Tensor",
+    "brief": "O(1) reshape view operation (requires contiguous source tensor).",
+    "params": [
+      {
+        "name": "src",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "new_shape",
+        "type": "const size_t*",
+        "description": ""
+      },
+      {
+        "name": "new_ndim",
+        "type": "uint8_t",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Strided Tensors",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_tensor_permute",
+    "return_type": "RCRE_Tensor",
+    "brief": "O(1) axis permutation view operation.",
+    "params": [
+      {
+        "name": "src",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "order",
+        "type": "const uint8_t*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Strided Tensors",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_tensor_transpose",
+    "return_type": "RCRE_Tensor",
+    "brief": "O(1) two-axis transpose view operation.",
+    "params": [
+      {
+        "name": "src",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "dim0",
+        "type": "uint8_t",
+        "description": ""
+      },
+      {
+        "name": "dim1",
+        "type": "uint8_t",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Strided Tensors",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_tensor_is_contiguous",
+    "return_type": "bool",
+    "brief": "Evaluates whether tensor memory is row-major contiguous.",
+    "params": [
+      {
+        "name": "t",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Strided Tensors",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_tensor_numel",
+    "return_type": "size_t",
+    "brief": "Computes total number of logical elements in the tensor.",
+    "params": [
+      {
+        "name": "t",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Strided Tensors",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_tensor_nbytes",
+    "return_type": "size_t",
+    "brief": "Computes total size in bytes for contiguous representation.",
+    "params": [
+      {
+        "name": "t",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Strided Tensors",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_dtype_size",
+    "return_type": "size_t",
+    "brief": "Returns byte size of a given RCRE_DType.",
+    "params": [
+      {
+        "name": "dtype",
+        "type": "RCRE_DType",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_tensor_adapt",
+    "return_type": "int",
+    "brief": "Explicit, deterministic input preprocessing and layout standardization.",
+    "params": [
+      {
+        "name": "src",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "spec",
+        "type": "const RCRE_PreprocessSpec*",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      },
+      {
+        "name": "dst",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Strided Tensors",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_threadpool_create",
+    "return_type": "RCRE_ThreadPool*",
+    "brief": "Creates a C23 / POSIX work-stealing threadpool with persistent workers.",
+    "params": [
+      {
+        "name": "num_threads",
+        "type": "size_t",
+        "description": "Number of worker threads (0 = auto-detect hardware concurrency)."
+      }
+    ],
+    "returns": "",
+    "category": "Concurrency",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_threadpool_parallel_for",
+    "return_type": "void",
+    "brief": "Executes a 1D parallel-for loop across threadpool workers.",
+    "params": [
+      {
+        "name": "pool",
+        "type": "RCRE_ThreadPool*",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "task",
+        "type": "rcre_task_fn",
+        "description": ""
+      },
+      {
+        "name": "arg",
+        "type": "void*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Concurrency",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_threadpool_parallel_for_2d",
+    "return_type": "void",
+    "brief": "Partitions 2D spatial dimensions into cache-friendly rectangular tiles.",
+    "params": [
+      {
+        "name": "pool",
+        "type": "RCRE_ThreadPool*",
+        "description": ""
+      },
+      {
+        "name": "height",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "width",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "tile_h",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "tile_w",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "tile_fn",
+        "type": "rcre_tile_fn",
+        "description": ""
+      },
+      {
+        "name": "arg",
+        "type": "void*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Concurrency",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_threadpool_destroy",
+    "return_type": "void",
+    "brief": "Shuts down worker threads and destroys the threadpool.",
+    "params": [
+      {
+        "name": "pool",
+        "type": "RCRE_ThreadPool*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Concurrency",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_cv_rgb_to_gray",
+    "return_type": "int",
+    "brief": "Converts 3-channel RGB image to 1-channel Grayscale using Rec.601 luma.",
+    "params": [
+      {
+        "name": "src",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "dst",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Computer Vision",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_cv_bgr_to_rgb",
+    "return_type": "int",
+    "brief": "Swaps color channels between RGB and BGR in-place or into destination.",
+    "params": [
+      {
+        "name": "src",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "dst",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Computer Vision",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_cv_gaussian_blur",
+    "return_type": "int",
+    "brief": "Separable 2D Gaussian blur with reflection padding.",
+    "params": [
+      {
+        "name": "src",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "dst",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "sigma",
+        "type": "float",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Computer Vision",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_cv_sobel",
+    "return_type": "int",
+    "brief": "Computes 3x3 horizontal (dx) and vertical (dy) Sobel spatial derivatives.",
+    "params": [
+      {
+        "name": "src",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "dst_dx",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "dst_dy",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Computer Vision",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_fft_1d",
+    "return_type": "int",
+    "brief": "1D In-Place Radix-2 Cooley-Tukey Fast Fourier Transform (Forward).",
+    "params": [
+      {
+        "name": "data",
+        "type": "RCRE_Complex*",
+        "description": "Array of complex numbers of length N (N must be a power of 2)."
+      },
+      {
+        "name": "n",
+        "type": "size_t",
+        "description": "Length of the transform (must satisfy (n & (n - 1)) == 0)."
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": "Optional scratchpad arena."
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ifft_1d",
+    "return_type": "int",
+    "brief": "1D In-Place Radix-2 Inverse Fast Fourier Transform with 1/N normalization.",
+    "params": [
+      {
+        "name": "data",
+        "type": "RCRE_Complex*",
+        "description": ""
+      },
+      {
+        "name": "n",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_fft_2d",
+    "return_type": "int",
+    "brief": "2D Fast Fourier Transform on an image or matrix (Forward).",
+    "params": [
+      {
+        "name": "input",
+        "type": "const RCRE_Tensor*",
+        "description": "Real input tensor of shape [H, W] (F32)."
+      },
+      {
+        "name": "output_re",
+        "type": "RCRE_Tensor*",
+        "description": "Real part output tensor of shape [H, W] (F32)."
+      },
+      {
+        "name": "output_im",
+        "type": "RCRE_Tensor*",
+        "description": "Imaginary part output tensor of shape [H, W] (F32)."
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": "Scratchpad arena for intermediate row/column buffers."
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ifft_2d",
+    "return_type": "int",
+    "brief": "2D Inverse Fast Fourier Transform (Complex frequency domain -> Real spatial domain).",
+    "params": [
+      {
+        "name": "input_re",
+        "type": "const RCRE_Tensor*",
+        "description": "Real frequency tensor of shape [H, W] (F32)."
+      },
+      {
+        "name": "input_im",
+        "type": "const RCRE_Tensor*",
+        "description": "Imaginary frequency tensor of shape [H, W] (F32)."
+      },
+      {
+        "name": "output",
+        "type": "RCRE_Tensor*",
+        "description": "Reconstructed real spatial tensor of shape [H, W] (F32)."
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": "Scratchpad arena for intermediate row/column buffers."
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_fftshift_2d",
+    "return_type": "int",
+    "brief": "Shifts zero-frequency component to center of 2D spectrum [H/2, W/2].",
+    "params": [
+      {
+        "name": "tensor_re",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "tensor_im",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ifftshift_2d",
+    "return_type": "int",
+    "brief": "Inverse shift: moves centered DC component back to top-left corner [0, 0].",
+    "params": [
+      {
+        "name": "tensor_re",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "tensor_im",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_fft_filter_2d",
+    "return_type": "int",
+    "brief": "Frequency-domain 2D filtering (Ideal or Gaussian, Low-pass or High-pass).",
+    "params": [
+      {
+        "name": "spectrum_re",
+        "type": "RCRE_Tensor*",
+        "description": "Real part of centered 2D spectrum."
+      },
+      {
+        "name": "spectrum_im",
+        "type": "RCRE_Tensor*",
+        "description": "Imaginary part of centered 2D spectrum."
+      },
+      {
+        "name": "cutoff_radius",
+        "type": "float",
+        "description": "Cutoff frequency radius D_0 in pixels."
+      },
+      {
+        "name": "is_highpass",
+        "type": "bool",
+        "description": "If true, creates high-pass filter; if false, low-pass filter."
+      },
+      {
+        "name": "is_gaussian",
+        "type": "bool",
+        "description": "If true, applies smooth Gaussian attenuation; if false, sharp brickwall."
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_nn_conv2d",
+    "return_type": "int",
+    "brief": "Standard 2D Spatial Convolution: [C_in, H_in, W_in] x [C_out, C_in, K_h, K_w] -> [C_out, H_out, W_out].",
+    "params": [
+      {
+        "name": "input",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "weights",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "bias",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "params",
+        "type": "const RCRE_Conv2DParams*",
+        "description": ""
+      },
+      {
+        "name": "output",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_nn_depthwise_conv2d",
+    "return_type": "int",
+    "brief": "Depthwise 2D Convolution (channel-multiplier = 1):",
+    "params": [
+      {
+        "name": "input",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "weights",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "bias",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "params",
+        "type": "const RCRE_Conv2DParams*",
+        "description": ""
+      },
+      {
+        "name": "output",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_nn_pointwise_conv2d",
+    "return_type": "int",
+    "brief": "Pointwise 1x1 Convolution / Channel Projection:",
+    "params": [
+      {
+        "name": "input",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "weights",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "bias",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "output",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_nn_batchnorm2d",
+    "return_type": "int",
+    "brief": "Fused 2D Batch Normalization: y = gamma * (x - mean) / sqrt(var + eps) + beta.",
+    "params": [
+      {
+        "name": "input",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "gamma",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "beta",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "mean",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "var",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "eps",
+        "type": "float",
+        "description": ""
+      },
+      {
+        "name": "output",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_nn_fuse_conv_batchnorm",
+    "return_type": "int",
+    "brief": "Fold BatchNorm scale & shift directly into Conv2D weights and bias (Zero-Cost Edge BN).",
+    "params": [
+      {
+        "name": "conv_weight",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "conv_bias",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "gamma",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "beta",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "mean",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "var",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "eps",
+        "type": "float",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_nn_relu6",
+    "return_type": "int",
+    "brief": "Piecewise ReLU6 activation: y = min(max(x, 0), 6.0).",
+    "params": [
+      {
+        "name": "input",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "output",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_nn_global_avgpool",
+    "return_type": "int",
+    "brief": "Global Average Pooling 2D: [C, H, W] -> [C, 1, 1].",
+    "params": [
+      {
+        "name": "input",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "output",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_nn_linear",
+    "return_type": "int",
+    "brief": "Fully connected linear projection: output = input * W^T + bias.",
+    "params": [
+      {
+        "name": "input",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "weights",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "bias",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "output",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_nn_softmax",
+    "return_type": "int",
+    "brief": "Numerically stable Softmax activation.",
+    "params": [
+      {
+        "name": "input",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "output",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_ols_fit",
+    "return_type": "int",
+    "brief": "Fits an Ordinary Least Squares (OLS) regression model: w = (X^T X)^-1 X^T y.",
+    "params": [
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": "Matrix of shape [N, D] (F32)."
+      },
+      {
+        "name": "y",
+        "type": "const RCRE_Tensor*",
+        "description": "Vector of shape [N, 1] (F32)."
+      },
+      {
+        "name": "weights",
+        "type": "RCRE_Tensor*",
+        "description": "Output vector of shape [D, 1] (F32)."
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_logistic_fit",
+    "return_type": "int",
+    "brief": "Fits Logistic Regression via Gradient Descent with Cross-Entropy Loss.",
+    "params": [
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "y",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "weights",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "lr",
+        "type": "float",
+        "description": ""
+      },
+      {
+        "name": "epochs",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_pegasos_svm_fit",
+    "return_type": "int",
+    "brief": "Fits Linear Soft-Margin SVM via Pegasos Subgradient Descent.",
+    "params": [
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "y",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "weights",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "lambda_reg",
+        "type": "float",
+        "description": ""
+      },
+      {
+        "name": "epochs",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_predict_linear",
+    "return_type": "int",
+    "brief": "Computes linear model inference: y_pred = X * weights.",
+    "params": [
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "weights",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "preds",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_kmeans_fit",
+    "return_type": "int",
+    "brief": "Fits k-Means clustering via standard settings.",
+    "params": [
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "k",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "max_iter",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "centroids",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "labels",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_kmeans_fit_ex",
+    "return_type": "int",
+    "brief": "Fits k-Means clustering with full control over initialization, tolerance, and multi-start.",
+    "params": [
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": "Matrix of shape [N, D] (F32)."
+      },
+      {
+        "name": "k",
+        "type": "size_t",
+        "description": "Number of clusters."
+      },
+      {
+        "name": "params",
+        "type": "const RCRE_KMeansParams*",
+        "description": "Advanced parameters (max_iter, n_init, tol, seed)."
+      },
+      {
+        "name": "centroids",
+        "type": "RCRE_Tensor*",
+        "description": "Output matrix of shape [K, D] (F32)."
+      },
+      {
+        "name": "labels",
+        "type": "RCRE_Tensor*",
+        "description": "Optional output vector of shape [N, 1] (I32 or F32)."
+      },
+      {
+        "name": "out_inertia",
+        "type": "float*",
+        "description": "Optional pointer to output the within-cluster sum of squared errors (WCSS)."
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": "Scratchpad arena for transient allocations."
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_kmeans_predict",
+    "return_type": "int",
+    "brief": "Predicts closest cluster centroid index for input samples.",
+    "params": [
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "centroids",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "labels",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_dbscan_fit",
+    "return_type": "int",
+    "brief": "Density-Based Spatial Clustering of Applications with Noise (DBSCAN).",
+    "params": [
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": "Matrix of shape [N, D] (F32)."
+      },
+      {
+        "name": "params",
+        "type": "const RCRE_DBSCANParams*",
+        "description": "DBSCAN configuration (eps, min_samples)."
+      },
+      {
+        "name": "labels",
+        "type": "RCRE_Tensor*",
+        "description": "Output vector of shape [N, 1] (I32 or F32). Noise outliers are assigned -1."
+      },
+      {
+        "name": "out_num_clusters",
+        "type": "size_t*",
+        "description": "Optional pointer to receive total number of discovered clusters."
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": "Scratchpad arena for transient allocations."
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_pca_fit",
+    "return_type": "int",
+    "brief": "Computes top K Principal Components via covariance power iteration.",
+    "params": [
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": "Input matrix [N, D] (F32)."
+      },
+      {
+        "name": "k",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "components",
+        "type": "RCRE_Tensor*",
+        "description": "Output matrix [K, D] representing top K principal eigenvectors."
+      },
+      {
+        "name": "mean",
+        "type": "RCRE_Tensor*",
+        "description": "Output vector [D, 1] representing feature means."
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_pca_transform",
+    "return_type": "int",
+    "brief": "Projects data onto fitted principal components: X_proj = (X - mean) * components^T.",
+    "params": [
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "components",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "mean",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "X_proj",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_pca_inverse_transform",
+    "return_type": "int",
+    "brief": "Reconstructs data from principal component projections: X_recon = X_proj * components + mean.",
+    "params": [
+      {
+        "name": "X_proj",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "components",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "mean",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "X_recon",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_ml_gbdt_predict",
+    "return_type": "int",
+    "brief": "Fast zero-allocation GBDT ensemble inference over flat-array nodes.",
+    "params": [
+      {
+        "name": "model",
+        "type": "const RCRE_GBDTModel*",
+        "description": ""
+      },
+      {
+        "name": "X",
+        "type": "const RCRE_Tensor*",
+        "description": ""
+      },
+      {
+        "name": "preds",
+        "type": "RCRE_Tensor*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Machine Learning",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_hnsw_create",
+    "return_type": "RCRE_HNSWIndex*",
+    "brief": "Allocates an HNSW vector index inside caller scratchpad arena.",
+    "params": [
+      {
+        "name": "dim",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "max_elements",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "M",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "ef_construction",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "metric",
+        "type": "RCRE_MetricType",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Vector Search (HNSW)",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_hnsw_insert",
+    "return_type": "int",
+    "brief": "Inserts a vector with an external ID into the HNSW graph.",
+    "params": [
+      {
+        "name": "index",
+        "type": "RCRE_HNSWIndex*",
+        "description": ""
+      },
+      {
+        "name": "vector",
+        "type": "const float*",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "scratch",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Vector Search (HNSW)",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_hnsw_search",
+    "return_type": "int",
+    "brief": "Searches for k nearest neighbors to a query vector.",
+    "params": [
+      {
+        "name": "index",
+        "type": "const RCRE_HNSWIndex*",
+        "description": ""
+      },
+      {
+        "name": "query",
+        "type": "const float*",
+        "description": ""
+      },
+      {
+        "name": "k",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "out_ids",
+        "type": "size_t*",
+        "description": ""
+      },
+      {
+        "name": "out_distances",
+        "type": "float*",
+        "description": ""
+      },
+      {
+        "name": "ef_search",
+        "type": "size_t",
+        "description": ""
+      },
+      {
+        "name": "scratch",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Vector Search (HNSW)",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_hal_init",
+    "return_type": "void",
+    "brief": "Probes host hardware and initializes dynamic SIMD dispatch table.",
+    "params": [],
+    "returns": "",
+    "category": "Hardware Acceleration",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_cpu_get_features",
+    "return_type": "uint32_t",
+    "brief": "Returns bitmask of detected CPU SIMD features.",
+    "params": [],
+    "returns": "",
+    "category": "Hardware Acceleration",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_cpu_get_brand",
+    "return_type": "const char*",
+    "brief": "Returns human-readable CPU brand/model string.",
+    "params": [],
+    "returns": "",
+    "category": "Hardware Acceleration",
+    "header": "rcre.h"
+  },
+  {
+    "name": "rcre_cam_default_config",
+    "return_type": "static inline RCRE_CamConfig",
+    "brief": "Default camera configuration helper.",
+    "params": [
+      {
+        "name": "640",
+        "type": "void) { RCRE_CamConfig cfg = { .width =",
+        "description": ""
+      },
+      {
+        "name": "480",
+        "type": ".height =",
+        "description": ""
+      },
+      {
+        "name": "30",
+        "type": ".fps =",
+        "description": ""
+      },
+      {
+        "name": "0",
+        "type": ".device_index =",
+        "description": ""
+      },
+      {
+        "name": "instance",
+        "type": ".backend = RCRE_CAM_BACKEND_AUTO }; return cfg; } /** * @brief Opens and initializes camera device. * @param config Camera settings. * @param arena Arena for internal camera buffers. * @return Opaque pointer to RCRE_Camera",
+        "description": ""
+      },
+      {
+        "name": "config",
+        "type": "or NULL on failure. */ RCRE_NODISCARD RCRE_Camera* rcre_cam_open(const RCRE_CamConfig*",
+        "description": ""
+      },
+      {
+        "name": "arena",
+        "type": "RCRE_Arena*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre_cam.h"
+  },
+  {
+    "name": "rcre_cam_grab",
+    "return_type": "int",
+    "brief": "Grabs the next video frame into caller-supplied destination tensor.",
+    "params": [
+      {
+        "name": "cam",
+        "type": "RCRE_Camera*",
+        "description": "Active camera handle."
+      },
+      {
+        "name": "out_frame",
+        "type": "RCRE_Tensor*",
+        "description": "Destination tensor [Height, Width, 3] U8 in HWC layout."
+      }
+    ],
+    "returns": "RCRE_OK on success, or error code if no frame ready.",
+    "category": "Core",
+    "header": "rcre_cam.h"
+  },
+  {
+    "name": "rcre_cam_close",
+    "return_type": "void",
+    "brief": "Stops capture and releases camera device resources.",
+    "params": [
+      {
+        "name": "cam",
+        "type": "RCRE_Camera*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre_cam.h"
+  },
+  {
+    "name": "rcre_cam_backend_name",
+    "return_type": "const char*",
+    "brief": "Returns the name of the active camera backend.",
+    "params": [
+      {
+        "name": "cam",
+        "type": "const RCRE_Camera*",
+        "description": ""
+      }
+    ],
+    "returns": "",
+    "category": "Core",
+    "header": "rcre_cam.h"
+  }
+]

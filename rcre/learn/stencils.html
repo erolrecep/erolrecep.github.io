@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCRE Visualizer — Sliding Stencils & SIMD Vector Lanes</title>
+  <meta name="description" content="Interactive 2D pixel stencil simulation illustrating how 3x3 Gaussian and Sobel filters map to 128-bit NEON and 256-bit AVX2 SIMD vector lanes.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="alternate icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .stencil-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 2rem;
+    }
+    @media (max-width: 992px) {
+      .stencil-layout { grid-template-columns: 1fr; }
+    }
+    .stencil-canvas-box {
+      background: #060910;
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 520px;
+      position: relative;
+    }
+    #stencil-canvas {
+      width: 100%;
+      max-width: 760px;
+      height: 480px;
+      background: #080c16;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .lane-box-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 0.5rem;
+    }
+    .lane-box {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+    .lane-box-active {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--accent-emerald);
+      color: #34d399;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="../index.html" class="nav-brand">
+      <span class="brand-badge">C23</span>
+      <span>RCRE</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../index.html">Overview</a></li>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../playground.html">Webcam Playground</a></li>
+        <li><a href="strides.html">3D Strides</a></li>
+        <li><a href="gemm_cache.html">Tiled GEMM</a></li>
+        <li><a href="stencils.html" class="active">SIMD Stencils</a></li>
+        <li><a href="https://erolrecep.github.io/rcre/" class="btn btn-cta">Project Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="section-header">
+      <div class="section-tag">Visualizer 3: SIMD Micro-Kernels</div>
+      <h1 class="section-title">Sliding Stencils & Vector Lanes</h1>
+      <p style="color: var(--text-muted); max-width: 760px; margin: 0.5rem auto 0;">
+        How does a $3 \times 3$ image spatial filter vectorize across CPU vector registers? 
+        Watch SIMD vector lanes calculate 4 or 8 adjacent output pixels simultaneously with reflection padding.
+      </p>
+    </div>
+
+    <div class="stencil-layout">
+      <!-- 2D Simulation Canvas -->
+      <div class="stencil-canvas-box">
+        <div class="viewport-overlay">
+          <span class="overlay-badge">
+            <span class="badge-dot"></span>
+            <span id="stencil-pos-badge">Center Pixel: (X=4, Y=4)</span>
+          </span>
+          <span class="overlay-badge" id="stencil-simd-badge">SIMD: 4 Lanes (NEON/WASM)</span>
+        </div>
+        <canvas id="stencil-canvas" width="760" height="480"></canvas>
+      </div>
+
+      <!-- Controls & Vector Registers -->
+      <div class="control-panel">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">Filter Settings</h3>
+
+        <div class="control-group">
+          <label class="control-label" for="select-kernel">Spatial Operator</label>
+          <select id="select-kernel">
+            <option value="gaussian" selected>Gaussian Blur 3x3 (Sigma 1.0)</option>
+            <option value="sobel_dx">Sobel dx (Horizontal Gradient)</option>
+            <option value="sobel_dy">Sobel dy (Vertical Gradient)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="select-vector-arch">Vector Architecture</label>
+          <select id="select-vector-arch">
+            <option value="neon" selected>ARM NEON / WASM SIMD (128-bit, 4 lanes)</option>
+            <option value="avx2">x86 AVX2 (256-bit, 8 lanes)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Filter Scan Speed</span>
+            <span class="control-value" id="val-stencil-speed">1.0&times;</span>
+          </div>
+          <input type="range" id="slider-stencil-speed" min="0.2" max="3.0" step="0.2" value="1.0">
+        </div>
+
+        <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
+          <button class="btn btn-primary" id="btn-stencil-play" style="flex: 1; justify-content: center;">
+            ⏸ Pause
+          </button>
+          <button class="btn btn-secondary" id="btn-stencil-step" style="flex: 1; justify-content: center;">
+            ⏭ Step
+          </button>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border-glass); margin: 0.5rem 0;">
+
+        <!-- Active Vector Lanes Status -->
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">SIMD Register Lanes</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">Parallel outputs computed in single instruction:</p>
+        
+        <div class="lane-box-grid" id="lane-container">
+          <div class="lane-box lane-box-active">Lane 0<br><span id="lane-val-0">P(x+0)</span></div>
+          <div class="lane-box lane-box-active">Lane 1<br><span id="lane-val-1">P(x+1)</span></div>
+          <div class="lane-box lane-box-active">Lane 2<br><span id="lane-val-2">P(x+2)</span></div>
+          <div class="lane-box lane-box-active">Lane 3<br><span id="lane-val-3">P(x+3)</span></div>
+        </div>
+
+        <div style="margin-top: 1rem; background: rgba(30, 41, 59, 0.5); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Border Padding Mode:</div>
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan);">Reflection: (border - d)</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 RCRE Project — <a href="../index.html">Back to Home</a></p>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('stencil-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let kernelType = 'gaussian';
+    let vectorLanes = 4;
+    let speed = 1.0;
+    let isPlaying = true;
+
+    const gridW = 24;
+    const gridH = 15;
+    const cellSize = 24;
+    const offsetX = 40;
+    const offsetY = 50;
+
+    let scanX = 1;
+    let scanY = 1;
+
+    // Kernel definitions
+    const kernels = {
+      gaussian: [
+        [1/16, 2/16, 1/16],
+        [2/16, 4/16, 2/16],
+        [1/16, 2/16, 1/16]
+      ],
+      sobel_dx: [
+        [-1, 0, 1],
+        [-2, 0, 2],
+        [-1, 0, 1]
+      ],
+      sobel_dy: [
+        [-1, -2, -1],
+        [ 0,  0,  0],
+        [ 1,  2,  1]
+      ]
+    };
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw input image grid
+      for (let y = 0; y < gridH; ++y) {
+        for (let x = 0; x < gridW; ++x) {
+          const px = offsetX + x * cellSize;
+          const py = offsetY + y * cellSize;
+
+          // Checkerboard synthetic pixel intensity
+          const val = ((x * 12 + y * 17) % 256);
+          ctx.fillStyle = `rgb(${val * 0.4 + 20}, ${val * 0.5 + 30}, ${val * 0.7 + 50})`;
+          ctx.fillRect(px, py, cellSize - 1, cellSize - 1);
+        }
+      }
+
+      // Draw border reflection boundary
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.strokeRect(offsetX, offsetY, gridW * cellSize, gridH * cellSize);
+      ctx.setLineDash([]);
+
+      // Draw sliding stencil 3x3 for each vector lane
+      for (let l = 0; l < vectorLanes; ++l) {
+        const curX = scanX + l;
+        if (curX >= gridW - 1) break;
+
+        const sx = offsetX + (curX - 1) * cellSize;
+        const sy = offsetY + (scanY - 1) * cellSize;
+
+        ctx.strokeStyle = l === 0 ? '#6366f1' : 'rgba(99, 102, 241, 0.4)';
+        ctx.lineWidth = l === 0 ? 3 : 1.5;
+        ctx.strokeRect(sx, sy, 3 * cellSize, 3 * cellSize);
+
+        // Highlight center pixel
+        ctx.fillStyle = '#10b981';
+        ctx.fillRect(offsetX + curX * cellSize, offsetY + scanY * cellSize, cellSize - 1, cellSize - 1);
+      }
+
+      // Draw multi-lane SIMD vector bracket
+      const bracketX = offsetX + scanX * cellSize;
+      const bracketY = offsetY + scanY * cellSize;
+      const bracketW = vectorLanes * cellSize;
+
+      ctx.strokeStyle = '#06b6d4';
+      ctx.lineWidth = 2.5;
+      ctx.strokeRect(bracketX - 2, bracketY - 2, bracketW + 2, cellSize + 2);
+
+      // Label below grid
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '12px JetBrains Mono';
+      ctx.fillText(`SIMD Vector Window: ${vectorLanes} parallel lanes`, offsetX, offsetY + gridH * cellSize + 25);
+    }
+
+    function advanceScan() {
+      scanX += vectorLanes;
+      if (scanX >= gridW - vectorLanes) {
+        scanX = 1;
+        scanY++;
+        if (scanY >= gridH - 1) {
+          scanY = 1;
+        }
+      }
+
+      document.getElementById('stencil-pos-badge').innerText = 
+        `Center: (X=${scanX}, Y=${scanY})`;
+
+      for (let i = 0; i < 4; ++i) {
+        const laneEl = document.getElementById(`lane-val-${i}`);
+        if (laneEl) {
+          laneEl.innerText = `P(${scanX + i}, ${scanY})`;
+        }
+      }
+    }
+
+    let lastTick = performance.now();
+    function loop(now) {
+      if (isPlaying && now - lastTick > (100 / speed)) {
+        advanceScan();
+        lastTick = now;
+      }
+      render();
+      requestAnimationFrame(loop);
+    }
+
+    // UI Listeners
+    document.getElementById('select-kernel').addEventListener('change', (e) => {
+      kernelType = e.target.value;
+    });
+
+    document.getElementById('select-vector-arch').addEventListener('change', (e) => {
+      const arch = e.target.value;
+      const container = document.getElementById('lane-container');
+      if (arch === 'avx2') {
+        vectorLanes = 8;
+        document.getElementById('stencil-simd-badge').innerText = 'SIMD: 8 Lanes (AVX2)';
+        container.style.gridTemplateColumns = 'repeat(8, 1fr)';
+        container.innerHTML = '';
+        for (let i = 0; i < 8; ++i) {
+          container.innerHTML += `<div class="lane-box lane-box-active">L${i}<br><span id="lane-val-${i}">P(x+${i})</span></div>`;
+        }
+      } else {
+        vectorLanes = 4;
+        document.getElementById('stencil-simd-badge').innerText = 'SIMD: 4 Lanes (NEON/WASM)';
+        container.style.gridTemplateColumns = 'repeat(4, 1fr)';
+        container.innerHTML = '';
+        for (let i = 0; i < 4; ++i) {
+          container.innerHTML += `<div class="lane-box lane-box-active">Lane ${i}<br><span id="lane-val-${i}">P(x+${i})</span></div>`;
+        }
+      }
+    });
+
+    document.getElementById('slider-stencil-speed').addEventListener('input', (e) => {
+      speed = parseFloat(e.target.value);
+      document.getElementById('val-stencil-speed').innerText = `${speed.toFixed(1)}×`;
+    });
+
+    const playBtn = document.getElementById('btn-stencil-play');
+    playBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      playBtn.innerText = isPlaying ? '⏸ Pause' : '▶ Play';
+    });
+
+    document.getElementById('btn-stencil-step').addEventListener('click', () => {
+      isPlaying = false;
+      playBtn.innerText = '▶ Play';
+      advanceScan();
+    });
+
+    render();
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

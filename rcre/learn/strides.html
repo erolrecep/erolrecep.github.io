@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCRE Visualizer — 3D Tensor Strides & Memory Layout</title>
+  <meta name="description" content="Interactive Three.js 3D voxel grid visualizing how multi-dimensional tensors map to flat 1D memory and zero-copy O(1) slicing.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="alternate icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .strides-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .memory-1d-container {
+      background: #060910;
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      overflow-x: auto;
+    }
+    .memory-1d-cells {
+      display: flex;
+      gap: 6px;
+      min-width: 600px;
+    }
+    .mem-cell {
+      flex: 1;
+      height: 48px;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .mem-cell.active {
+      background: var(--accent-indigo);
+      border-color: #818cf8;
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+      transform: translateY(-3px);
+    }
+    .mem-cell.sliced {
+      background: var(--accent-emerald);
+      border-color: #34d399;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+      transform: translateY(-3px);
+    }
+    .formula-banner {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .formula-math {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      color: #a5b4fc;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <a href="../index.html" class="nav-brand">
+      <span class="brand-badge">C23</span>
+      <span>RCRE</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../index.html">Overview</a></li>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../playground.html">Webcam Playground</a></li>
+        <li><a href="strides.html" class="active">3D Strides</a></li>
+        <li><a href="gemm_cache.html">Tiled GEMM</a></li>
+        <li><a href="stencils.html">SIMD Stencils</a></li>
+        <li><a href="https://erolrecep.github.io/rcre/" class="btn btn-cta">Project Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="section-header">
+      <div class="section-tag">Visualizer 1: Three.js 3D</div>
+      <h1 class="section-title">3D Tensor Strides & Memory Layout</h1>
+      <p style="color: var(--text-muted); max-width: 700px; margin: 0.5rem auto 0;">
+        How does a 3D tensor $(H, W, C)$ map into a flat 1D array of bytes? 
+        Explore how $\mathcal{O}(1)$ slicing and transposing change strides without copying a single byte.
+      </p>
+    </div>
+
+    <!-- Interactive Controls Bar -->
+    <div class="control-panel strides-controls">
+      <div class="control-group">
+        <label class="control-label" for="select-layout">Memory Layout</label>
+        <select id="select-layout">
+          <option value="HWC" selected>HWC (Row-Major Channels-Last)</option>
+          <option value="CHW">CHW (Planar Channels-First)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label" for="select-dims">Tensor Dimensions (D, H, W)</label>
+        <select id="select-dims">
+          <option value="3,3,3" selected>3 x 3 x 3 (27 elements)</option>
+          <option value="2,4,3">2 x 4 x 3 (24 elements)</option>
+          <option value="4,3,2">4 x 3 x 2 (24 elements)</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label" for="select-op">Zero-Copy View Operation</label>
+        <select id="select-op">
+          <option value="none" selected>None (Full Contiguous Tensor)</option>
+          <option value="slice_h">Slice Height [1..2]</option>
+          <option value="slice_w">Slice Width [1..2]</option>
+          <option value="transpose_hw">Transpose Axis 0 & 1</option>
+        </select>
+      </div>
+
+      <div class="control-group" style="justify-content: center;">
+        <button class="btn btn-secondary" id="btn-reset-cam" style="margin-top: 1rem;">
+          🎥 Reset 3D Camera
+        </button>
+      </div>
+    </div>
+
+    <!-- Stride Formula Display -->
+    <div class="formula-banner">
+      <div>
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Stride Invariant Formula</div>
+        <div class="formula-math" id="formula-text">offset = (z &times; 9) + (y &times; 3) + (x &times; 1)</div>
+      </div>
+      <div>
+        <span class="overlay-badge" id="badge-contiguous">Contiguous: YES (0-Copy Slice)</span>
+      </div>
+    </div>
+
+    <!-- 3D WebGL Canvas Container -->
+    <div class="visualizer-canvas-container" id="webgl-container">
+      <div class="viewport-overlay">
+        <span class="overlay-badge">
+          <span class="badge-dot"></span>
+          <span>Click & Drag to Rotate 3D Grid</span>
+        </span>
+        <span class="overlay-badge" id="hover-coord-badge">Hover: None</span>
+      </div>
+    </div>
+
+    <!-- 1D Physical Memory Array Trace -->
+    <div class="memory-1d-container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-main);">1D Contiguous Memory Buffer in RAM</span>
+        <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent-cyan);" id="mem-stats">0 / 27 voxels selected</span>
+      </div>
+      <div class="memory-1d-cells" id="memory-cells-track"></div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 RCRE Project — <a href="../index.html">Back to Home</a></p>
+  </footer>
+
+  <script>
+    // State
+    let currentDim = [3, 3, 3];
+    let currentLayout = 'HWC';
+    let currentOp = 'none';
+    let hoveredIdx = -1;
+
+    // Three.js Setup
+    const container = document.getElementById('webgl-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0d14);
+
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.set(7, 6, 8);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(10, 15, 10);
+    scene.add(dirLight);
+
+    // Grid helper
+    const gridHelper = new THREE.GridHelper(10, 10, 0x334155, 0x1e293b);
+    gridHelper.position.y = -2;
+    scene.add(gridHelper);
+
+    // Group for voxels
+    const voxelGroup = new THREE.Group();
+    scene.add(voxelGroup);
+
+    let voxelMeshes = [];
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+
+    function computeStrides(shape, layout) {
+      const [D, H, W] = shape;
+      if (layout === 'HWC') {
+        return [H * W, W, 1];
+      } else {
+        return [H * W, 1, H];
+      }
+    }
+
+    function isSliced(z, y, x) {
+      if (currentOp === 'slice_h') {
+        return y >= 1 && y <= 2;
+      }
+      if (currentOp === 'slice_w') {
+        return x >= 1 && x <= 2;
+      }
+      if (currentOp === 'transpose_hw') {
+        return true;
+      }
+      return true;
+    }
+
+    function buildVoxels() {
+      // Clear old meshes
+      while (voxelGroup.children.length > 0) {
+        voxelGroup.remove(voxelGroup.children[0]);
+      }
+      voxelMeshes = [];
+
+      const [D, H, W] = currentDim;
+      const strides = computeStrides(currentDim, currentLayout);
+      const total = D * H * W;
+
+      // Update Formula UI
+      document.getElementById('formula-text').innerHTML = 
+        `offset = (z &times; ${strides[0]}) + (y &times; ${strides[1]}) + (x &times; ${strides[2]})`;
+
+      // Update 1D Memory Strip
+      const memTrack = document.getElementById('memory-cells-track');
+      memTrack.innerHTML = '';
+      for (let i = 0; i < total; ++i) {
+        const cell = document.createElement('div');
+        cell.className = 'mem-cell';
+        cell.id = `mem-cell-${i}`;
+        cell.innerHTML = `<span>[${i}]</span><span style="font-size:9px;color:#94a3b8;">${(i*4).toString(16)}h</span>`;
+        memTrack.appendChild(cell);
+      }
+
+      const geom = new THREE.BoxGeometry(0.85, 0.85, 0.85);
+
+      const offsetX = (W - 1) * 0.55;
+      const offsetY = (H - 1) * 0.55;
+      const offsetZ = (D - 1) * 0.55;
+
+      for (let z = 0; z < D; ++z) {
+        for (let y = 0; y < H; ++y) {
+          for (let x = 0; x < W; ++x) {
+            const linearIdx = z * strides[0] + y * strides[1] + x * strides[2];
+            const inSlice = isSliced(z, y, x);
+
+            const mat = new THREE.MeshStandardMaterial({
+              color: inSlice ? 0x6366f1 : 0x334155,
+              roughness: 0.3,
+              metalness: 0.2,
+              transparent: true,
+              opacity: inSlice ? 0.85 : 0.25
+            });
+
+            const mesh = new THREE.Mesh(geom, mat);
+            mesh.position.set((x - offsetX) * 1.15, (y - offsetY) * 1.15, (z - offsetZ) * 1.15);
+            mesh.userData = { z, y, x, linearIdx, inSlice };
+
+            // Outline wireframe
+            const wireGeom = new THREE.EdgesGeometry(geom);
+            const wireMat = new THREE.LineBasicMaterial({ color: inSlice ? 0x818cf8 : 0x475569, linewidth: 1 });
+            const wire = new THREE.LineSegments(wireGeom, wireMat);
+            mesh.add(wire);
+
+            voxelGroup.add(mesh);
+            voxelMeshes.push(mesh);
+
+            // Update 1D cell class
+            const cell = document.getElementById(`mem-cell-${linearIdx}`);
+            if (cell && inSlice) {
+              cell.classList.add('sliced');
+            }
+          }
+        }
+      }
+
+      document.getElementById('mem-stats').innerText = 
+        `${voxelMeshes.filter(m => m.userData.inSlice).length} / ${total} voxels active`;
+    }
+
+    // Interactive Drag to Rotate Camera
+    let isDragging = false;
+    let prevMousePos = { x: 0, y: 0 };
+    let spherical = { radius: 12, theta: 0.8, phi: 1.0 };
+
+    function updateCameraFromSpherical() {
+      camera.position.x = spherical.radius * Math.sin(spherical.phi) * Math.sin(spherical.theta);
+      camera.position.y = spherical.radius * Math.cos(spherical.phi);
+      camera.position.z = spherical.radius * Math.sin(spherical.phi) * Math.cos(spherical.theta);
+      camera.lookAt(0, 0, 0);
+    }
+    updateCameraFromSpherical();
+
+    container.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      prevMousePos = { x: e.clientX, y: e.clientY };
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        const deltaX = e.clientX - prevMousePos.x;
+        const deltaY = e.clientY - prevMousePos.y;
+        prevMousePos = { x: e.clientX, y: e.clientY };
+
+        spherical.theta -= deltaX * 0.008;
+        spherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, spherical.phi - deltaY * 0.008));
+        updateCameraFromSpherical();
+      }
+
+      // Raycasting for hover
+      const rect = container.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(voxelMeshes);
+
+      document.querySelectorAll('.mem-cell').forEach(c => c.classList.remove('active'));
+
+      if (intersects.length > 0) {
+        const data = intersects[0].object.userData;
+        document.getElementById('hover-coord-badge').innerText = 
+          `Coord: (Z=${data.z}, Y=${data.y}, X=${data.x}) → Memory[${data.linearIdx}]`;
+        const cell = document.getElementById(`mem-cell-${data.linearIdx}`);
+        if (cell) cell.classList.add('active');
+      } else {
+        document.getElementById('hover-coord-badge').innerText = 'Hover: None';
+      }
+    });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    // Controls Event Listeners
+    document.getElementById('select-layout').addEventListener('change', (e) => {
+      currentLayout = e.target.value;
+      buildVoxels();
+    });
+
+    document.getElementById('select-dims').addEventListener('change', (e) => {
+      currentDim = e.target.value.split(',').map(Number);
+      buildVoxels();
+    });
+
+    document.getElementById('select-op').addEventListener('change', (e) => {
+      currentOp = e.target.value;
+      buildVoxels();
+    });
+
+    document.getElementById('btn-reset-cam').addEventListener('click', () => {
+      spherical = { radius: 12, theta: 0.8, phi: 1.0 };
+      updateCameraFromSpherical();
+    });
+
+    // Resize Handler
+    window.addEventListener('resize', () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+
+    // Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+      if (!isDragging) {
+        voxelGroup.rotation.y += 0.002;
+      }
+      renderer.render(scene, camera);
+    }
+
+    buildVoxels();
+    animate();
+  </script>
+</body>
+</html>

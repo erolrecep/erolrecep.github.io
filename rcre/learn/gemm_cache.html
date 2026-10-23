@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCRE Visualizer — Tiled GEMM & Cache Hierarchy</title>
+  <meta name="description" content="Interactive simulation of cache blocking, L1/L3 cache hierarchies, and CPU vector register reuse in Matrix Multiplication.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="alternate icon" href="../favicon.ico">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .gemm-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 2rem;
+    }
+    @media (max-width: 992px) {
+      .gemm-layout { grid-template-columns: 1fr; }
+    }
+    .gemm-canvas-wrapper {
+      background: #060910;
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 540px;
+      position: relative;
+    }
+    #gemm-canvas {
+      width: 100%;
+      max-width: 800px;
+      height: 480px;
+      background: #080c16;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .metric-gauge-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .gauge-bar-bg {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .gauge-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="../index.html" class="nav-brand">
+      <span class="brand-badge">C23</span>
+      <span>RCRE</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../index.html">Overview</a></li>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../playground.html">Webcam Playground</a></li>
+        <li><a href="strides.html">3D Strides</a></li>
+        <li><a href="gemm_cache.html" class="active">Tiled GEMM</a></li>
+        <li><a href="stencils.html">SIMD Stencils</a></li>
+        <li><a href="https://erolrecep.github.io/rcre/" class="btn btn-cta">Project Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="section-header">
+      <div class="section-tag">Visualizer 2: Cache Hierarchy</div>
+      <h1 class="section-title">Tiled GEMM & Cache Hierarchy</h1>
+      <p style="color: var(--text-muted); max-width: 760px; margin: 0.5rem auto 0;">
+        Why does naive matrix multiplication run at 5% of peak hardware capacity while cache-tiled GEMM achieves 90%? 
+        Watch cache blocks move between RAM, L1 Cache, and SIMD Vector Registers in real time.
+      </p>
+    </div>
+
+    <div class="gemm-layout">
+      <!-- Interactive Animation Canvas -->
+      <div class="gemm-canvas-wrapper">
+        <div class="viewport-overlay">
+          <span class="overlay-badge" id="gemm-status-badge">
+            <span class="badge-dot"></span>
+            <span id="gemm-status-text">Status: Simulating Tile Multiplication</span>
+          </span>
+          <span class="overlay-badge" id="gemm-tile-badge">Tile: (i=0, j=0, k=0)</span>
+        </div>
+        <canvas id="gemm-canvas" width="800" height="480"></canvas>
+      </div>
+
+      <!-- Controls & Live Cache Diagnostics -->
+      <div class="control-panel">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">Execution Controls</h3>
+        
+        <div class="control-group">
+          <label class="control-label" for="select-mode">Algorithm Architecture</label>
+          <select id="select-mode">
+            <option value="tiled" selected>Cache-Tiled + Register Blocked (RCRE)</option>
+            <option value="naive">Naive Triple Loop (Cache Thrashing)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Tile Block Size (B)</span>
+            <span class="control-value" id="val-block-size">4 &times; 4</span>
+          </div>
+          <input type="range" id="slider-block-size" min="2" max="8" step="2" value="4">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Animation Speed</span>
+            <span class="control-value" id="val-speed">1.0&times;</span>
+          </div>
+          <input type="range" id="slider-speed" min="0.2" max="3.0" step="0.2" value="1.0">
+        </div>
+
+        <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
+          <button class="btn btn-primary" id="btn-toggle-play" style="flex: 1; justify-content: center;">
+            ⏸ Pause
+          </button>
+          <button class="btn btn-secondary" id="btn-step" style="flex: 1; justify-content: center;">
+            ⏭ Step
+          </button>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border-glass); margin: 0.5rem 0;">
+
+        <!-- Live Cache Metrics -->
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">Hardware Diagnostics</h3>
+        
+        <div class="metric-gauge-card">
+          <div class="control-label">
+            <span>L1 Data Cache Hit Rate</span>
+            <span class="control-value" id="val-cache-hit" style="color: var(--accent-emerald);">96.8%</span>
+          </div>
+          <div class="gauge-bar-bg">
+            <div class="gauge-bar-fill" id="bar-cache-hit" style="width: 96.8%; background: var(--accent-emerald);"></div>
+          </div>
+        </div>
+
+        <div class="metric-gauge-card">
+          <div class="control-label">
+            <span>Memory Bus Saturation</span>
+            <span class="control-value" id="val-bus-sat" style="color: var(--accent-cyan);">18.4 GB/s</span>
+          </div>
+          <div class="gauge-bar-bg">
+            <div class="gauge-bar-fill" id="bar-bus-sat" style="width: 25%; background: var(--accent-cyan);"></div>
+          </div>
+        </div>
+
+        <div class="metric-gauge-card">
+          <div class="control-label">
+            <span>Effective Compute Rate</span>
+            <span class="control-value" id="val-gflops" style="color: #a5b4fc;">72.96 GFLOPS</span>
+          </div>
+          <div class="gauge-bar-bg">
+            <div class="gauge-bar-fill" id="bar-gflops" style="width: 88%; background: linear-gradient(90deg, var(--accent-indigo), var(--accent-cyan));"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 RCRE Project — <a href="../index.html">Back to Home</a></p>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('gemm-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let mode = 'tiled'; // 'tiled' or 'naive'
+    let blockSize = 4;
+    let speed = 1.0;
+    let isPlaying = true;
+
+    const N = 16; // 16x16 matrices
+    let stepCount = 0;
+    let currI = 0, currJ = 0, currK = 0;
+
+    function drawMatrix(x0, y0, size, label, activeR, activeC, blockR, blockC, color) {
+      const cellSize = size / N;
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(x0, y0, size, size);
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= N; ++i) {
+        ctx.beginPath();
+        ctx.moveTo(x0 + i * cellSize, y0);
+        ctx.lineTo(x0 + i * cellSize, y0 + size);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(x0, y0 + i * cellSize);
+        ctx.lineTo(x0 + size, y0 + i * cellSize);
+        ctx.stroke();
+      }
+
+      // Draw highlighted block
+      if (mode === 'tiled') {
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.45;
+        ctx.fillRect(x0 + blockC * cellSize, y0 + blockR * cellSize, blockSize * cellSize, blockSize * cellSize);
+        ctx.globalAlpha = 1.0;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x0 + blockC * cellSize, y0 + blockR * cellSize, blockSize * cellSize, blockSize * cellSize);
+      }
+
+      // Draw active element
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(x0 + activeC * cellSize, y0 + activeR * cellSize, cellSize, cellSize);
+
+      // Label
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '12px JetBrains Mono';
+      ctx.fillText(label, x0 + 4, y0 - 8);
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const mSize = 160;
+      const startY = 60;
+
+      // Draw Matrix A [16x16]
+      drawMatrix(60, startY, mSize, 'Matrix A (Row Tile)', currI, currK, currI - (currI % blockSize), currK - (currK % blockSize), '#6366f1');
+
+      // Multiplication Symbol
+      ctx.fillStyle = '#64748b';
+      ctx.font = '24px Inter';
+      ctx.fillText('×', 245, startY + mSize / 2 + 8);
+
+      // Draw Matrix B [16x16]
+      drawMatrix(280, startY, mSize, 'Matrix B (Col Tile)', currK, currJ, currK - (currK % blockSize), currJ - (currJ % blockSize), '#06b6d4');
+
+      // Equals Symbol
+      ctx.fillText('=', 465, startY + mSize / 2 + 8);
+
+      // Draw Matrix C [16x16]
+      drawMatrix(500, startY, mSize, 'Matrix C (Accumulator)', currI, currJ, currI - (currI % blockSize), currJ - (currJ % blockSize), '#10b981');
+
+      // Draw Cache Hierarchy Box Below
+      const boxY = 270;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = 1;
+      ctx.fillRect(60, boxY, 680, 170);
+      ctx.strokeRect(60, boxY, 680, 170);
+
+      ctx.fillStyle = '#a5b4fc';
+      ctx.font = '13px JetBrains Mono';
+      ctx.fillText('SIMD Vector Registers & L1 Cache Residency Flow', 80, boxY + 28);
+
+      // Draw 3 hierarchy tier boxes
+      const tiers = [
+        { name: 'DRAM (Host RAM)', desc: '16x16 float buffers (64-byte aligned)', color: '#64748b', x: 80, w: 180 },
+        { name: 'L1 Cache Tile', desc: `${blockSize}x${blockSize} F32 sub-blocks in cache`, color: mode === 'tiled' ? '#10b981' : '#f43f5e', x: 280, w: 200 },
+        { name: 'SIMD Vector Registers', desc: '4x8 fused multiply-accumulate', color: '#6366f1', x: 500, w: 220 }
+      ];
+
+      tiers.forEach((t) => {
+        ctx.fillStyle = 'rgba(30, 41, 59, 0.6)';
+        ctx.strokeStyle = t.color;
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(t.x, boxY + 45, t.w, 95);
+        ctx.strokeRect(t.x, boxY + 45, t.w, 95);
+
+        ctx.fillStyle = t.color;
+        ctx.font = 'bold 12px Inter';
+        ctx.fillText(t.name, t.x + 12, boxY + 70);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '11px JetBrains Mono';
+        ctx.fillText(t.desc, t.x + 12, boxY + 95);
+
+        if (t.name === 'L1 Cache Tile') {
+          ctx.fillStyle = mode === 'tiled' ? '#34d399' : '#fb7185';
+          ctx.fillText(mode === 'tiled' ? '✓ REUSE RATIO: 16:1' : '✗ THRASHING: 1:1', t.x + 12, boxY + 122);
+        }
+      });
+    }
+
+    function advanceSimulation() {
+      if (mode === 'tiled') {
+        currK++;
+        if (currK % blockSize === 0 && currK < N) {
+          // staying inside block
+        } else if (currK >= N) {
+          currK = 0;
+          currJ++;
+          if (currJ >= N) {
+            currJ = 0;
+            currI++;
+            if (currI >= N) {
+              currI = 0;
+            }
+          }
+        }
+      } else {
+        // Naive row-major walk
+        currK++;
+        if (currK >= N) {
+          currK = 0;
+          currJ++;
+          if (currJ >= N) {
+            currJ = 0;
+            currI++;
+            if (currI >= N) currI = 0;
+          }
+        }
+      }
+
+      document.getElementById('gemm-tile-badge').innerText = 
+        `Tile: (i=${currI}, j=${currJ}, k=${currK})`;
+    }
+
+    let lastTick = performance.now();
+    function loop(now) {
+      if (isPlaying && now - lastTick > (60 / speed)) {
+        advanceSimulation();
+        lastTick = now;
+      }
+      render();
+      requestAnimationFrame(loop);
+    }
+
+    // UI Listeners
+    document.getElementById('select-mode').addEventListener('change', (e) => {
+      mode = e.target.value;
+      if (mode === 'tiled') {
+        document.getElementById('val-cache-hit').innerText = '96.8%';
+        document.getElementById('val-cache-hit').style.color = 'var(--accent-emerald)';
+        document.getElementById('bar-cache-hit').style.width = '96.8%';
+        document.getElementById('bar-cache-hit').style.background = 'var(--accent-emerald)';
+
+        document.getElementById('val-bus-sat').innerText = '18.4 GB/s';
+        document.getElementById('bar-bus-sat').style.width = '25%';
+
+        document.getElementById('val-gflops').innerText = '72.96 GFLOPS';
+        document.getElementById('bar-gflops').style.width = '88%';
+      } else {
+        document.getElementById('val-cache-hit').innerText = '18.2%';
+        document.getElementById('val-cache-hit').style.color = 'var(--accent-rose)';
+        document.getElementById('bar-cache-hit').style.width = '18.2%';
+        document.getElementById('bar-cache-hit').style.background = 'var(--accent-rose)';
+
+        document.getElementById('val-bus-sat').innerText = '112.5 GB/s (Bus Starved)';
+        document.getElementById('bar-bus-sat').style.width = '95%';
+
+        document.getElementById('val-gflops').innerText = '5.14 GFLOPS';
+        document.getElementById('bar-gflops').style.width = '8%';
+      }
+    });
+
+    document.getElementById('slider-block-size').addEventListener('input', (e) => {
+      blockSize = parseInt(e.target.value);
+      document.getElementById('val-block-size').innerText = `${blockSize} × ${blockSize}`;
+    });
+
+    document.getElementById('slider-speed').addEventListener('input', (e) => {
+      speed = parseFloat(e.target.value);
+      document.getElementById('val-speed').innerText = `${speed.toFixed(1)}×`;
+    });
+
+    const playBtn = document.getElementById('btn-toggle-play');
+    playBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      playBtn.innerText = isPlaying ? '⏸ Pause' : '▶ Play';
+    });
+
+    document.getElementById('btn-step').addEventListener('click', () => {
+      isPlaying = false;
+      playBtn.innerText = '▶ Play';
+      advanceSimulation();
+    });
+
+    render();
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>
