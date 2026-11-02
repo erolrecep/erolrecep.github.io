@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Fri, 16 Oct 2026 12:08:00 -0500</lastBuildDate>
+			<lastBuildDate>Mon, 02 Nov 2026 12:00:00 -0600</lastBuildDate>
 		
 			<atom:link href="https://erolrecep.github.io/categories/scientific-computing/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Best Practices for Using HPC: Scaling Up to Cluster-Native Workflows</title>
+				<link>https://erolrecep.github.io/posts/best-practices-for-hpc/</link>
+				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/posts/best-practices-for-hpc/</guid>
+				<description>&lt;p&gt;&lt;em&gt;Moving Beyond the Laptop Mindset: A Practical Guide for Researchers and Computational Scientists&lt;/em&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;&#xA;&lt;p&gt;Unlocking the full potential of advanced computational infrastructure requires moving beyond the mindset of simply scaling up local code. While transitioning from a personal workstation or Google Colab notebook to a shared High-Performance Computing (HPC) cluster removes local compute and memory bottlenecks, true acceleration is achieved only by adopting &lt;strong&gt;cluster-native workflows&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Modern supercomputing systems are not simply bigger laptops; they are orchestrated, multi-tenant community ecosystems governed by batch schedulers, distributed parallel filesystems, and specialized hardware accelerators. Navigating these environments demands an operational paradigm shift.&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>Vibe Coding for Scientists and Researchers</title>
 				<link>https://erolrecep.github.io/posts/vibecoding-for-scientists-researchers/</link>

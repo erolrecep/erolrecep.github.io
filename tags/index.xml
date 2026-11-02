@@ -10,9 +10,58 @@
 		
 		
 		
-			<lastBuildDate>Tue, 20 Oct 2026 20:45:00 -0500</lastBuildDate>
+			<lastBuildDate>Mon, 02 Nov 2026 12:00:00 -0600</lastBuildDate>
 		
 			<atom:link href="https://erolrecep.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Apptainer</title>
+				<link>https://erolrecep.github.io/tags/apptainer/</link>
+				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/apptainer/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>GPU Computing</title>
+				<link>https://erolrecep.github.io/tags/gpu-computing/</link>
+				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/gpu-computing/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>High Performance Computing</title>
+				<link>https://erolrecep.github.io/tags/high-performance-computing/</link>
+				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/high-performance-computing/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Performance Optimization</title>
+				<link>https://erolrecep.github.io/tags/performance-optimization/</link>
+				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/performance-optimization/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Reproducibility</title>
+				<link>https://erolrecep.github.io/tags/reproducibility/</link>
+				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/reproducibility/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Scientific Workflows</title>
+				<link>https://erolrecep.github.io/tags/scientific-workflows/</link>
+				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/scientific-workflows/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>SLURM</title>
+				<link>https://erolrecep.github.io/tags/slurm/</link>
+				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/slurm/</guid>
+				<description></description>
+			</item>
 			<item>
 				<title>Artificial Intelligence</title>
 				<link>https://erolrecep.github.io/tags/artificial-intelligence/</link>
@@ -35,13 +84,6 @@
 				<description></description>
 			</item>
 			<item>
-				<title>High Performance Computing</title>
-				<link>https://erolrecep.github.io/tags/high-performance-computing/</link>
-				<pubDate>Tue, 20 Oct 2026 20:45:00 -0500</pubDate>
-				<guid>https://erolrecep.github.io/tags/high-performance-computing/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>Machine Learning</title>
 				<link>https://erolrecep.github.io/tags/machine-learning/</link>
 				<pubDate>Tue, 20 Oct 2026 20:45:00 -0500</pubDate>
@@ -60,13 +102,6 @@
 				<link>https://erolrecep.github.io/tags/llms/</link>
 				<pubDate>Fri, 16 Oct 2026 12:08:00 -0500</pubDate>
 				<guid>https://erolrecep.github.io/tags/llms/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Reproducibility</title>
-				<link>https://erolrecep.github.io/tags/reproducibility/</link>
-				<pubDate>Fri, 16 Oct 2026 12:08:00 -0500</pubDate>
-				<guid>https://erolrecep.github.io/tags/reproducibility/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -228,13 +263,6 @@
 				<link>https://erolrecep.github.io/tags/workshops/</link>
 				<pubDate>Sun, 13 Oct 2024 05:47:10 -0500</pubDate>
 				<guid>https://erolrecep.github.io/tags/workshops/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>SLURM</title>
-				<link>https://erolrecep.github.io/tags/slurm/</link>
-				<pubDate>Sun, 13 Oct 2024 05:26:01 -0500</pubDate>
-				<guid>https://erolrecep.github.io/tags/slurm/</guid>
 				<description></description>
 			</item>
 	</channel>

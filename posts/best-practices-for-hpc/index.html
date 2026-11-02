@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+    <head>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        
+        <meta name="description" content="HPC Admin - AI/ML Specialist Technical Blog">
+        
+        <meta name="keywords" content="minimalist,blog,mlenngineer,hpc,ai,python,c,optimization,computervision,experiments,computation">
+
+        <title>
+              Recep&#39;s Technical Blog - Best Practices for Using HPC: Scaling Up to Cluster-Native Workflows 
+        </title>
+
+        <meta name="generator" content="Hugo 0.169.0">
+
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+        
+
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://erolrecep.github.io/css/main.css">
+        <link rel="stylesheet" href="https://erolrecep.github.io/css/custom.css">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#ffffff"></head>
+
+    <body lang="en-US">
+        <div class="container my-auto">
+
+
+<header class="text-start title">
+  <h1 class="title">Best Practices for Using HPC: Scaling Up to Cluster-Native Workflows</h1>
+</header>
+
+<section id="category-pane" class="meta">
+  
+  <div class="d-flex flex-column flex-md-row justify-content-between">
+    <h6 class="text-start meta">
+       PUBLISHED ON NOV 2, 2026
+      
+      / 10 MIN READ
+      
+      
+      
+      —
+      
+      
+      <a class="meta"
+        href="/categories/high-performance-computing">HIGH PERFORMANCE COMPUTING</a>, 
+      
+      <a class="meta"
+        href="/categories/scientific-computing">SCIENTIFIC COMPUTING</a>
+      
+      
+      
+    </h6>
+  </div>
+  
+</section>
+
+<section id="content-pane">
+  <div class="text-justify content">
+    
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#1-the-core-paradigm-shift-laptop-vs-supercomputer">1. The Core Paradigm Shift: Laptop vs. Supercomputer</a></li>
+    <li><a href="#2-accessing-the-cluster-login-node-etiquette">2. Accessing the Cluster: Login Node Etiquette</a>
+      <ul>
+        <li><a href="#the-golden-rule">The Golden Rule</a></li>
+        <li><a href="#the-hidden-trap-remote-ide-servers">The Hidden Trap: Remote IDE Servers</a></li>
+        <li><a href="#the-cluster-native-solution">The Cluster-Native Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-high-performance-data-logistics--storage-hygiene">3. High-Performance Data Logistics &amp; Storage Hygiene</a>
+      <ul>
+        <li><a href="#moving-data-at-scale-rsync-vs-globus">Moving Data at Scale: <code>rsync</code> vs. Globus</a></li>
+        <li><a href="#understanding-hpc-storage-tiers">Understanding HPC Storage Tiers</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-reproducible-environments-packaging-with-apptainer">4. Reproducible Environments: Packaging with Apptainer</a>
+      <ul>
+        <li><a href="#why-apptainer-excels-on-hpc">Why Apptainer Excels on HPC:</a></li>
+        <li><a href="#slurm-execution-example">Slurm Execution Example:</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-slurm-resource-sizing-the-three-costly-traps">5. Slurm Resource Sizing: The Three Costly Traps</a>
+      <ul>
+        <li><a href="#anti-pattern-1-the-memory-over-allocation-trap">Anti-Pattern 1: The Memory Over-Allocation Trap</a></li>
+        <li><a href="#anti-pattern-2-the-sequential-execution-loop-trap">Anti-Pattern 2: The Sequential Execution Loop Trap</a></li>
+        <li><a href="#anti-pattern-3-the-multi-gpu-hoarding-trap">Anti-Pattern 3: The Multi-GPU Hoarding Trap</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-observability--profiling-know-your-hardware-utilization">6. Observability &amp; Profiling: Know Your Hardware Utilization</a>
+      <ul>
+        <li><a href="#post-mortem-auditing-with-seff">Post-Mortem Auditing with <code>seff</code></a></li>
+        <li><a href="#live-telemetry-during-interactive-allocations">Live Telemetry During Interactive Allocations</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-project-hygiene-structuring-run-directories--slurm-logs">7. Project Hygiene: Structuring Run Directories &amp; Slurm Logs</a></li>
+    <li><a href="#8-conclusion-we-are-partners-in-discovery">8. Conclusion: We Are Partners in Discovery</a>
+      <ul>
+        <li><a href="#resources--presentation-links">Resources &amp; Presentation Links</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    
+    <p><em>Moving Beyond the Laptop Mindset: A Practical Guide for Researchers and Computational Scientists</em></p>
+<hr>
+<h2 id="abstract">Abstract</h2>
+<p>Unlocking the full potential of advanced computational infrastructure requires moving beyond the mindset of simply scaling up local code. While transitioning from a personal workstation or Google Colab notebook to a shared High-Performance Computing (HPC) cluster removes local compute and memory bottlenecks, true acceleration is achieved only by adopting <strong>cluster-native workflows</strong>.</p>
+<p>Modern supercomputing systems are not simply bigger laptops; they are orchestrated, multi-tenant community ecosystems governed by batch schedulers, distributed parallel filesystems, and specialized hardware accelerators. Navigating these environments demands an operational paradigm shift.</p>
+<p>This guide—developed from my hands-on workshops and daily engineering consultations—provides an in-depth, practical roadmap to mastering cluster-native computing. We examine the shared resource model, data transfer logistics, containerized reproducibility with Apptainer, and dissect <strong>three pervasive Slurm anti-patterns</strong> (the Memory Trap, the Sequential Loop Trap, and the Multi-GPU Hoarding Trap) with side-by-side script refactorings. Finally, we establish observability workflows using <code>seff</code> and <code>nvtop</code> to audit hardware efficiency and accelerate time-to-discovery.</p>
+<blockquote>
+<p>📊 <strong>Interactive Slide Deck</strong>: You can explore the accompanying 16-slide workshop presentation directly at:<br>
+<a href="https://erolrecep.github.io/best-practices-hpc/"><strong>https://erolrecep.github.io/best-practices-hpc/</strong></a></p>
+</blockquote>
+<hr>
+<h2 id="1-the-core-paradigm-shift-laptop-vs-supercomputer">1. The Core Paradigm Shift: Laptop vs. Supercomputer</h2>
+<p>In empirical science, computational researchers routinely encounter the limits of personal hardware: an out-of-memory error during data ingestion, thermal throttling during model training, or an execution time spanning weeks. Transitioning to an institutional supercomputer (such as Rice University&rsquo;s <strong>RANGE</strong> cluster, equipped with NVIDIA H100/H200 GPUs and VAST high-speed parallel storage) resolves raw capacity limits.</p>
+<p>However, researchers frequently bring their personal workstation habits directly into the cluster, creating severe operational friction.</p>
+<div style="background: rgba(56, 189, 248, 0.08); border-left: 4px solid #0284c7; padding: 1rem 1.5rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; font-size: 0.95rem; color: #0369a1;">
+  <strong>The Fundamental Rule:</strong> An HPC cluster is an autonomous batch-processing factory, not an interactive personal playground.
+</div>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: left">Dimension</th>
+					<th style="text-align: left">Personal Workstation / Laptop</th>
+					<th style="text-align: left">Shared HPC Supercomputer</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left"><strong>Ownership</strong></td>
+					<td style="text-align: left">Dedicated (100% of CPU and RAM is yours)</td>
+					<td style="text-align: left">Shared (Hundreds of researchers compete for nodes)</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Execution</strong></td>
+					<td style="text-align: left">Synchronous &amp; Interactive (Click run, view stdout)</td>
+					<td style="text-align: left">Asynchronous &amp; Batch-Scheduled (Slurm priority queues)</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Filesystem</strong></td>
+					<td style="text-align: left">Local NVMe/SSD; desktop writes are harmless</td>
+					<td style="text-align: left">Distributed parallel storage (VAST NVMe / Lustre)</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Lifecycle</strong></td>
+					<td style="text-align: left">Sleep/restart kills active jobs</td>
+					<td style="text-align: left">Detached background jobs run 24/7 autonomously</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Failure Cost</strong></td>
+					<td style="text-align: left">Only impacts your local session</td>
+					<td style="text-align: left">Over-allocation blocks entire research groups</td>
+			</tr>
+	</tbody>
+</table>
+<p>Understanding this distinction transforms how you design pipelines: <strong>develop and debug on minimal subsets locally or interactively, then dispatch self-contained, automated batch jobs to the cluster.</strong></p>
+<hr>
+<h2 id="2-accessing-the-cluster-login-node-etiquette">2. Accessing the Cluster: Login Node Etiquette</h2>
+<p>When you connect to an HPC cluster via SSH, you land on a <strong>Login Node</strong> (also referred to as a head node).</p>
+<h3 id="the-golden-rule">The Golden Rule</h3>
+<blockquote>
+<p><strong>Never execute computational workloads, heavy data processing, or background language server processes on login nodes.</strong></p>
+</blockquote>
+<p>Login nodes are shared gateway servers configured with limited compute capacity. Their sole purpose is:</p>
+<ul>
+<li>Navigating the filesystem and editing configuration files.</li>
+<li>Managing code via Git.</li>
+<li>Inspecting queue status (<code>squeue</code>) and managing jobs (<code>sbatch</code>, <code>scancel</code>).</li>
+</ul>
+<h3 id="the-hidden-trap-remote-ide-servers">The Hidden Trap: Remote IDE Servers</h3>
+<p>A modern anti-pattern is opening remote VS Code or Cursor directly connected to the login node. Default IDE extensions spawn aggressive background indexing processes, language servers, and AI copilots that saturate CPU cores and exhaust memory on the head node, degrading responsiveness for every user on the system.</p>
+<h3 id="the-cluster-native-solution">The Cluster-Native Solution</h3>
+<p>For exploratory data analysis, interactive debugging, or running IDEs:</p>
+<ol>
+<li><strong>Interactive Slurm Allocations</strong>: Request an interactive shell directly on a compute node:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>salloc --cpus-per-task<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span> --mem<span style="color:#f92672">=</span>16G --time<span style="color:#f92672">=</span>02:00:00
+</span></span></code></pre></div></li>
+<li><strong>OpenOnDemand (OOD)</strong>: Use the web-based OpenOnDemand portal to launch dedicated, containerized JupyterLab or MATLAB instances backed by real compute node allocations.</li>
+<li><strong>Production Runs</strong>: Submit non-interactive batch scripts using <code>sbatch</code>.</li>
+</ol>
+<hr>
+<h2 id="3-high-performance-data-logistics--storage-hygiene">3. High-Performance Data Logistics &amp; Storage Hygiene</h2>
+<p>Data movement and storage architecture represent the second major bottleneck for computational researchers.</p>
+<h3 id="moving-data-at-scale-rsync-vs-globus">Moving Data at Scale: <code>rsync</code> vs. Globus</h3>
+<p>Moving a few megabytes is trivial, but migrating multi-terabyte datasets across institutions requires protocol awareness:</p>
+<pre tabindex="0"><code>                           DATA TRANSFER STRATEGY
+                                     │
+                 ┌───────────────────┴───────────────────┐
+                 ▼                                       ▼
+      Small to Medium (&lt; 100 GB)                 Massive (Multi-TB)
+                 │                                       │
+                 ▼                                       ▼
+       Incremental Terminal Sync                High-Throughput GridFTP
+            [ rsync / scp ]                         [ Globus Transfer ]
+                 │                                       │
+     • Resumes interrupted transfers         • Science DMZ 100GbE engine
+     • Preserves timestamps (-a)             • End-to-end SHA256 checksums
+     • Filters cache files (--exclude)       • Background detached execution
+</code></pre><p>For incremental synchronization of code, configuration files, or preprocessed datasets:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Robust rsync with resume capability and timestamp preservation</span>
+</span></span><span style="display:flex;"><span>rsync -avzP --exclude <span style="color:#e6db74">&#39;*.tmp&#39;</span> --exclude <span style="color:#e6db74">&#39;__pycache__&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  ./project_data/ re51@range.rice.edu:/scratch/re51/data/
+</span></span></code></pre></div><p>For multi-terabyte dataset ingest, <strong>Globus Transfer</strong> is essential: it leverages high-speed Science DMZ network switches, handles connection dropouts automatically, and performs background checksum verification without requiring your local terminal to stay connected.</p>
+<hr>
+<h3 id="understanding-hpc-storage-tiers">Understanding HPC Storage Tiers</h3>
+<p>Supercomputers partition storage into distinct tiers, each optimized for specific access patterns:</p>
+<ol>
+<li><strong>Home Directory (<code>~/home</code>)</strong>:
+<ul>
+<li><strong>Characteristics</strong>: Strict quotas (typically 20–50 GB), daily enterprise backups.</li>
+<li><strong>Intended Use</strong>: Shell dotfiles, SSH keys, virtual environment definitions, Git repositories.</li>
+<li><strong>Anti-Pattern</strong>: Writing simulation checkpoints, PyTorch cache directories, or uncompressed raw datasets here will instantly exhaust your quota and lock your shell.</li>
+</ul>
+</li>
+<li><strong>Scratch Storage (<code>/scratch</code>)</strong>:
+<ul>
+<li><strong>Characteristics</strong>: Multi-petabyte parallel NVMe (e.g., VAST Data or Lustre) with multi-GB/s read/write bandwidth.</li>
+<li><strong>Intended Use</strong>: High-frequency checkpointing, active job I/O, uncompressed temporary arrays.</li>
+<li><strong>The Hygiene Rule</strong>: Scratch is <strong>ephemeral compute storage, not a permanent lab archive</strong>. Automated purge policies clean old files. Always archive essential results and delete scratch intermediates post-run.</li>
+</ul>
+</li>
+<li><strong>Project / Lab Archive</strong>:
+<ul>
+<li><strong>Characteristics</strong>: High-capacity network storage shared across your research group.</li>
+<li><strong>Intended Use</strong>: Final curated datasets, model weights, and publication artifacts.</li>
+</ul>
+</li>
+</ol>
+<h4 id="beware-the-million-tiny-files-trap">Beware the &ldquo;Million Tiny Files&rdquo; Trap</h4>
+<p>Parallel filesystems excel at sequential streaming of large contiguous blocks (e.g., 50 GB HDF5 or binary tensor files). Storing 1,000,000 loose 10 KB JPEG files overburdens the parallel metadata servers (MDT), causing directory listings (<code>ls</code>) and file opens to grind to a halt. Always bundle small files into archives (<code>.tar</code>), HDF5 containers, or WebDataset formats.</p>
+<hr>
+<h2 id="4-reproducible-environments-packaging-with-apptainer">4. Reproducible Environments: Packaging with Apptainer</h2>
+<p>One of the most frequent support tickets in scientific computing reads: <em>&ldquo;It runs perfectly on my laptop, but fails on the cluster.&rdquo;</em></p>
+<p>Underlying differences in glibc versions, CUDA toolkits, and conflicting Python pip wheels are the culprits. The cluster-native solution is <strong>containerization</strong> via <strong>Apptainer</strong> (formerly Singularity).</p>
+<pre tabindex="0"><code>   ┌────────────────────────────────────────────────────────┐
+   │             Self-Contained Scientific Container        │
+   │                      (my_model.sif)                    │
+   │  ┌──────────────────────────────────────────────────┐  │
+   │  │ Application Code &amp; Dependencies (Python 3.13)    │  │
+   │  ├──────────────────────────────────────────────────┤  │
+   │  │ Machine Learning Frameworks (PyTorch 2.4, CUDA)  │  │
+   │  ├──────────────────────────────────────────────────┤  │
+   │  │ OS System Libraries &amp; Binaries (Ubuntu 22.04 LTS)│  │
+   │  └──────────────────────────────────────────────────┘  │
+   └───────────────────────────┬────────────────────────────┘
+                               │ Directly binds GPU via --nv
+                               ▼
+   ┌────────────────────────────────────────────────────────┐
+   │             HPC Host Compute Node (RANGE)              │
+   │          Linux Kernel + NVIDIA Driver Layer            │
+   └────────────────────────────────────────────────────────┘
+</code></pre><h3 id="why-apptainer-excels-on-hpc">Why Apptainer Excels on HPC:</h3>
+<ul>
+<li><strong>No Root Required</strong>: Executes entirely in unprivileged user space.</li>
+<li><strong>Hardware Acceleration</strong>: The <code>--nv</code> flag automatically exposes host NVIDIA kernel drivers and CUDA runtime devices into the container.</li>
+<li><strong>Native Filesystem Mounts</strong>: Directly mount <code>/scratch</code> and <code>/home</code> without copying data.</li>
+</ul>
+<h3 id="slurm-execution-example">Slurm Execution Example:</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --job-name=container_train</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --gres=gpu:1</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --time=12:00:00</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute PyTorch workload inside Apptainer</span>
+</span></span><span style="display:flex;"><span>apptainer exec --nv <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  --bind /scratch/re51:/scratch <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  /scratch/re51/containers/pytorch_2.4.sif <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  python3 /scratch/re51/code/train.py --data-dir /scratch/re51/dataset
+</span></span></code></pre></div><p>Pairing your container with a root <code>Makefile</code> ensures that running <code>make train</code> executes the identical recipe regardless of whether it is tested on your local workstation or submitted on RANGE.</p>
+<hr>
+<h2 id="5-slurm-resource-sizing-the-three-costly-traps">5. Slurm Resource Sizing: The Three Costly Traps</h2>
+<p>Resource allocation is the operational heart of High-Performance Computing. Because an HPC cluster is a shared, finite resource, Slurm prioritizes jobs based on backfill scheduling algorithms. Over-requesting resources exponentially inflates queue wait times.</p>
+<p>Here are the three most common Slurm anti-patterns and their refactored cluster-native solutions:</p>
+<hr>
+<h3 id="anti-pattern-1-the-memory-over-allocation-trap">Anti-Pattern 1: The Memory Over-Allocation Trap</h3>
+<p>Researchers often request massive amounts of memory &ldquo;just to be safe.&rdquo;</p>
+<pre tabindex="0"><code>❌ MEMORY TRAP: Requesting 128 GB for a 16 GB job
+────────────────────────────────────────────────────────────────────────
+Slurm Scheduler: &#34;I need to find a single node with 128 GB of idle RAM.&#34;
+Result: Job sits in PENDING state for 48 hours waiting for a node to drain.
+Actual Utilization: Script peaks at 12.4 GB. 115.6 GB RAM is wasted.
+
+✅ CLUSTER-NATIVE: Requesting 16 GB based on profiling
+────────────────────────────────────────────────────────────────────────
+Slurm Scheduler: &#34;A 16 GB fragment is available on node range-cn042 right now.&#34;
+Result: Job starts within 3 minutes. Memory efficiency reaches 85%.
+</code></pre><h4 id="code-comparison">Code Comparison:</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># ❌ BAD: over_allocation_bad_example.sh</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --job-name=mem_hog</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --mem=128G </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Job stays pending in queue for days for resources it doesn&#39;t need.</span>
+</span></span><span style="display:flex;"><span>python data_process.py
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ✅ GOOD: enough_amount_allocation.sh</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --job-name=mem_smart</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --mem=16G </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Starts quickly; validated using `seff` from a preliminary test run.</span>
+</span></span><span style="display:flex;"><span>python data_process.py
+</span></span></code></pre></div><hr>
+<h3 id="anti-pattern-2-the-sequential-execution-loop-trap">Anti-Pattern 2: The Sequential Execution Loop Trap</h3>
+<p>Another common pitfall is submitting a single job script requesting a multi-core node (e.g., 64 CPU cores), inside of which a single-threaded Python script runs 100 simulations sequentially in a <code>for</code> loop.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># ❌ BAD: single_core_job_full_allocate.sh</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --job-name=bad_seq</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --nodes=1</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --ntasks=64</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --time=48:00:00</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Wastes 63 CPU cores if the Python script is single-threaded!</span>
+</span></span><span style="display:flex;"><span>python my_single_thread_script.py param1
+</span></span><span style="display:flex;"><span>python my_single_thread_script.py param2
+</span></span></code></pre></div><p>In this scenario, you occupy 64 cores for 48 hours, but 63 cores sit at 0% utilization.</p>
+<h4 id="the-cluster-native-solution-slurm-job-arrays">The Cluster-Native Solution: Slurm Job Arrays</h4>
+<p>Slurm Job Arrays allow you to submit hundreds of independent parameter tasks under a single job ID, orchestrating true concurrent execution:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># ✅ GOOD: single_core_job_slurm_jobarray.sh</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --job-name=good_array</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --array=1-100%10</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --cpus-per-task=1</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --mem=4G</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --time=02:00:00</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Runs 100 tasks concurrently (maximum 10 running at any single moment)</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Executing task index: </span>$SLURM_ARRAY_TASK_ID<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>python my_single_thread_script.py --run-id <span style="color:#e6db74">&#34;</span>$SLURM_ARRAY_TASK_ID<span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><ul>
+<li>Each task requests only <strong>1 CPU core and 4 GB of RAM</strong>, allowing Slurm to scatter tasks across available node gaps immediately.</li>
+<li>The <code>%10</code> throttle prevents overwhelming filesystems while providing a <strong>10x wall-clock speedup</strong> over sequential execution.</li>
+</ul>
+<hr>
+<h3 id="anti-pattern-3-the-multi-gpu-hoarding-trap">Anti-Pattern 3: The Multi-GPU Hoarding Trap</h3>
+<p>Modern GPU accelerators (such as NVIDIA H100 and H200) represent substantial capital investments and are in high demand across research institutions.</p>
+<p>A frequent error is requesting 4 GPUs (<code>--gres=gpu:4</code>) in the Slurm header for a script that is written for a single CUDA device:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># train_model.py</span>
+</span></span><span style="display:flex;"><span>device <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>device(<span style="color:#e6db74">&#34;cuda:0&#34;</span> <span style="color:#66d9ef">if</span> torch<span style="color:#f92672">.</span>cuda<span style="color:#f92672">.</span>is_available() <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;cpu&#34;</span>)
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>to(device)  <span style="color:#75715e"># Only utilizes GPU 0!</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># ❌ BAD: wasting_gpu_resource.sh</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --job-name=gpu_waste</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --gres=gpu:4</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --time=24:00:00</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Locks 4 GPUs, but the Python script only sends tensors to cuda:0.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3 H100 GPUs sit at 0% load while other researchers wait in queue.</span>
+</span></span><span style="display:flex;"><span>python train_model.py
+</span></span></code></pre></div><h4 id="the-cluster-native-solution-1">The Cluster-Native Solution:</h4>
+<p>If your script is not explicitly engineered with <code>torch.distributed.run</code> and <code>DistributedDataParallel</code> (DDP), request exactly <strong>1 GPU</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># ✅ GOOD: correct_gpu_reseource_allocation.sh</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --job-name=gpu_optimized</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --gres=gpu:1</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --time=24:00:00</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># High-priority scheduling, 100% GPU saturation</span>
+</span></span><span style="display:flex;"><span>apptainer exec --nv my_pytorch.sif python train_model.py
+</span></span></code></pre></div><hr>
+<h2 id="6-observability--profiling-know-your-hardware-utilization">6. Observability &amp; Profiling: Know Your Hardware Utilization</h2>
+<p>You cannot optimize what you do not measure. Slurm and modern Linux environments provide built-in telemetry tools to audit job performance.</p>
+<h3 id="post-mortem-auditing-with-seff">Post-Mortem Auditing with <code>seff</code></h3>
+<p>After any Slurm batch job terminates, run <code>seff &lt;jobid&gt;</code> to view a concise summary of CPU and memory efficiency:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>$ seff 4819201
+</span></span><span style="display:flex;"><span>Job ID: 4819201
+</span></span><span style="display:flex;"><span>Cluster: range
+</span></span><span style="display:flex;"><span>State: COMPLETED (exit code 0)
+</span></span><span style="display:flex;"><span>Nodes: 1
+</span></span><span style="display:flex;"><span>Cores: 8
+</span></span><span style="display:flex;"><span>CPU Utilized: 02:45:12
+</span></span><span style="display:flex;"><span>CPU Efficiency: 89.2% of 03:05:12 core-walltime
+</span></span><span style="display:flex;"><span>Memory Utilized: 14.21 GB
+</span></span><span style="display:flex;"><span>Memory Efficiency: 88.8% of 16.00 GB
+</span></span></code></pre></div><blockquote>
+<p>🎯 <strong>Rule of Thumb</strong>: If your <strong>Memory Efficiency is below 30%</strong>, reduce <code>--mem</code> in your next submission. If <strong>CPU Efficiency is low</strong>, verify your multi-threading flags (e.g., <code>OMP_NUM_THREADS</code> or PyTorch <code>num_workers</code>).</p>
+</blockquote>
+<h3 id="live-telemetry-during-interactive-allocations">Live Telemetry During Interactive Allocations</h3>
+<p>When running inside an interactive <code>salloc</code> session, observe real-time resource saturation:</p>
+<ul>
+<li><strong><code>nvtop</code></strong>: An interactive, visual GPU process monitor showing per-GPU compute engine %, memory bandwidth, and power draw.</li>
+<li><strong><code>nvidia-smi dmon -s pucvmet</code></strong>: Text-based periodic device telemetry.</li>
+<li><strong><code>htop</code></strong>: Per-core CPU load and thread distribution.</li>
+</ul>
+<p>Always execute a brief 5-minute sanity test interactively to verify GPU saturation before submitting a 48-hour batch job.</p>
+<hr>
+<h2 id="7-project-hygiene-structuring-run-directories--slurm-logs">7. Project Hygiene: Structuring Run Directories &amp; Slurm Logs</h2>
+<p>Avoid dumping standard output and error logs into your root home directory. Adopt a structured directory blueprint:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>my_scientific_project/
+</span></span><span style="display:flex;"><span>├── Makefile                   # Automated workflow entry points
+</span></span><span style="display:flex;"><span>├── requirements.txt           # Python dependency lockfile
+</span></span><span style="display:flex;"><span>├── container.sif              # Apptainer container image
+</span></span><span style="display:flex;"><span>├── src/                       # Application source code
+</span></span><span style="display:flex;"><span>├── sbatch/                    # Parameterized Slurm submission scripts
+</span></span><span style="display:flex;"><span>│   ├── 01_preprocess.slurm
+</span></span><span style="display:flex;"><span>│   └── 02_train_array.slurm
+</span></span><span style="display:flex;"><span>└── results/                   # Log outputs organized by Job ID
+</span></span><span style="display:flex;"><span>    ├── train_array_48210_1.out
+</span></span><span style="display:flex;"><span>    └── train_array_48210_1.err
+</span></span></code></pre></div><p>In your Slurm scripts, always parameterize output filenames:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Route output and errors automatically using job name (%x) and job ID (%j)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --output=results/%x_%j.out</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --error=results/%x_%j.err</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Receive email alerts on failure or completion</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --mail-type=END,FAIL</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#SBATCH --mail-user=re51@rice.edu</span>
+</span></span></code></pre></div><hr>
+<h2 id="8-conclusion-we-are-partners-in-discovery">8. Conclusion: We Are Partners in Discovery</h2>
+<p>Scaling computational research from a personal workstation to an institutional supercomputer is an iterative skill. The operational best practices outlined here—resource right-sizing, containerized portability, storage hygiene, and batch parallelization—form the technical bedrock of modern computational science.</p>
+<p>As computational scientists and research software engineers, we are here to support your scientific breakthroughs. Engage with the <strong>Center for Research Computing (CRC)</strong> early during experimental design, rather than solely when pipeline errors occur:</p>
+<ul>
+<li><strong>Open Office Hours</strong>: Every Tuesday (10:00 AM – 12:00 PM &amp; 1:00 PM – 3:00 PM). Drop in with your code, Slurm scripts, or scaling bottlenecks.</li>
+<li><strong>Helpdesk &amp; Ticketing</strong>: Contact <code>helpdesk@rice.edu</code> or submit through the Service Now portal for cluster, GPU, and software support.</li>
+<li><strong>1-on-1 Engineering Consultations</strong>: Arrange dedicated technical sessions to co-design multi-node distributed pipelines, PyTorch DDP acceleration, or Slurm job array automation.</li>
+</ul>
+<p>Let&rsquo;s build scalable, reproducible, and cluster-native science together.</p>
+<hr>
+<h3 id="resources--presentation-links">Resources &amp; Presentation Links</h3>
+<ul>
+<li><strong>Interactive Presentation Deck</strong>: <a href="https://erolrecep.github.io/best-practices-hpc/">https://erolrecep.github.io/best-practices-hpc/</a></li>
+<li><strong>Workshop Source Repository</strong>: <a href="https://github.com/erolrecep/best_practices_for_hpc">https://github.com/erolrecep/best_practices_for_hpc</a></li>
+<li><strong>Author Portfolio &amp; Blog</strong>: <a href="https://erolrecep.github.io/">https://erolrecep.github.io/</a></li>
+<li><strong>Rice Center for Research Computing</strong>: <a href="https://researchcomputing.rice.edu/">https://researchcomputing.rice.edu/</a></li>
+<li><strong>Rice HPC Documentation</strong>: <a href="https://kb.rice.edu/">https://kb.rice.edu/</a></li>
+</ul>
+
+  </div>
+</section>
+
+<section id="tag-pane" class="meta">
+  
+  <div class="d-flex flex-column flex-md-row justify-content-between">
+    <h6 class="text-end meta">
+      
+      
+      
+      TAGS:
+      
+      
+      <a class="meta" href="/tags/apptainer">APPTAINER</a>,
+      
+      
+      <a class="meta" href="/tags/gpu-computing">GPU COMPUTING</a>,
+      
+      
+      <a class="meta" href="/tags/high-performance-computing">HIGH PERFORMANCE COMPUTING</a>,
+      
+      
+      <a class="meta" href="/tags/performance-optimization">PERFORMANCE OPTIMIZATION</a>,
+      
+      
+      <a class="meta" href="/tags/reproducibility">REPRODUCIBILITY</a>,
+      
+      
+      <a class="meta" href="/tags/scientific-workflows">SCIENTIFIC WORKFLOWS</a>,
+      
+      
+      <a class="meta" href="/tags/slurm">SLURM</a>
+      
+      
+      
+    </h6>
+  </div>
+  
+</section>
+
+
+
+
+
+
+
+<section id="menu-pane" class="menu text-center">
+  
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      
+      
+      <li class="menu-item">
+        <a class="menu-item" href="https://erolrecep.github.io/posts/data-science-yesterday-tomorrow/">&lt; prev</a>
+      </li>
+      
+
+      <li class="menu-item">
+        
+        <span class="menu-item">&nbsp;|&nbsp;</span>
+        
+        <a class="menu-item" href="/posts">posts</a>
+        
+      </li>
+
+      
+      
+    </ul>
+  </nav>
+  
+  <h4 class="text-center mt-3"><a class="menu-item" href="https://erolrecep.github.io/">home</a></h4>
+</section>
+
+
+<footer class="text-center footer">
+  <hr />
+  
+  <h6 class="text-center copyright">© 2026. Recep Erol. Made with ❤️ in Houston, TX</h6>
+  
+  <h6 class="text-center powered"><a href="https://gohugo.io/">Hugo, themed by </a> <a
+      href="https://github.com/kaapiandcode/hugo-goa">hugo-goa</a> <br> <a href="https://creativecommons.org/version4/" >Some Rights Reserved</a> </h6>
+  
+  
+  <h6>
+    <a href="https://erolrecep.github.io/index.xml" aria-label="RSS Feed"><i class="fas fa-rss" aria-hidden="true"></i></a>
+  </h6>
+  
+  
+
+</footer>
+
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+
+<script>hljs.highlightAll();</script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="/js/custom.js"></script>
+</body>
+
+</html>
+

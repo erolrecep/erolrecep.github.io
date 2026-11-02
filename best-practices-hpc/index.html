@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Best Practices for Using HPC: Scaling Up to Cluster-Native Workflows</title>
+  <meta name="description"
+    content="Comprehensive guide & workshop on High-Performance Computing best practices, Slurm optimization, and cluster-native workflows by Dr. Recep Erol (Rice University CRC)." />
+  <meta name="author" content="Dr. Recep Erol" />
+
+  <!-- Reveal.js 5.1 Core Styles via CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/dracula.css" id="theme" />
+
+  <!-- Monokai Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css" />
+
+  <!-- Google Fonts: Inter & Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.35);
+      --secondary: #a855f7;
+      --accent: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --bg-dark: #0b0f19;
+      --card-bg: rgba(15, 23, 42, 0.82);
+      --card-border: rgba(255, 255, 255, 0.12);
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .reveal {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: #f1f5f9;
+      background: radial-gradient(circle at 50% 15%, #1e1b4b 0%, #0f172a 50%, #030712 100%);
+    }
+
+    .reveal .slides section {
+      padding: 0 !important;
+      box-sizing: border-box;
+    }
+
+    .reveal h1,
+    .reveal h2,
+    .reveal h3,
+    .reveal h4 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      text-transform: none;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .reveal h1 {
+      font-size: 1.7em;
+      line-height: 1.15;
+    }
+
+    .reveal h2 {
+      font-size: 1.25em;
+      line-height: 1.2;
+      margin-bottom: 0.25em;
+    }
+
+    .reveal h3 {
+      font-size: 0.95em;
+      color: var(--primary);
+    }
+
+    .reveal h4 {
+      font-size: 0.68em;
+      color: #94a3b8;
+      font-weight: 500;
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+
+    .reveal p,
+    .reveal li {
+      font-size: 0.52em;
+      line-height: 1.45;
+      color: #cbd5e1;
+    }
+
+    .reveal strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .reveal ul {
+      margin-left: 1.2em;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .reveal pre {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      font-size: 0.38em !important;
+      width: 100%;
+      margin: 6px 0;
+      box-sizing: border-box;
+    }
+
+    .reveal pre code {
+      font-family: 'Fira Code', monospace;
+      padding: 8px 12px !important;
+      line-height: 1.35;
+      max-height: 380px;
+      box-sizing: border-box;
+    }
+
+    /* Cards & Containers */
+    .slide-wrapper {
+      max-width: 1120px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    .glass-card p,
+    .glass-card li {
+      font-size: 0.48em;
+      line-height: 1.4;
+      color: #cbd5e1;
+    }
+
+    .glass-card h4 {
+      font-size: 0.68em;
+      margin-bottom: 6px;
+    }
+
+    .glass-card-bad {
+      border: 1px solid rgba(248, 113, 113, 0.45);
+      background: rgba(30, 15, 20, 0.85);
+    }
+
+    .glass-card-good {
+      border: 1px solid rgba(52, 211, 153, 0.45);
+      background: rgba(15, 30, 25, 0.85);
+    }
+
+    .card-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .card-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Badges & Pills */
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      font-size: 0.44em;
+      font-weight: 700;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .badge-danger {
+      background: rgba(248, 113, 113, 0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(248, 113, 113, 0.5);
+    }
+
+    .badge-success {
+      background: rgba(52, 211, 153, 0.2);
+      color: #6ee7b7;
+      border: 1px solid rgba(52, 211, 153, 0.5);
+    }
+
+    .badge-primary {
+      background: rgba(56, 189, 248, 0.2);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.5);
+    }
+
+    .badge-warning {
+      background: rgba(251, 191, 36, 0.2);
+      color: #fde047;
+      border: 1px solid rgba(251, 191, 36, 0.5);
+    }
+
+    /* Author Bio Box */
+    .bio-container {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 22px 28px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .bio-avatar {
+      width: 155px;
+      height: 155px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      box-shadow: 0 0 20px var(--primary-glow);
+      flex-shrink: 0;
+    }
+
+    .bio-details {
+      line-height: 1.5;
+    }
+
+    .bio-details h3 {
+      font-size: 1.15em;
+      margin: 0 0 2px 0;
+      color: #ffffff;
+    }
+
+    .bio-details .bio-role {
+      font-size: 0.68em;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .bio-details p {
+      font-size: 0.52em;
+      margin: 4px 0;
+    }
+
+    .bio-details a {
+      color: #7dd3fc;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .bio-details a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 6px 10px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.15em;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 0.44em;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 1: Title Slide -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper" style="text-align: center;">
+          <div style="margin-bottom: 12px;">
+            <span class="badge-pill badge-primary">Rice University CRC Workshop</span>
+          </div>
+          <h1 style="font-size: 1.75em; margin-bottom: 8px; background: linear-gradient(135deg, #ffffff 40%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            Best Practices for Using HPC
+          </h1>
+          <h3 style="font-size: 0.95em; font-weight: 500; color: #cbd5e1; margin-bottom: 16px;">
+            Scaling Up to Cluster-Native Workflows
+          </h3>
+          <p style="font-size: 0.6em; color: #94a3b8; margin: 0 auto 22px auto; max-width: 720px;">
+            Bridging the gap between personal laptops and large-scale, hardware-accelerated supercomputing.
+          </p>
+          <div style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.06); padding: 6px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1);">
+            <span style="font-size: 0.52em; color: #ffffff; font-weight: 600;">Recep Erol, PhD</span>
+            <span style="color: #64748b; font-size: 0.5em;">•</span>
+            <span style="font-size: 0.52em; color: #94a3b8;">Center for Research Computing (CRC)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 2: About Me (from VibeCoding-Workshop) -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <div style="text-align: center; margin-bottom: 14px;">
+            <span class="badge-pill badge-primary">Presenter Profile</span>
+          </div>
+          <div class="bio-container">
+            <img class="bio-avatar" src="images/avatar.jpeg" alt="Recep Erol, PhD" />
+            <div class="bio-details">
+              <h3>Recep Erol, PhD</h3>
+              <div class="bio-role">Computational Scientist for AI</div>
+              <p>
+                🏛️ <a href="https://researchcomputing.rice.edu/" target="_blank">Center for Research Computing (CRC) • Rice University</a>
+              </p>
+              <p>
+                📧 <a href="mailto:re51@rice.edu">re51@rice.edu</a>
+              </p>
+              <p>
+                🔗 <a href="https://linkedin.com/in/erolrecep" target="_blank">linkedin.com/in/erolrecep</a>
+              </p>
+              <p>
+                💻 <a href="https://github.com/erolrecep" target="_blank">github.com/erolrecep</a>
+              </p>
+              <p>
+                🌐 <a href="https://erolrecep.github.io" target="_blank">erolrecep.github.io</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 3: The Narrative Shift - We Are Partners in Research -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <h2>We Are Your Partners in Research</h2>
+          <h4>An HPC cluster is not just a larger laptop—it is a shared community ecosystem.</h4>
+          <div class="card-grid-3">
+            <div class="glass-card">
+              <div style="font-size: 1.3em; margin-bottom: 4px;">🔬</div>
+              <h4 style="color: #ffffff; font-size: 0.72em;">Cutting-Edge Science</h4>
+              <p>You push domain boundaries in molecular dynamics, AI/LLMs, genomics, and simulations.</p>
+            </div>
+            <div class="glass-card">
+              <div style="font-size: 1.3em; margin-bottom: 4px;">🔄</div>
+              <h4 style="color: #ffffff; font-size: 0.72em;">New Paradigms</h4>
+              <p>Cluster computing introduces batch queues, parallel storage, and hardware accelerators.</p>
+            </div>
+            <div class="glass-card">
+              <div style="font-size: 1.3em; margin-bottom: 4px;">🤝</div>
+              <h4 style="color: #ffffff; font-size: 0.72em;">Active Collaboration</h4>
+              <p>CRC engineers co-design pipelines with you before runs happen, turning queue delays into speedups.</p>
+            </div>
+          </div>
+          <div style="margin-top: 14px; padding: 10px 16px; background: rgba(56, 189, 248, 0.1); border-left: 3px solid var(--primary); border-radius: 6px; text-align: left;">
+            <p style="margin: 0; font-size: 0.5em; color: #e2e8f0;">
+              <strong>Guiding Philosophy:</strong> Everyone needs help scaling up. Our goal is empowering you to write cluster-native code that runs faster, costs less in wait time, and reproduces seamlessly.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 4: Agenda - The 5 Pillars of Cluster-Native Workflows -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <h2>The 5 Pillars of Cluster Efficiency</h2>
+          <h4>What we will cover today</h4>
+          <div class="card-grid-2">
+            <div class="glass-card">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span class="badge-pill badge-primary">Pillar 1</span>
+                <strong style="font-size: 0.68em;">The Mindset Shift</strong>
+              </div>
+              <p>Shared resource ethics, interactive vs. batch paradigms, and login node etiquette.</p>
+            </div>
+            <div class="glass-card">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span class="badge-pill badge-primary">Pillar 2</span>
+                <strong style="font-size: 0.68em;">Data Logistics & Storage</strong>
+              </div>
+              <p>High-speed VAST scratch vs. archives; migrating multi-TB datasets via Globus & rsync.</p>
+            </div>
+            <div class="glass-card">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span class="badge-pill badge-primary">Pillar 3</span>
+                <strong style="font-size: 0.68em;">Reproducible Environments</strong>
+              </div>
+              <p>Containerizing workloads with Apptainer (Singularity) and automating with Makefiles.</p>
+            </div>
+            <div class="glass-card">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span class="badge-pill badge-warning">Pillar 4</span>
+                <strong style="font-size: 0.68em;">Slurm & The 3 Traps</strong>
+              </div>
+              <p>Memory over-allocation, sequential job loops, and single-GPU lockups on multi-GPU nodes.</p>
+            </div>
+          </div>
+          <div class="glass-card" style="margin-top: 10px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span class="badge-pill badge-success">Pillar 5</span>
+              <strong style="font-size: 0.68em;">Observability & CRC Support</strong>
+            </div>
+            <p>Auditing jobs with <code>seff</code>, monitoring live GPUs with <code>nvtop</code>, and collaborating during office hours.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 5: Pillar 1 - The Core Mindset Shift -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-primary">Pillar 1: Architecture</span>
+          </div>
+          <h2>Laptop vs. Supercomputer</h2>
+          <h4>Moving from synchronous execution to orchestrated batch scheduling</h4>
+          <div class="card-grid-2">
+            <div class="glass-card" style="border-left: 3px solid var(--danger);">
+              <h4 style="color: #fca5a5; font-size: 0.72em; margin-bottom: 4px;">💻 Personal Laptop / Workstation</h4>
+              <ul>
+                <li><strong>Dedicated:</strong> You own 100% of memory and CPU cores.</li>
+                <li><strong>Interactive:</strong> Click "Run", view output, hit Ctrl+C.</li>
+                <li><strong>Unbounded I/O:</strong> Writing temp files to desktop is harmless.</li>
+                <li><strong>Failure:</strong> If laptop sleeps or restarts, process dies.</li>
+              </ul>
+            </div>
+            <div class="glass-card" style="border-left: 3px solid var(--accent);">
+              <h4 style="color: #6ee7b7; font-size: 0.72em; margin-bottom: 4px;">⚡ Shared HPC Cluster</h4>
+              <ul>
+                <li><strong>Shared:</strong> Hundreds of researchers compete for compute nodes.</li>
+                <li><strong>Scheduled:</strong> Slurm orchestrates jobs by fair-share priority.</li>
+                <li><strong>Parallel I/O:</strong> Shared network filesystem (VAST / GPFS).</li>
+                <li><strong>Resilient:</strong> Detached batch jobs continue 24/7 uninterrupted.</li>
+              </ul>
+            </div>
+          </div>
+          <div style="margin-top: 12px; text-align: left;">
+            <p style="font-size: 0.52em; color: #94a3b8;">
+              💡 <em>Key Takeaway:</em> HPC is not an interactive playground—it is a production compute factory. Develop locally or interactively, then dispatch autonomous batch workloads.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 6: Accessing HPC - Login Nodes vs Compute Nodes -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <h2>Accessing HPC: The Golden Rule</h2>
+          <h4 style="color: var(--danger);">Never execute computational workloads on login nodes!</h4>
+          <div class="card-grid-2">
+            <div class="glass-card glass-card-bad">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <h4 style="color: #fca5a5; margin: 0; font-size: 0.72em;">🚫 Login Nodes (Gateway Only)</h4>
+                <span class="badge-pill badge-danger">Strict Limits</span>
+              </div>
+              <p><strong>Allowed:</strong></p>
+              <ul>
+                <li>Navigating files, editing scripts with nano/vim.</li>
+                <li>Submitting jobs (<code>sbatch</code>, <code>squeue</code>, <code>scancel</code>).</li>
+                <li>Light Git cloning and checking status.</li>
+              </ul>
+              <p style="color: #fca5a5; margin-top: 6px;">
+                <strong>Forbidden:</strong> Remote VSCode Server / Copilot indexing, heavy compiling, running simulations directly.
+              </p>
+            </div>
+            <div class="glass-card glass-card-good">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <h4 style="color: #6ee7b7; margin: 0; font-size: 0.72em;">✅ Compute Nodes (The Workhorses)</h4>
+                <span class="badge-pill badge-success">Full Power</span>
+              </div>
+              <p><strong>Interactive Debugging:</strong></p>
+              <ul>
+                <li><code>salloc --cpus-per-task=4 --mem=16G --time=02:00:00</code></li>
+                <li><strong>OpenOnDemand (OOD):</strong> Web-based Jupyter & MATLAB with dedicated compute allocation.</li>
+              </ul>
+              <p><strong>Production Batch Jobs:</strong></p>
+              <ul>
+                <li><code>sbatch my_job.slurm</code> (unattended, queued, logged).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 7: Pillar 2 - Data Logistics: Moving Data at Scale -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-primary">Pillar 2: Data Transfer</span>
+          </div>
+          <h2>Moving Data at Scale</h2>
+          <h4>Choose the right vehicle for your data payload</h4>
+          <div class="card-grid-2">
+            <div class="glass-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <strong style="color: #38bdf8; font-size: 0.72em;">📁 Small to Medium (&lt; 100 GB)</strong>
+                <span class="badge-pill badge-primary">Terminal</span>
+              </div>
+              <p><strong>Tool: <code>rsync</code> or <code>scp</code></strong></p>
+              <pre><code class="language-bash"># Efficient incremental synchronization
+rsync -avzP --exclude '*.tmp' ./my_dataset/ \
+  re51@range.rice.edu:/scratch/re51/data/</code></pre>
+              <ul>
+                <li>Resumes interrupted transfers (<code>-P</code>).</li>
+                <li>Preserves timestamps and permissions (<code>-a</code>).</li>
+                <li>Ideal for code, configs, and preprocessed subsets.</li>
+              </ul>
+            </div>
+            <div class="glass-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <strong style="color: #34d399; font-size: 0.72em;">🌐 Massive Payloads (Multi-TB)</strong>
+                <span class="badge-pill badge-success">High Throughput</span>
+              </div>
+              <p><strong>Tool: Globus Transfer</strong></p>
+              <ul>
+                <li><strong>GridFTP Engine:</strong> Maxes out campus 100GbE science DMZ.</li>
+                <li><strong>Auto-Healing:</strong> Checksums every chunk and retries on dropped connections.</li>
+                <li><strong>Background Execution:</strong> Does not require your laptop to remain open.</li>
+                <li>Direct endpoint-to-endpoint between Rice, TACC, AWS, and external universities.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 8: Pillar 2 (Cont.) - Storage Hygiene: Scratch vs Permanent -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-primary">Pillar 2: Storage Tiers</span>
+          </div>
+          <h2>Storage Hygiene: Scratch vs. Archive</h2>
+          <h4>HPC storage is partitioned for specific I/O profiles</h4>
+          <div class="card-grid-3">
+            <div class="glass-card">
+              <h4 style="color: #fbbf24; font-size: 0.72em; margin-bottom: 4px;">🏠 Home (~/home)</h4>
+              <div class="stat-box" style="margin-bottom: 6px;">
+                <div class="stat-number">~20-50 GB</div>
+                <div class="stat-label">Quota Limited</div>
+              </div>
+              <p>For dotfiles, SSH keys, virtual environment definitions, and Git repositories. <strong>Never write simulation checkpoints here.</strong></p>
+            </div>
+            <div class="glass-card" style="border: 1px solid var(--accent);">
+              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 4px;">⚡ Scratch (/scratch)</h4>
+              <div class="stat-box" style="margin-bottom: 6px;">
+                <div class="stat-number" style="color: var(--accent);">VAST NVMe</div>
+                <div class="stat-label">High-Speed Parallel I/O</div>
+              </div>
+              <p>For active compute runs, checkpointing, and uncompressed datasets. <strong>Purge policy applies—clean intermediate files!</strong></p>
+            </div>
+            <div class="glass-card">
+              <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 4px;">📦 Project / Archive</h4>
+              <div class="stat-box" style="margin-bottom: 6px;">
+                <div class="stat-number" style="color: var(--primary);">Lab Shares</div>
+                <div class="stat-label">Long-Term Storage</div>
+              </div>
+              <p>For published benchmark data and final analysis results. Not for hundreds of thousands of tiny temp cache files.</p>
+            </div>
+          </div>
+          <div style="margin-top: 12px; padding: 8px 14px; background: rgba(251, 191, 36, 0.1); border-left: 3px solid var(--warning); text-align: left;">
+            <p style="margin: 0; font-size: 0.48em; color: #fde047;">
+              ⚠️ <strong>The Million Tiny Files Trap:</strong> Storing 1,000,000 loose 10KB images degrades Lustre/VAST metadata servers. Always archive or bundle datasets (e.g. <code>tar</code>, HDF5, WebDataset).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 9: Pillar 3 - Reproducible Environments (Apptainer) -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-primary">Pillar 3: Reproducibility</span>
+          </div>
+          <h2>Eliminate "Works on My Machine"</h2>
+          <h4>Package once with Apptainer (Singularity) • Run anywhere identically</h4>
+          <div class="card-grid-2">
+            <div class="glass-card">
+              <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 6px;">📦 Why Containers on HPC?</h4>
+              <ul>
+                <li><strong>No Root Needed:</strong> Apptainer executes in unprivileged user space.</li>
+                <li><strong>Direct Hardware Binding:</strong> <code>--nv</code> automatically passes NVIDIA driver & CUDA libraries into container.</li>
+                <li><strong>Host Filesystem Mounting:</strong> Access <code>/scratch</code> and <code>/home</code> seamlessly inside.</li>
+                <li><strong>Reproducibility:</strong> One <code>.sif</code> file encapsulates Python 3.13, PyTorch, C libraries, and CUDA.</li>
+              </ul>
+            </div>
+            <div class="glass-card">
+              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 6px;">🚀 Example Slurm Execution</h4>
+              <pre><code class="language-bash"># Run PyTorch GPU script inside container
+apptainer exec --nv \
+  --bind /scratch/re51:/scratch \
+  /scratch/re51/containers/pytorch_2.4.sif \
+  python3 /scratch/re51/code/train.py \
+    --data-dir /scratch/re51/dataset</code></pre>
+              <p style="font-size: 0.48em; margin-top: 6px; color: #94a3b8;">
+                Pair with a project <code>Makefile</code> so that <code>make train</code> executes the identical recipe locally and on RANGE.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 10: Slurm Trap 1 - The Memory Trap -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-danger">Slurm Anti-Pattern #1</span>
+          </div>
+          <h2>Trap 1: The Memory Overallocation Trap</h2>
+          <h4>Requesting 128 GB "just to be safe" inflates queue wait times for days</h4>
+          <div class="card-grid-2">
+            <div class="glass-card glass-card-bad">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span class="badge-pill badge-danger">❌ over_allocation_bad_example.sh</span>
+              </div>
+              <pre><code class="language-bash">#!/bin/bash
+#SBATCH --job-name=mem_hog
+#SBATCH --mem=128G 
+# Job stays pending in queue for days for 
+# resources it doesn't actually need.
+
+python data_process.py</code></pre>
+              <ul style="font-size: 0.46em; margin-top: 4px;">
+                <li>Slurm scheduler must drain nodes to carve out 128GB RAM.</li>
+                <li>Actual script memory peak: <strong>only 12.4 GB</strong>.</li>
+                <li><strong>Wasted:</strong> 115.6 GB RAM locked away from peers.</li>
+              </ul>
+            </div>
+            <div class="glass-card glass-card-good">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span class="badge-pill badge-success">✅ enough_amount_allocation.sh</span>
+              </div>
+              <pre><code class="language-bash">#!/bin/bash
+#SBATCH --job-name=mem_smart
+#SBATCH --mem=16G 
+# Job starts quickly. Validated using `seff` 
+# from a previous run.
+
+python data_process.py</code></pre>
+              <ul style="font-size: 0.46em; margin-top: 4px;">
+                <li>Slurm instantly fits this job into available node fragments.</li>
+                <li>Queue wait drops from <strong>48 hours to 3 minutes</strong>.</li>
+                <li>Verified with: <code>seff &lt;jobid&gt;</code> (85% memory efficiency).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 11: Slurm Trap 2 - The Sequential Execution Trap -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-danger">Slurm Anti-Pattern #2</span>
+          </div>
+          <h2>Trap 2: The Sequential Loop Trap</h2>
+          <h4>Running 100 independent simulations sequentially inside a huge multi-core allocation</h4>
+          <div class="card-grid-2">
+            <div class="glass-card glass-card-bad">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span class="badge-pill badge-danger">❌ single_core_job_full_allocate.sh</span>
+              </div>
+              <pre><code class="language-bash">#!/bin/bash
+#SBATCH --job-name=bad_seq
+#SBATCH --nodes=1
+#SBATCH --ntasks=64
+#SBATCH --time=48:00:00
+
+# Wastes 63 cores if the script is single-threaded
+python my_single_thread_script.py param1
+python my_single_thread_script.py param2</code></pre>
+              <p style="font-size: 0.46em; color: #fca5a5; margin-top: 4px;">
+                Allocates 64 cores for 48 hours, but python executes on 1 core. 63 CPU cores idle at 0% load!
+              </p>
+            </div>
+            <div class="glass-card glass-card-good">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span class="badge-pill badge-success">✅ single_core_job_slurm_jobarray.sh</span>
+              </div>
+              <pre><code class="language-bash">#!/bin/bash
+#SBATCH --job-name=good_array
+#SBATCH --array=1-100%10
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=4G
+#SBATCH --time=02:00:00
+
+# Runs 100 tasks concurrently (max 10 at once)
+echo "Running task ID: $SLURM_ARRAY_TASK_ID"
+python my_single_thread_script.py --id $SLURM_ARRAY_TASK_ID</code></pre>
+              <p style="font-size: 0.46em; color: #6ee7b7; margin-top: 4px;">
+                Parallel throughput: Slurm launches 10 concurrent worker tasks, dropping wall-clock runtime by <strong>10x</strong>!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 12: Slurm Trap 3 - The Multi-GPU Waste Trap -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-danger">Slurm Anti-Pattern #3</span>
+          </div>
+          <h2>Trap 3: The Multi-GPU Hoarding Trap</h2>
+          <h4>Requesting 4 H100 GPUs for a script that only addresses <code>cuda:0</code></h4>
+          <div class="card-grid-2">
+            <div class="glass-card glass-card-bad">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span class="badge-pill badge-danger">❌ wasting_gpu_resource.sh</span>
+              </div>
+              <pre><code class="language-bash">#!/bin/bash
+#SBATCH --job-name=gpu_waste
+#SBATCH --gres=gpu:4
+#SBATCH --time=24:00:00
+
+# The Python script is only coded to use cuda:0.
+# 3 H100 GPUs sit idle while others wait in queue.
+python train_model.py</code></pre>
+              <p style="font-size: 0.46em; color: #fca5a5; margin-top: 4px;">
+                Locks \$120,000 worth of GPUs. 3 GPUs sit at 0% utilization while lab mates are stuck in <code>PENDING</code> status.
+              </p>
+            </div>
+            <div class="glass-card glass-card-good">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span class="badge-pill badge-success">✅ correct_gpu_reseource_allocation.sh</span>
+              </div>
+              <pre><code class="language-bash">#!/bin/bash
+#SBATCH --job-name=gpu_optimized
+#SBATCH --gres=gpu:1
+#SBATCH --time=24:00:00
+
+# Loads Apptainer container with PyTorch
+apptainer exec --nv my_pytorch.sif python train_model.py
+
+# (If using 4 GPUs, script MUST use 
+# DistributedDataParallel or similar).</code></pre>
+              <p style="font-size: 0.46em; color: #6ee7b7; margin-top: 4px;">
+                High priority queueing, 100% GPU saturation. If scaling to 4 GPUs, verify with <code>torch.distributed</code> first!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 13: Pillar 5 - Observability, Profiling & Audit Tools -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-primary">Pillar 5: Observability</span>
+          </div>
+          <h2>Know Your Hardware Utilization</h2>
+          <h4>Audit running and finished jobs with native diagnostics</h4>
+          <div class="card-grid-2">
+            <div class="glass-card">
+              <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 4px;">📊 Post-Mortem Audit: <code>seff</code></h4>
+              <p style="font-size: 0.48em; margin-bottom: 4px;">Inspect real CPU & RAM efficiency after job finishes:</p>
+              <pre><code class="language-bash">$ seff 4819201
+Job ID: 4819201
+State: COMPLETED (exit code 0)
+Cores: 8
+CPU Utilized: 02:45:12
+CPU Efficiency: 89.2% of 03:05:12 core-walltime
+Memory Utilized: 14.21 GB
+Memory Efficiency: 88.8% of 16.00 GB</code></pre>
+              <p style="font-size: 0.46em; color: #34d399; margin-top: 4px;">
+                ✅ <strong>Golden Rule:</strong> If Memory Efficiency &lt; 30%, reduce <code>--mem</code> in your next run!
+              </p>
+            </div>
+            <div class="glass-card">
+              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 4px;">🔍 Live Monitoring During <code>salloc</code></h4>
+              <ul>
+                <li><strong><code>nvtop</code> / <code>nvidia-smi</code>:</strong> Real-time GPU compute %, memory %, and PCIe bandwidth.</li>
+                <li><strong><code>htop</code>:</strong> Inspect per-core CPU utilization and thread affinity.</li>
+                <li><strong><code>sacct -j &lt;jobid&gt; --format=JobID,Elapsed,MaxRSS,State</code></strong></li>
+              </ul>
+              <div style="margin-top: 10px; padding: 6px 10px; background: rgba(56, 189, 248, 0.1); border-radius: 6px;">
+                <p style="margin: 0; font-size: 0.46em; color: #cbd5e1;">
+                  Always run a 1-epoch or 5-minute interactive test on compute nodes before launching a 72-hour batch job.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 14: Organizing Project Layout for Job History -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <h2>Folder Structure & Slurm Hygiene</h2>
+          <h4>Pair submitted job scripts with their output logs</h4>
+          <div class="card-grid-2">
+            <div class="glass-card">
+              <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 6px;">📁 Recommended Project Blueprint</h4>
+              <pre><code class="language-text">my_project/
+├── Makefile               # Automated build & test targets
+├── requirements.txt       # Environment lockfile
+├── container.sif          # Apptainer image
+├── src/                   # Python / C source modules
+├── sbatch/                # Parameterized Slurm scripts
+│   ├── 01_preprocess.slurm
+│   └── 02_train_array.slurm
+└── results/               # Job history logs
+    ├── 01_prep_48210.out
+    └── 01_prep_48210.err</code></pre>
+            </div>
+            <div class="glass-card">
+              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 6px;">🎯 Best Practices for Slurm Directives</h4>
+              <pre><code class="language-bash"># Auto-route standard output & errors with JobID
+#SBATCH --output=results/%x_%j.out
+#SBATCH --error=results/%x_%j.err
+
+# Email notifications on failure or completion
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=re51@rice.edu</code></pre>
+              <ul>
+                <li>Never dump stdout into your root home directory.</li>
+                <li><code>%x</code> expands to Job Name, <code>%j</code> expands to Job ID.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 15: Partnering with CRC - Office Hours & Support -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper">
+          <h2>Let's Collaborate: We Are Here to Help!</h2>
+          <h4>Engage with CRC engineers during experimental design, not just when jobs fail</h4>
+          <div class="card-grid-3">
+            <div class="glass-card">
+              <div style="font-size: 1.3em; margin-bottom: 4px;">🚪</div>
+              <h4 style="color: #ffffff; font-size: 0.72em;">Open Office Hours</h4>
+              <p>Every Tuesday:</p>
+              <p style="color: var(--primary); font-weight: 600; font-size: 0.52em;">10:00 AM – 12:00 PM<br/>1:00 PM – 3:00 PM</p>
+              <p style="font-size: 0.46em; color: #94a3b8;">Drop in with code, Slurm scripts, or architecture questions.</p>
+            </div>
+            <div class="glass-card">
+              <div style="font-size: 1.3em; margin-bottom: 4px;">🎫</div>
+              <h4 style="color: #ffffff; font-size: 0.72em;">CRC Support Tickets</h4>
+              <p>Submit questions anytime:</p>
+              <p style="color: #34d399; font-weight: 600; font-size: 0.52em;">helpdesk@rice.edu<br/>or Service Now portal</p>
+              <p style="font-size: 0.46em; color: #94a3b8;">Tag CRC for cluster, GPU, and software support.</p>
+            </div>
+            <div class="glass-card">
+              <div style="font-size: 1.3em; margin-bottom: 4px;">🤝</div>
+              <h4 style="color: #ffffff; font-size: 0.72em;">1-on-1 Consultations</h4>
+              <p>Scaling up a grant or pipeline?</p>
+              <p style="color: var(--warning); font-weight: 600; font-size: 0.52em;">Dedicated Engineering</p>
+              <p style="font-size: 0.46em; color: #94a3b8;">We help optimize MPI, PyTorch DDP, and Slurm arrays.</p>
+            </div>
+          </div>
+          <div style="margin-top: 14px; text-align: center;">
+            <p style="font-size: 0.56em; color: #ffffff;">
+              Portal: <a href="https://researchcomputing.rice.edu" target="_blank" style="color: var(--primary);">researchcomputing.rice.edu</a> • Cluster Docs: <a href="https://kb.rice.edu" target="_blank" style="color: var(--primary);">kb.rice.edu</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SLIDE 16: Closing & Q&A Slide -->
+      <!-- =================================================================== -->
+      <section>
+        <div class="slide-wrapper" style="text-align: center;">
+          <div style="margin-bottom: 10px;">
+            <span class="badge-pill badge-success">Questions & Discussion</span>
+          </div>
+          <h2 style="font-size: 1.55em; margin-bottom: 4px;">Thank You!</h2>
+          <h4 style="color: #94a3b8; font-weight: 400; margin-bottom: 16px;">
+            Let's build scalable, reproducible, cluster-native science together.
+          </h4>
+          <div class="bio-container" style="max-width: 700px; padding: 18px 24px;">
+            <img class="bio-avatar" src="images/avatar.jpeg" alt="Recep Erol, PhD" style="width: 130px; height: 130px;" />
+            <div class="bio-details">
+              <h3 style="font-size: 1.05em; margin: 0 0 2px 0;">Recep Erol, PhD</h3>
+              <div class="bio-role" style="font-size: 0.65em; margin-bottom: 6px;">Computational Scientist for AI • Rice CRC</div>
+              <p style="font-size: 0.5em; margin: 3px 0;">📧 <a href="mailto:re51@rice.edu">re51@rice.edu</a></p>
+              <p style="font-size: 0.5em; margin: 3px 0;">🔗 <a href="https://linkedin.com/in/erolrecep" target="_blank">linkedin.com/in/erolrecep</a> | <a href="https://github.com/erolrecep" target="_blank">github.com/erolrecep</a></p>
+              <p style="font-size: 0.5em; margin: 3px 0;">🌐 <a href="https://erolrecep.github.io" target="_blank">erolrecep.github.io</a> | <a href="https://researchcomputing.rice.edu" target="_blank">researchcomputing.rice.edu</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js 5.1 JS & Highlight Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      // Presentation dimensions (16:9 widescreen HD)
+      width: 1280,
+      height: 720,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+
+      // Navigation & Layout
+      hash: true,
+      slideNumber: 'c/t',
+      controls: true,
+      progress: true,
+      center: true,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+
+</html>
