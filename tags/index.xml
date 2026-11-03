@@ -10,9 +10,58 @@
 		
 		
 		
-			<lastBuildDate>Mon, 02 Nov 2026 12:00:00 -0600</lastBuildDate>
+			<lastBuildDate>Tue, 03 Nov 2026 06:00:00 -0600</lastBuildDate>
 		
 			<atom:link href="https://erolrecep.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Artificial Intelligence</title>
+				<link>https://erolrecep.github.io/tags/artificial-intelligence/</link>
+				<pubDate>Tue, 03 Nov 2026 06:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/artificial-intelligence/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Awesome-Datascience</title>
+				<link>https://erolrecep.github.io/tags/awesome-datascience/</link>
+				<pubDate>Tue, 03 Nov 2026 06:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/awesome-datascience/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Data Science</title>
+				<link>https://erolrecep.github.io/tags/data-science/</link>
+				<pubDate>Tue, 03 Nov 2026 06:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/data-science/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Formula 1</title>
+				<link>https://erolrecep.github.io/tags/formula-1/</link>
+				<pubDate>Tue, 03 Nov 2026 06:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/formula-1/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>High Performance Computing</title>
+				<link>https://erolrecep.github.io/tags/high-performance-computing/</link>
+				<pubDate>Tue, 03 Nov 2026 06:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/high-performance-computing/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Machine Learning</title>
+				<link>https://erolrecep.github.io/tags/machine-learning/</link>
+				<pubDate>Tue, 03 Nov 2026 06:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/machine-learning/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Simulation</title>
+				<link>https://erolrecep.github.io/tags/simulation/</link>
+				<pubDate>Tue, 03 Nov 2026 06:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/simulation/</guid>
+				<description></description>
+			</item>
 			<item>
 				<title>Apptainer</title>
 				<link>https://erolrecep.github.io/tags/apptainer/</link>
@@ -25,13 +74,6 @@
 				<link>https://erolrecep.github.io/tags/gpu-computing/</link>
 				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
 				<guid>https://erolrecep.github.io/tags/gpu-computing/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>High Performance Computing</title>
-				<link>https://erolrecep.github.io/tags/high-performance-computing/</link>
-				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
-				<guid>https://erolrecep.github.io/tags/high-performance-computing/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -63,31 +105,10 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Artificial Intelligence</title>
-				<link>https://erolrecep.github.io/tags/artificial-intelligence/</link>
-				<pubDate>Tue, 20 Oct 2026 20:45:00 -0500</pubDate>
-				<guid>https://erolrecep.github.io/tags/artificial-intelligence/</guid>
-				<description></description>
-			</item>
-			<item>
 				<title>Career Advice</title>
 				<link>https://erolrecep.github.io/tags/career-advice/</link>
 				<pubDate>Tue, 20 Oct 2026 20:45:00 -0500</pubDate>
 				<guid>https://erolrecep.github.io/tags/career-advice/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Data Science</title>
-				<link>https://erolrecep.github.io/tags/data-science/</link>
-				<pubDate>Tue, 20 Oct 2026 20:45:00 -0500</pubDate>
-				<guid>https://erolrecep.github.io/tags/data-science/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Machine Learning</title>
-				<link>https://erolrecep.github.io/tags/machine-learning/</link>
-				<pubDate>Tue, 20 Oct 2026 20:45:00 -0500</pubDate>
-				<guid>https://erolrecep.github.io/tags/machine-learning/</guid>
 				<description></description>
 			</item>
 			<item>

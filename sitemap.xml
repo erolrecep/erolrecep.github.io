@@ -2,13 +2,52 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://erolrecep.github.io/categories/artificial-intelligence/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/artificial-intelligence/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/awesome-datascience/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/categories/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/categories/data-science/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/data-science/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/posts/data-science-yesterday-tomorrow-part-2/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/formula-1/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/high-performance-computing/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/machine-learning/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/posts/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/simulation/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/</loc>
+    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
+  </url><url>
     <loc>https://erolrecep.github.io/tags/apptainer/</loc>
     <lastmod>2026-11-02T12:00:00-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/posts/best-practices-for-hpc/</loc>
-    <lastmod>2026-11-02T12:00:00-06:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/categories/</loc>
     <lastmod>2026-11-02T12:00:00-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/tags/gpu-computing/</loc>
@@ -17,16 +56,7 @@
     <loc>https://erolrecep.github.io/categories/high-performance-computing/</loc>
     <lastmod>2026-11-02T12:00:00-06:00</lastmod>
   </url><url>
-    <loc>https://erolrecep.github.io/tags/high-performance-computing/</loc>
-    <lastmod>2026-11-02T12:00:00-06:00</lastmod>
-  </url><url>
     <loc>https://erolrecep.github.io/tags/performance-optimization/</loc>
-    <lastmod>2026-11-02T12:00:00-06:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/posts/</loc>
-    <lastmod>2026-11-02T12:00:00-06:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/</loc>
     <lastmod>2026-11-02T12:00:00-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/tags/reproducibility/</loc>
@@ -41,28 +71,10 @@
     <loc>https://erolrecep.github.io/tags/slurm/</loc>
     <lastmod>2026-11-02T12:00:00-06:00</lastmod>
   </url><url>
-    <loc>https://erolrecep.github.io/tags/</loc>
-    <lastmod>2026-11-02T12:00:00-06:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/categories/artificial-intelligence/</loc>
-    <lastmod>2026-10-20T20:45:00-05:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/tags/artificial-intelligence/</loc>
-    <lastmod>2026-10-20T20:45:00-05:00</lastmod>
-  </url><url>
     <loc>https://erolrecep.github.io/tags/career-advice/</loc>
     <lastmod>2026-10-20T20:45:00-05:00</lastmod>
   </url><url>
-    <loc>https://erolrecep.github.io/categories/data-science/</loc>
-    <lastmod>2026-10-20T20:45:00-05:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/tags/data-science/</loc>
-    <lastmod>2026-10-20T20:45:00-05:00</lastmod>
-  </url><url>
     <loc>https://erolrecep.github.io/posts/data-science-yesterday-tomorrow/</loc>
-    <lastmod>2026-10-20T20:45:00-05:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/tags/machine-learning/</loc>
     <lastmod>2026-10-20T20:45:00-05:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/tags/marimo/</loc>
