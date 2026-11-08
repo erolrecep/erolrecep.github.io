@@ -78,25 +78,25 @@
   },
   "data-science-yesterday-tomorrow": {
     "slug": "data-science-yesterday-tomorrow",
-    "title": "From Yesterday to Tomorrow: Why Data Science + AI is Your Unstoppable Superpower",
+    "title": "Data Science from Yesterday to Tomorrow, Part 1: Why Data Science + AI is Your Unstoppable Superpower",
     "author": "Recep Erol",
     "voice": "am_adam",
-    "duration_seconds": 1196.17,
-    "duration_str": "19:56",
-    "file_size": 8976432,
+    "duration_seconds": 1200.51,
+    "duration_str": "20:00",
+    "file_size": 8996376,
     "output_path": "static/audio/data-science-yesterday-tomorrow.mp3",
-    "hash": "26d2aa19dcfb1a04b981322697c74d3b9a8e411f63371320306c73048d8b6caa"
+    "hash": "021cec67cae4653737e8d23f27881761062fa6af235fa023968cd35e60e3ccef"
   },
   "data-science-yesterday-tomorrow-part-2": {
     "slug": "data-science-yesterday-tomorrow-part-2",
     "title": "Data Science from Yesterday to Tomorrow, Part 2: Lessons from a Quarter-Century of Hype and Reality",
     "author": "Recep Erol",
     "voice": "am_adam",
-    "duration_seconds": 1198.97,
-    "duration_str": "19:58",
-    "file_size": 8984112,
+    "duration_seconds": 1199.03,
+    "duration_str": "19:59",
+    "file_size": 8962584,
     "output_path": "static/audio/data-science-yesterday-tomorrow-part-2.mp3",
-    "hash": "aa3577d2cddf95beee075ce56c64ece3dbbf91f584d7669cbf51636cc5ac3049"
+    "hash": "8c2f2c14c7f05c78157e35ea92efa38dbde4841784442b6fac101299e28fc5b4"
   },
   "gnuparallel_for_your_terminal_tasks": {
     "slug": "gnuparallel_for_your_terminal_tasks",
