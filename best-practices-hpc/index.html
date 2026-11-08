@@ -67,8 +67,13 @@
     }
 
     html,
-    body {
+    body,
+    #presentation-main {
       height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
       background-color: #FFFFFF;
       color: var(--text-main);
       font-family: 'Lato', system-ui, -apple-system, sans-serif;
@@ -505,8 +510,9 @@
   </div>
 
   <!-- Main Presentation Region Landmark (WCAG 1.3.1 / Valid HTML5 semantics) -->
-  <main id="presentation-main" class="reveal" aria-label="HPC Best Practices Slide Deck">
-    <div class="slides">
+  <main id="presentation-main" aria-label="HPC Best Practices Slide Deck">
+    <div class="reveal">
+      <div class="slides">
 
       <!-- ================================================================== -->
       <!-- SLIDE 1: Title Slide (Rice Institutional Blue Cover) -->
@@ -1363,7 +1369,8 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
       </section>
 
     </div>
-  </main>
+  </div>
+</main>
 
   <!-- Reveal.js & Highlight.js Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
@@ -1392,6 +1399,20 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
 
       // Plugins
       plugins: [RevealHighlight]
+    }).then(function () {
+      // Remove role="application" so screen reader users can navigate slides via standard reading keys (WCAG Best Practice)
+      const wrapper = document.querySelector('.reveal');
+      if (wrapper && wrapper.hasAttribute('role')) {
+        wrapper.removeAttribute('role');
+      }
+    });
+
+    // Safeguard removal on ready event
+    Reveal.on('ready', function () {
+      const wrapper = document.querySelector('.reveal');
+      if (wrapper && wrapper.hasAttribute('role')) {
+        wrapper.removeAttribute('role');
+      }
     });
 
     // Dynamic ARIA Live Region Announcement on Slide Change (WCAG 4.1.2)
