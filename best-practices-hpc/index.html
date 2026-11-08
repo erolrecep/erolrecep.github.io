@@ -37,7 +37,8 @@
       --card-border: rgba(255, 255, 255, 0.12);
     }
 
-    html, body {
+    html,
+    body {
       height: 100%;
       overflow: hidden;
     }
@@ -318,7 +319,8 @@
           <div style="margin-bottom: 12px;">
             <span class="badge-pill badge-primary">Rice University CRC Workshop</span>
           </div>
-          <h1 style="font-size: 1.75em; margin-bottom: 8px; background: linear-gradient(135deg, #ffffff 40%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          <h1
+            style="font-size: 1.75em; margin-bottom: 8px; background: linear-gradient(135deg, #ffffff 40%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
             Best Practices for Using HPC
           </h1>
           <h3 style="font-size: 0.95em; font-weight: 500; color: #cbd5e1; margin-bottom: 16px;">
@@ -327,7 +329,8 @@
           <p style="font-size: 0.6em; color: #94a3b8; margin: 0 auto 22px auto; max-width: 720px;">
             Bridging the gap between personal laptops and large-scale, hardware-accelerated supercomputing.
           </p>
-          <div style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.06); padding: 6px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1);">
+          <div
+            style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.06); padding: 6px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1);">
             <span style="font-size: 0.52em; color: #ffffff; font-weight: 600;">Recep Erol, PhD</span>
             <span style="color: #64748b; font-size: 0.5em;">•</span>
             <span style="font-size: 0.52em; color: #94a3b8;">Center for Research Computing (CRC)</span>
@@ -349,7 +352,8 @@
               <h3>Recep Erol, PhD</h3>
               <div class="bio-role">Computational Scientist for AI</div>
               <p>
-                🏛️ <a href="https://researchcomputing.rice.edu/" target="_blank">Center for Research Computing (CRC) • Rice University</a>
+                🏛️ <a href="https://researchcomputing.rice.edu/" target="_blank">Center for Research Computing (CRC) •
+                  Rice University</a>
               </p>
               <p>
                 📧 <a href="mailto:re51@rice.edu">re51@rice.edu</a>
@@ -392,9 +396,11 @@
               <p>CRC engineers co-design pipelines with you before runs happen, turning queue delays into speedups.</p>
             </div>
           </div>
-          <div style="margin-top: 14px; padding: 10px 16px; background: rgba(56, 189, 248, 0.1); border-left: 3px solid var(--primary); border-radius: 6px; text-align: left;">
+          <div
+            style="margin-top: 14px; padding: 10px 16px; background: rgba(56, 189, 248, 0.1); border-left: 3px solid var(--primary); border-radius: 6px; text-align: left;">
             <p style="margin: 0; font-size: 0.5em; color: #e2e8f0;">
-              <strong>Guiding Philosophy:</strong> Everyone needs help scaling up. Our goal is empowering you to write cluster-native code that runs faster, costs less in wait time, and reproduces seamlessly.
+              <strong>Guiding Philosophy:</strong> Everyone needs help scaling up. Our goal is empowering you to write
+              cluster-native code that runs faster, costs less in wait time, and reproduces seamlessly.
             </p>
           </div>
         </div>
@@ -442,7 +448,8 @@
               <span class="badge-pill badge-success">Pillar 5</span>
               <strong style="font-size: 0.68em;">Observability & CRC Support</strong>
             </div>
-            <p>Auditing jobs with <code>seff</code>, monitoring live GPUs with <code>nvtop</code>, and collaborating during office hours.</p>
+            <p>Auditing jobs with <code>seff</code>, monitoring live GPUs with <code>nvtop</code>, and collaborating
+              during office hours.</p>
           </div>
         </div>
       </section>
@@ -479,7 +486,8 @@
           </div>
           <div style="margin-top: 12px; text-align: left;">
             <p style="font-size: 0.52em; color: #94a3b8;">
-              💡 <em>Key Takeaway:</em> HPC is not an interactive playground—it is a production compute factory. Develop locally or interactively, then dispatch autonomous batch workloads.
+              💡 <em>Key Takeaway:</em> HPC is not an interactive playground—it is a production compute factory. Develop
+              locally or interactively, then dispatch autonomous batch workloads.
             </p>
           </div>
         </div>
@@ -505,7 +513,8 @@
                 <li>Light Git cloning and checking status.</li>
               </ul>
               <p style="color: #fca5a5; margin-top: 6px;">
-                <strong>Forbidden:</strong> Remote VSCode Server / Copilot indexing, heavy compiling, running simulations directly.
+                <strong>Forbidden:</strong> Remote VSCode Server / Copilot indexing, heavy compiling, running
+                simulations directly.
               </p>
             </div>
             <div class="glass-card glass-card-good">
@@ -516,7 +525,8 @@
               <p><strong>Interactive Debugging:</strong></p>
               <ul>
                 <li><code>salloc --cpus-per-task=4 --mem=16G --time=02:00:00</code></li>
-                <li><strong>OpenOnDemand (OOD):</strong> Web-based Jupyter & MATLAB with dedicated compute allocation.</li>
+                <li><strong>OpenOnDemand (OOD):</strong> Web-based Jupyter & MATLAB with dedicated compute allocation.
+                </li>
               </ul>
               <p><strong>Production Batch Jobs:</strong></p>
               <ul>
@@ -584,10 +594,11 @@ rsync -avzP --exclude '*.tmp' ./my_dataset/ \
             <div class="glass-card">
               <h4 style="color: #fbbf24; font-size: 0.72em; margin-bottom: 4px;">🏠 Home (~/home)</h4>
               <div class="stat-box" style="margin-bottom: 6px;">
-                <div class="stat-number">~20-50 GB</div>
+                <div class="stat-number">~10-50 GB</div>
                 <div class="stat-label">Quota Limited</div>
               </div>
-              <p>For dotfiles, SSH keys, virtual environment definitions, and Git repositories. <strong>Never write simulation checkpoints here.</strong></p>
+              <p>For dotfiles, SSH keys, virtual environment definitions, and Git repositories. <strong>Never write
+                  simulation checkpoints here.</strong></p>
             </div>
             <div class="glass-card" style="border: 1px solid var(--accent);">
               <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 4px;">⚡ Scratch (/scratch)</h4>
@@ -595,7 +606,8 @@ rsync -avzP --exclude '*.tmp' ./my_dataset/ \
                 <div class="stat-number" style="color: var(--accent);">VAST NVMe</div>
                 <div class="stat-label">High-Speed Parallel I/O</div>
               </div>
-              <p>For active compute runs, checkpointing, and uncompressed datasets. <strong>Purge policy applies—clean intermediate files!</strong></p>
+              <p>For active compute runs, checkpointing, and uncompressed datasets. <strong>Purge policy applies—clean
+                  intermediate files!</strong></p>
             </div>
             <div class="glass-card">
               <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 4px;">📦 Project / Archive</h4>
@@ -603,12 +615,15 @@ rsync -avzP --exclude '*.tmp' ./my_dataset/ \
                 <div class="stat-number" style="color: var(--primary);">Lab Shares</div>
                 <div class="stat-label">Long-Term Storage</div>
               </div>
-              <p>For published benchmark data and final analysis results. Not for hundreds of thousands of tiny temp cache files.</p>
+              <p>For published benchmark data and final analysis results. Not for hundreds of thousands of tiny temp
+                cache files.</p>
             </div>
           </div>
-          <div style="margin-top: 12px; padding: 8px 14px; background: rgba(251, 191, 36, 0.1); border-left: 3px solid var(--warning); text-align: left;">
+          <div
+            style="margin-top: 12px; padding: 8px 14px; background: rgba(251, 191, 36, 0.1); border-left: 3px solid var(--warning); text-align: left;">
             <p style="margin: 0; font-size: 0.48em; color: #fde047;">
-              ⚠️ <strong>The Million Tiny Files Trap:</strong> Storing 1,000,000 loose 10KB images degrades Lustre/VAST metadata servers. Always archive or bundle datasets (e.g. <code>tar</code>, HDF5, WebDataset).
+              ⚠️ <strong>The Million Tiny Files Trap:</strong> Storing 1,000,000 loose 10KB images degrades
+              metadata servers. Always archive or bundle datasets (e.g. <code>tar</code>, HDF5, WebDataset).
             </p>
           </div>
         </div>
@@ -629,9 +644,12 @@ rsync -avzP --exclude '*.tmp' ./my_dataset/ \
               <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 6px;">📦 Why Containers on HPC?</h4>
               <ul>
                 <li><strong>No Root Needed:</strong> Apptainer executes in unprivileged user space.</li>
-                <li><strong>Direct Hardware Binding:</strong> <code>--nv</code> automatically passes NVIDIA driver & CUDA libraries into container.</li>
-                <li><strong>Host Filesystem Mounting:</strong> Access <code>/scratch</code> and <code>/home</code> seamlessly inside.</li>
-                <li><strong>Reproducibility:</strong> One <code>.sif</code> file encapsulates Python 3.13, PyTorch, C libraries, and CUDA.</li>
+                <li><strong>Direct Hardware Binding:</strong> <code>--nv</code> automatically passes NVIDIA driver &
+                  CUDA libraries into container.</li>
+                <li><strong>Host Filesystem Mounting:</strong> Access <code>/scratch</code> and <code>/home</code>
+                  seamlessly inside.</li>
+                <li><strong>Reproducibility:</strong> One <code>.sif</code> file encapsulates Python 3.13, PyTorch, C
+                  libraries, and CUDA.</li>
               </ul>
             </div>
             <div class="glass-card">
@@ -643,7 +661,8 @@ apptainer exec --nv \
   python3 /scratch/re51/code/train.py \
     --data-dir /scratch/re51/dataset</code></pre>
               <p style="font-size: 0.48em; margin-top: 6px; color: #94a3b8;">
-                Pair with a project <code>Makefile</code> so that <code>make train</code> executes the identical recipe locally and on RANGE.
+                Pair with a project <code>Makefile</code> so that <code>make train</code> executes the identical recipe
+                locally and on RANGE.
               </p>
             </div>
           </div>
@@ -742,7 +761,8 @@ python my_single_thread_script.py param2</code></pre>
 echo "Running task ID: $SLURM_ARRAY_TASK_ID"
 python my_single_thread_script.py --id $SLURM_ARRAY_TASK_ID</code></pre>
               <p style="font-size: 0.46em; color: #6ee7b7; margin-top: 4px;">
-                Parallel throughput: Slurm launches 10 concurrent worker tasks, dropping wall-clock runtime by <strong>10x</strong>!
+                Parallel throughput: Slurm launches 10 concurrent worker tasks, dropping wall-clock runtime by
+                <strong>10x</strong>!
               </p>
             </div>
           </div>
@@ -773,7 +793,8 @@ python my_single_thread_script.py --id $SLURM_ARRAY_TASK_ID</code></pre>
 # 3 H100 GPUs sit idle while others wait in queue.
 python train_model.py</code></pre>
               <p style="font-size: 0.46em; color: #fca5a5; margin-top: 4px;">
-                Locks \$120,000 worth of GPUs. 3 GPUs sit at 0% utilization while lab mates are stuck in <code>PENDING</code> status.
+                Locks \$120,000 worth of GPUs. 3 GPUs sit at 0% utilization while lab mates are stuck in
+                <code>PENDING</code> status.
               </p>
             </div>
             <div class="glass-card glass-card-good">
@@ -791,7 +812,8 @@ apptainer exec --nv my_pytorch.sif python train_model.py
 # (If using 4 GPUs, script MUST use 
 # DistributedDataParallel or similar).</code></pre>
               <p style="font-size: 0.46em; color: #6ee7b7; margin-top: 4px;">
-                High priority queueing, 100% GPU saturation. If scaling to 4 GPUs, verify with <code>torch.distributed</code> first!
+                High priority queueing, 100% GPU saturation. If scaling to 4 GPUs, verify with
+                <code>torch.distributed</code> first!
               </p>
             </div>
           </div>
@@ -810,8 +832,10 @@ apptainer exec --nv my_pytorch.sif python train_model.py
           <h4>Audit running and finished jobs with native diagnostics</h4>
           <div class="card-grid-2">
             <div class="glass-card">
-              <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 4px;">📊 Post-Mortem Audit: <code>seff</code></h4>
-              <p style="font-size: 0.48em; margin-bottom: 4px;">Inspect real CPU & RAM efficiency after job finishes:</p>
+              <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 4px;">📊 Post-Mortem Audit: <code>seff</code>
+              </h4>
+              <p style="font-size: 0.48em; margin-bottom: 4px;">Inspect real CPU & RAM efficiency after job finishes:
+              </p>
               <pre><code class="language-bash">$ seff 4819201
 Job ID: 4819201
 State: COMPLETED (exit code 0)
@@ -821,19 +845,25 @@ CPU Efficiency: 89.2% of 03:05:12 core-walltime
 Memory Utilized: 14.21 GB
 Memory Efficiency: 88.8% of 16.00 GB</code></pre>
               <p style="font-size: 0.46em; color: #34d399; margin-top: 4px;">
-                ✅ <strong>Golden Rule:</strong> If Memory Efficiency &lt; 30%, reduce <code>--mem</code> in your next run!
+                ✅ <strong>Golden Rule:</strong> If Memory Efficiency &lt; 30%, reduce <code>--mem</code> in your next
+                run!
               </p>
             </div>
             <div class="glass-card">
-              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 4px;">🔍 Live Monitoring During <code>salloc</code></h4>
+              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 4px;">🔍 Live Monitoring During
+                <code>salloc</code>
+              </h4>
               <ul>
-                <li><strong><code>nvtop</code> / <code>nvidia-smi</code>:</strong> Real-time GPU compute %, memory %, and PCIe bandwidth.</li>
+                <li><strong><code>nvtop</code> / <code>nvidia-smi</code>:</strong> Real-time GPU compute %, memory %,
+                  and PCIe bandwidth.</li>
                 <li><strong><code>htop</code>:</strong> Inspect per-core CPU utilization and thread affinity.</li>
                 <li><strong><code>sacct -j &lt;jobid&gt; --format=JobID,Elapsed,MaxRSS,State</code></strong></li>
               </ul>
-              <div style="margin-top: 10px; padding: 6px 10px; background: rgba(56, 189, 248, 0.1); border-radius: 6px;">
+              <div
+                style="margin-top: 10px; padding: 6px 10px; background: rgba(56, 189, 248, 0.1); border-radius: 6px;">
                 <p style="margin: 0; font-size: 0.46em; color: #cbd5e1;">
-                  Always run a 1-epoch or 5-minute interactive test on compute nodes before launching a 72-hour batch job.
+                  Always run a 1-epoch or 5-minute interactive test on compute nodes before launching a 72-hour batch
+                  job.
                 </p>
               </div>
             </div>
@@ -864,7 +894,8 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
     └── 01_prep_48210.err</code></pre>
             </div>
             <div class="glass-card">
-              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 6px;">🎯 Best Practices for Slurm Directives</h4>
+              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 6px;">🎯 Best Practices for Slurm Directives
+              </h4>
               <pre><code class="language-bash"># Auto-route standard output & errors with JobID
 #SBATCH --output=results/%x_%j.out
 #SBATCH --error=results/%x_%j.err
@@ -893,14 +924,17 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
               <div style="font-size: 1.3em; margin-bottom: 4px;">🚪</div>
               <h4 style="color: #ffffff; font-size: 0.72em;">Open Office Hours</h4>
               <p>Every Tuesday:</p>
-              <p style="color: var(--primary); font-weight: 600; font-size: 0.52em;">10:00 AM – 12:00 PM<br/>1:00 PM – 3:00 PM</p>
-              <p style="font-size: 0.46em; color: #94a3b8;">Drop in with code, Slurm scripts, or architecture questions.</p>
+              <p style="color: var(--primary); font-weight: 600; font-size: 0.52em;">10:00 AM – 12:00 PM<br />1:00 PM –
+                3:00 PM</p>
+              <p style="font-size: 0.46em; color: #94a3b8;">Drop in with code, Slurm scripts, or architecture questions.
+              </p>
             </div>
             <div class="glass-card">
               <div style="font-size: 1.3em; margin-bottom: 4px;">🎫</div>
               <h4 style="color: #ffffff; font-size: 0.72em;">CRC Support Tickets</h4>
               <p>Submit questions anytime:</p>
-              <p style="color: #34d399; font-weight: 600; font-size: 0.52em;">helpdesk@rice.edu<br/>or Service Now portal</p>
+              <p style="color: #34d399; font-weight: 600; font-size: 0.52em;">helpdesk@rice.edu<br />or Service Now
+                portal</p>
               <p style="font-size: 0.46em; color: #94a3b8;">Tag CRC for cluster, GPU, and software support.</p>
             </div>
             <div class="glass-card">
@@ -913,7 +947,9 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
           </div>
           <div style="margin-top: 14px; text-align: center;">
             <p style="font-size: 0.56em; color: #ffffff;">
-              Portal: <a href="https://researchcomputing.rice.edu" target="_blank" style="color: var(--primary);">researchcomputing.rice.edu</a> • Cluster Docs: <a href="https://kb.rice.edu" target="_blank" style="color: var(--primary);">kb.rice.edu</a>
+              Portal: <a href="https://researchcomputing.rice.edu" target="_blank"
+                style="color: var(--primary);">researchcomputing.rice.edu</a> • Cluster Docs: <a
+                href="https://kb.rice.edu" target="_blank" style="color: var(--primary);">kb.rice.edu</a>
             </p>
           </div>
         </div>
@@ -928,17 +964,44 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
             <span class="badge-pill badge-success">Questions & Discussion</span>
           </div>
           <h2 style="font-size: 1.55em; margin-bottom: 4px;">Thank You!</h2>
-          <h4 style="color: #94a3b8; font-weight: 400; margin-bottom: 16px;">
+          <h4 style="color: #94a3b8; font-weight: 400; margin-bottom: 18px;">
             Let's build scalable, reproducible, cluster-native science together.
           </h4>
-          <div class="bio-container" style="max-width: 700px; padding: 18px 24px;">
-            <img class="bio-avatar" src="images/avatar.jpeg" alt="Recep Erol, PhD" style="width: 130px; height: 130px;" />
-            <div class="bio-details">
-              <h3 style="font-size: 1.05em; margin: 0 0 2px 0;">Recep Erol, PhD</h3>
-              <div class="bio-role" style="font-size: 0.65em; margin-bottom: 6px;">Computational Scientist for AI • Rice CRC</div>
-              <p style="font-size: 0.5em; margin: 3px 0;">📧 <a href="mailto:re51@rice.edu">re51@rice.edu</a></p>
-              <p style="font-size: 0.5em; margin: 3px 0;">🔗 <a href="https://linkedin.com/in/erolrecep" target="_blank">linkedin.com/in/erolrecep</a> | <a href="https://github.com/erolrecep" target="_blank">github.com/erolrecep</a></p>
-              <p style="font-size: 0.5em; margin: 3px 0;">🌐 <a href="https://erolrecep.github.io" target="_blank">erolrecep.github.io</a> | <a href="https://researchcomputing.rice.edu" target="_blank">researchcomputing.rice.edu</a></p>
+          <div style="display: flex; gap: 24px; max-width: 960px; margin: 0 auto; align-items: stretch; justify-content: center;">
+            <div class="bio-container" style="flex: 1.25; margin: 0; padding: 20px 24px;">
+              <img class="bio-avatar" src="images/avatar.jpeg" alt="Recep Erol, PhD"
+                style="width: 140px; height: 140px;" />
+              <div class="bio-details">
+                <h3>Recep Erol, PhD</h3>
+                <div class="bio-role">Computational Scientist for AI</div>
+                <p>
+                  🏛️ <a href="https://researchcomputing.rice.edu/" target="_blank">Center for Research Computing (CRC) •
+                    Rice University</a>
+                </p>
+                <p>
+                  📧 <a href="mailto:re51@rice.edu">re51@rice.edu</a>
+                </p>
+                <p>
+                  🔗 <a href="https://linkedin.com/in/erolrecep" target="_blank">linkedin.com/in/erolrecep</a>
+                </p>
+                <p>
+                  💻 <a href="https://github.com/erolrecep" target="_blank">github.com/erolrecep</a>
+                </p>
+                <p>
+                  🌐 <a href="https://erolrecep.github.io" target="_blank">erolrecep.github.io</a>
+                </p>
+              </div>
+            </div>
+
+            <div class="glass-card" style="flex: 0.75; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px 20px; text-align: center; border-radius: 12px;">
+              <div style="background: #ffffff; padding: 8px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); line-height: 0; margin-bottom: 10px;">
+                <img src="images/consult_qr.svg" alt="Consultant with Recep QR Code" style="width: 120px; height: 120px; display: block;" />
+              </div>
+              <h4 style="color: #ffffff; font-size: 0.8em; margin: 0 0 4px 0; font-weight: 700;">Consultant with Recep</h4>
+              <p style="font-size: 0.5em; color: var(--primary); margin: 0 0 10px 0; font-weight: 600;">1:1 HPC & AI Consultation Booking</p>
+              <a href="https://calendar.app.google/riPATTce6ZBbuJNR6" target="_blank" style="display: inline-block; padding: 5px 14px; background: rgba(56, 189, 248, 0.15); border: 1px solid var(--primary); border-radius: 9999px; font-size: 0.48em; color: #7dd3fc; text-decoration: none; font-weight: 600; transition: all 0.2s ease;">
+                Book on Google Calendar &rarr;
+              </a>
             </div>
           </div>
         </div>
