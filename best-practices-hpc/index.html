@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Best Practices for Using HPC: Scaling Up to Cluster-Native Workflows</title>
+  <title>Best Practices for Using HPC: Scaling Up to Cluster-Native Workflows | Rice University CRC</title>
   <meta name="description"
     content="Comprehensive guide & workshop on High-Performance Computing best practices, Slurm optimization, and cluster-native workflows by Dr. Recep Erol (Rice University CRC)." />
   <meta name="author" content="Dr. Recep Erol" />
@@ -12,94 +12,187 @@
   <!-- Reveal.js 5.1 Core Styles via CDN -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/dracula.css" id="theme" />
 
-  <!-- Monokai Syntax Highlighting -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css" />
-
-  <!-- Google Fonts: Inter & Fira Code -->
+  <!-- Google Fonts: Cormorant Garamond (Rice Headings), Lato (Rice Body), and Fira Code (Monospace) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400;1,600&family=Fira+Code:wght@400;500;600;700&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap"
     rel="stylesheet">
 
   <style>
     :root {
-      --primary: #38bdf8;
-      --primary-glow: rgba(56, 189, 248, 0.35);
-      --secondary: #a855f7;
-      --accent: #34d399;
-      --warning: #fbbf24;
-      --danger: #f87171;
-      --bg-dark: #0b0f19;
-      --card-bg: rgba(15, 23, 42, 0.82);
-      --card-border: rgba(255, 255, 255, 0.12);
+      /* Official Rice University Brand Colors */
+      --rice-blue: #00205B;
+      --rice-blue-dark: #00143A;
+      --rice-blue-light: #0A327A;
+      --rice-slate: #334155;
+      --rice-muted: #475569;
+      --rice-bg-light: #F8FAFC;
+      --rice-card-bg: #FFFFFF;
+      --rice-card-border: #CBD5E1;
+      --rice-card-shadow: 0 4px 16px rgba(0, 32, 91, 0.08);
+
+      /* High-Contrast Accessible Text Tokens (WCAG AAA >= 7:1) */
+      --text-main: #0F172A;
+      --text-muted: #334155;
+      --link-color: #0045B5;
+      --link-hover: #00205B;
+
+      /* Status Badges & Callouts (WCAG AAA >= 7:1 Contrast) */
+      --badge-good-bg: #ECFDF5;
+      --badge-good-text: #065F46;
+      --badge-good-border: #059669;
+
+      --badge-bad-bg: #FEF2F2;
+      --badge-bad-text: #991B1B;
+      --badge-bad-border: #DC2626;
+
+      --badge-warn-bg: #FEF3C7;
+      --badge-warn-text: #92400E;
+      --badge-warn-border: #D97706;
+
+      --badge-info-bg: #EFF6FF;
+      --badge-info-text: #1E40AF;
+      --badge-info-border: #2563EB;
+
+      /* High-Contrast Code Syntax */
+      --code-bg: #0F172A;
+      --code-text: #F8FAFC;
+      --code-comment: #94A3B8;
+      --code-keyword: #38BDF8;
+      --code-string: #4ADE80;
+      --code-var: #FCD34D;
     }
 
     html,
     body {
       height: 100%;
       overflow: hidden;
+      background-color: #FFFFFF;
+      color: var(--text-main);
+      font-family: 'Lato', system-ui, -apple-system, sans-serif;
     }
 
+    /* Screen Reader Accessibility Utilities */
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -60px;
+      left: 12px;
+      background: var(--rice-blue);
+      color: #FFFFFF;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 6px;
+      z-index: 9999;
+      border: 2px solid #FFFFFF;
+      transition: top 0.2s ease;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+      outline: 3px solid #38BDF8;
+      outline-offset: 2px;
+    }
+
+    /* Accessible Keyboard Focus Indicators (WCAG 2.4.7) */
+    :focus-visible {
+      outline: 3px solid var(--rice-blue) !important;
+      outline-offset: 2px !important;
+    }
+
+    /* Reveal.js Container Styling */
     .reveal {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      color: #f1f5f9;
-      background: radial-gradient(circle at 50% 15%, #1e1b4b 0%, #0f172a 50%, #030712 100%);
+      font-family: 'Lato', system-ui, -apple-system, sans-serif;
+      color: var(--text-main);
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .reveal .slides {
+      text-align: left;
     }
 
     .reveal .slides section {
-      padding: 0 !important;
+      padding: 24px 32px 42px 32px !important;
       box-sizing: border-box;
+      height: 100%;
     }
 
+    /* Typography Hierarchy (Rice Template Specification) */
     .reveal h1,
     .reveal h2,
-    .reveal h3,
-    .reveal h4 {
-      font-family: 'Inter', sans-serif;
-      font-weight: 800;
-      letter-spacing: -0.025em;
+    .reveal h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 700;
+      letter-spacing: -0.015em;
       text-transform: none;
-      color: #ffffff;
       margin: 0;
-    }
-
-    .reveal h1 {
-      font-size: 1.7em;
       line-height: 1.15;
     }
 
+    .reveal h1 {
+      font-size: 1.95em;
+      color: #FFFFFF;
+    }
+
     .reveal h2 {
-      font-size: 1.25em;
-      line-height: 1.2;
-      margin-bottom: 0.25em;
+      font-size: 1.42em;
+      color: var(--rice-blue);
+      margin-bottom: 4px;
     }
 
     .reveal h3 {
-      font-size: 0.95em;
-      color: var(--primary);
+      font-size: 1.05em;
+      color: var(--rice-blue);
+      margin-bottom: 6px;
     }
 
     .reveal h4 {
+      font-family: 'Lato', system-ui, sans-serif;
       font-size: 0.68em;
-      color: #94a3b8;
+      color: var(--text-muted);
       font-weight: 500;
       line-height: 1.35;
-      margin-bottom: 12px;
+      margin: 0 0 14px 0;
     }
 
     .reveal p,
     .reveal li {
       font-size: 0.52em;
-      line-height: 1.45;
-      color: #cbd5e1;
+      line-height: 1.5;
+      color: var(--text-main);
     }
 
     .reveal strong {
-      color: #ffffff;
+      color: var(--text-main);
       font-weight: 700;
+    }
+
+    .reveal a {
+      color: var(--link-color);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.15s ease;
+    }
+
+    .reveal a:hover {
+      color: var(--link-hover);
     }
 
     .reveal ul {
@@ -108,70 +201,104 @@
       margin-bottom: 4px;
     }
 
+    .reveal li {
+      margin-bottom: 5px;
+    }
+
+    /* Code Blocks (High Contrast WCAG AA >= 4.5:1) */
     .reveal pre {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: var(--code-bg);
+      border: 1px solid #334155;
       border-radius: 8px;
-      font-size: 0.38em !important;
+      font-size: 0.40em !important;
       width: 100%;
-      margin: 6px 0;
+      margin: 8px 0;
       box-sizing: border-box;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
     }
 
     .reveal pre code {
-      font-family: 'Fira Code', monospace;
-      padding: 8px 12px !important;
-      line-height: 1.35;
+      font-family: 'Fira Code', ui-monospace, monospace;
+      padding: 10px 14px !important;
+      line-height: 1.45;
+      color: var(--code-text);
       max-height: 380px;
       box-sizing: border-box;
+      overflow-x: auto;
     }
 
-    /* Cards & Containers */
+    /* Rice Institutional Slide Footers */
+    .slide-footer {
+      position: absolute;
+      bottom: 10px;
+      left: 32px;
+      right: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--rice-card-border);
+      padding-top: 6px;
+      font-size: 0.38em;
+      color: var(--rice-muted);
+      font-family: 'Lato', sans-serif;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-logo {
+      height: 22px;
+      width: auto;
+      display: block;
+    }
+
+    .footer-title {
+      font-weight: 600;
+      color: var(--rice-blue);
+      letter-spacing: 0.02em;
+    }
+
+    .footer-counter {
+      font-weight: 700;
+      color: var(--rice-slate);
+    }
+
+    /* Layout Cards & Grids */
     .slide-wrapper {
-      max-width: 1120px;
+      max-width: 1160px;
       margin: 0 auto;
       width: 100%;
       box-sizing: border-box;
+      padding-bottom: 30px;
     }
 
-    .glass-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      padding: 14px 18px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    .rice-card {
+      background: var(--rice-card-bg);
+      border: 1px solid var(--rice-card-border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      box-shadow: var(--rice-card-shadow);
       text-align: left;
       box-sizing: border-box;
     }
 
-    .glass-card p,
-    .glass-card li {
-      font-size: 0.48em;
-      line-height: 1.4;
-      color: #cbd5e1;
+    .rice-card-bad {
+      border: 2px solid var(--badge-bad-border);
+      background: #FFFBFB;
     }
 
-    .glass-card h4 {
-      font-size: 0.68em;
-      margin-bottom: 6px;
-    }
-
-    .glass-card-bad {
-      border: 1px solid rgba(248, 113, 113, 0.45);
-      background: rgba(30, 15, 20, 0.85);
-    }
-
-    .glass-card-good {
-      border: 1px solid rgba(52, 211, 153, 0.45);
-      background: rgba(15, 30, 25, 0.85);
+    .rice-card-good {
+      border: 2px solid var(--badge-good-border);
+      background: #FBFFFD;
     }
 
     .card-grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      gap: 16px;
       align-items: stretch;
       width: 100%;
       box-sizing: border-box;
@@ -180,284 +307,386 @@
     .card-grid-3 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
+      gap: 14px;
       align-items: stretch;
       width: 100%;
       box-sizing: border-box;
     }
 
-    /* Badges & Pills */
+    /* Badges & Pills (High Contrast & Visible Glyphs) */
     .badge-pill {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 3px 10px;
+      gap: 6px;
+      padding: 4px 12px;
       font-size: 0.44em;
       font-weight: 700;
       border-radius: 9999px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
-    }
-
-    .badge-danger {
-      background: rgba(248, 113, 113, 0.2);
-      color: #fca5a5;
-      border: 1px solid rgba(248, 113, 113, 0.5);
-    }
-
-    .badge-success {
-      background: rgba(52, 211, 153, 0.2);
-      color: #6ee7b7;
-      border: 1px solid rgba(52, 211, 153, 0.5);
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+      line-height: 1.2;
     }
 
     .badge-primary {
-      background: rgba(56, 189, 248, 0.2);
-      color: #7dd3fc;
-      border: 1px solid rgba(56, 189, 248, 0.5);
+      background: var(--badge-info-bg);
+      color: var(--badge-info-text);
+      border: 1.5px solid var(--badge-info-border);
+    }
+
+    .badge-success {
+      background: var(--badge-good-bg);
+      color: var(--badge-good-text);
+      border: 1.5px solid var(--badge-good-border);
+    }
+
+    .badge-danger {
+      background: var(--badge-bad-bg);
+      color: var(--badge-bad-text);
+      border: 1.5px solid var(--badge-bad-border);
     }
 
     .badge-warning {
-      background: rgba(251, 191, 36, 0.2);
-      color: #fde047;
-      border: 1px solid rgba(251, 191, 36, 0.5);
+      background: var(--badge-warn-bg);
+      color: var(--badge-warn-text);
+      border: 1.5px solid var(--badge-warn-border);
     }
 
-    /* Author Bio Box */
+    /* Bio & Consultation Cards */
     .bio-container {
       display: flex;
       align-items: center;
-      gap: 28px;
-      padding: 22px 28px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 14px;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
-      max-width: 820px;
+      gap: 24px;
+      padding: 20px 24px;
+      background: var(--rice-card-bg);
+      border: 1px solid var(--rice-card-border);
+      border-radius: 10px;
+      box-shadow: var(--rice-card-shadow);
+      max-width: 860px;
       margin: 0 auto;
       text-align: left;
     }
 
     .bio-avatar {
-      width: 155px;
-      height: 155px;
+      width: 145px;
+      height: 145px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid var(--primary);
-      box-shadow: 0 0 20px var(--primary-glow);
+      border: 3px solid var(--rice-blue);
+      box-shadow: 0 4px 14px rgba(0, 32, 91, 0.18);
       flex-shrink: 0;
     }
 
     .bio-details {
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
-    .bio-details h3 {
-      font-size: 1.15em;
-      margin: 0 0 2px 0;
-      color: #ffffff;
+    .bio-name {
+      font-size: 1.15em !important;
+      margin: 0 0 2px 0 !important;
+      color: var(--rice-blue) !important;
     }
 
-    .bio-details .bio-role {
-      font-size: 0.68em;
-      color: var(--primary);
-      font-weight: 600;
-      margin-bottom: 8px;
+    .bio-role {
+      font-size: 0.65em !important;
+      color: var(--rice-slate) !important;
+      font-weight: 700 !important;
+      margin-bottom: 8px !important;
     }
 
-    .bio-details p {
-      font-size: 0.52em;
-      margin: 4px 0;
+    .bio-item {
+      font-size: 0.50em !important;
+      margin: 4px 0 !important;
+      color: var(--text-main);
     }
 
-    .bio-details a {
-      color: #7dd3fc;
-      text-decoration: none;
-      transition: color 0.2s ease;
+    .bio-link {
+      color: var(--link-color) !important;
+      text-decoration: underline !important;
+      text-underline-offset: 2px !important;
     }
 
-    .bio-details a:hover {
-      color: #ffffff;
-      text-decoration: underline;
+    .bio-link:hover {
+      color: var(--rice-blue) !important;
     }
 
     .stat-box {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--rice-bg-light);
+      border: 1px solid var(--rice-card-border);
       border-radius: 6px;
-      padding: 6px 10px;
+      padding: 8px 12px;
       text-align: center;
     }
 
     .stat-number {
       font-size: 1.15em;
       font-weight: 800;
-      color: var(--primary);
+      color: var(--rice-blue);
       line-height: 1.1;
     }
 
     .stat-label {
       font-size: 0.44em;
-      color: #94a3b8;
+      color: var(--rice-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-top: 2px;
+      font-weight: 600;
+    }
+
+    /* Cover & Thank You Slide Theming (Institutional Deep Rice Blue #00205B) */
+    section.slide-cover,
+    section.slide-closing {
+      background: var(--rice-blue) !important;
+      color: #FFFFFF !important;
+    }
+
+    section.slide-cover h1,
+    section.slide-closing h2 {
+      color: #FFFFFF !important;
+    }
+
+    section.slide-cover p,
+    section.slide-closing p {
+      color: #E2E8F0 !important;
+    }
+
+    /* Accessible Motion Sensitivity (WCAG 2.2.2 & 2.3.3) */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal .slides section {
+        transition: none !important;
+        animation: none !important;
+      }
+      * {
+        animation-duration: 0.001s !important;
+        transition-duration: 0.001s !important;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="reveal">
+  <!-- Skip Navigation Link for Keyboard & Screen Reader Users (WCAG 2.4.1) -->
+  <a href="#presentation-main" class="skip-link">Skip to slide content</a>
+
+  <!-- Off-Screen Screen Reader Slide Transition Announcer (WCAG 4.1.2) -->
+  <div id="sr-slide-announcer" class="sr-only" aria-live="polite" aria-atomic="true">
+    Slide 1 of 16: Best Practices for Using HPC
+  </div>
+
+  <!-- Document Header Landmark (WCAG 1.3.1) -->
+  <header role="banner" class="sr-only">
+    <h1>Best Practices for Using HPC: Scaling Up to Cluster-Native Workflows</h1>
+    <p>Presentation by Dr. Recep Erol, Computational Scientist for AI, Rice University Center for Research Computing</p>
+  </header>
+
+  <!-- Main Presentation Region Landmark (WCAG 1.3.1) -->
+  <main id="presentation-main" class="reveal" role="region" aria-label="HPC Best Practices Slide Deck">
     <div class="slides">
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 1: Title Slide -->
-      <!-- =================================================================== -->
-      <section>
-        <div class="slide-wrapper" style="text-align: center;">
-          <div style="margin-bottom: 12px;">
-            <span class="badge-pill badge-primary">Rice University CRC Workshop</span>
+      <!-- ================================================================== -->
+      <!-- SLIDE 1: Title Slide (Rice Institutional Blue Cover) -->
+      <!-- ================================================================== -->
+      <section id="slide-1" class="slide-cover" role="group" aria-roledescription="slide"
+        aria-label="Slide 1 of 16: Best Practices for Using HPC">
+        <div class="slide-wrapper" style="text-align: center; padding-top: 48px;">
+          <div style="margin-bottom: 16px;">
+            <span class="badge-pill"
+              style="background: rgba(255, 255, 255, 0.15); color: #FFFFFF; border: 1.5px solid rgba(255, 255, 255, 0.4);">
+              Rice University CRC Workshop
+            </span>
           </div>
-          <h1
-            style="font-size: 1.75em; margin-bottom: 8px; background: linear-gradient(135deg, #ffffff 40%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          <h1 style="font-size: 2.1em; margin-bottom: 12px; color: #FFFFFF;">
             Best Practices for Using HPC
           </h1>
-          <h3 style="font-size: 0.95em; font-weight: 500; color: #cbd5e1; margin-bottom: 16px;">
+          <h3
+            style="font-size: 1.05em; font-family: 'Lato', sans-serif; font-weight: 400; color: #E0E7FF; margin-bottom: 20px;">
             Scaling Up to Cluster-Native Workflows
           </h3>
-          <p style="font-size: 0.6em; color: #94a3b8; margin: 0 auto 22px auto; max-width: 720px;">
+          <p style="font-size: 0.62em; color: #CBD5E1; margin: 0 auto 28px auto; max-width: 780px;">
             Bridging the gap between personal laptops and large-scale, hardware-accelerated supercomputing.
           </p>
           <div
-            style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.06); padding: 6px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1);">
-            <span style="font-size: 0.52em; color: #ffffff; font-weight: 600;">Recep Erol, PhD</span>
-            <span style="color: #64748b; font-size: 0.5em;">•</span>
-            <span style="font-size: 0.52em; color: #94a3b8;">Center for Research Computing (CRC)</span>
+            style="display: inline-flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.10); padding: 8px 20px; border-radius: 9999px; border: 1px solid rgba(255, 255, 255, 0.25);">
+            <span style="font-size: 0.54em; color: #FFFFFF; font-weight: 700;">Recep Erol, PhD</span>
+            <span style="color: #94A3B8; font-size: 0.5em;" aria-hidden="true">•</span>
+            <span style="font-size: 0.54em; color: #E2E8F0;">Center for Research Computing (CRC)</span>
+          </div>
+          <div style="margin-top: 48px;">
+            <img src="images/rice_logo_white.png" alt="Rice University Official Logo" style="height: 38px; width: auto;" />
           </div>
         </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 2: About Me (from VibeCoding-Workshop) -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 2: Presenter Profile -->
+      <!-- ================================================================== -->
+      <section id="slide-2" role="group" aria-roledescription="slide"
+        aria-label="Slide 2 of 16: Presenter Profile - Recep Erol, PhD">
         <div class="slide-wrapper">
-          <div style="text-align: center; margin-bottom: 14px;">
+          <div style="margin-bottom: 8px;">
             <span class="badge-pill badge-primary">Presenter Profile</span>
           </div>
-          <div class="bio-container">
-            <img class="bio-avatar" src="images/avatar.jpeg" alt="Recep Erol, PhD" />
+          <h2>About the Presenter</h2>
+          <h4>Computational Scientist for AI at Rice University Center for Research Computing</h4>
+
+          <div class="bio-container" role="region" aria-label="Presenter Bio Card: Dr. Recep Erol" style="margin-top: 24px;">
+            <img src="images/avatar.jpeg"
+              alt="Portrait photograph of Dr. Recep Erol, Computational Scientist for AI at Rice University"
+              class="bio-avatar" width="145" height="145" />
             <div class="bio-details">
-              <h3>Recep Erol, PhD</h3>
+              <h3 class="bio-name">Recep Erol, PhD</h3>
               <div class="bio-role">Computational Scientist for AI</div>
-              <p>
-                🏛️ <a href="https://researchcomputing.rice.edu/" target="_blank">Center for Research Computing (CRC) •
-                  Rice University</a>
+              <p class="bio-item">
+                <a href="https://researchcomputing.rice.edu/" target="_blank" rel="noopener noreferrer" class="bio-link"
+                  aria-label="Center for Research Computing at Rice University (opens in a new tab)">
+                  <span aria-hidden="true">🏛️</span> <strong>Center for Research Computing (CRC)</strong> • Rice University
+                </a>
               </p>
-              <p>
-                📧 <a href="mailto:re51@rice.edu">re51@rice.edu</a>
+              <p class="bio-item">
+                <a href="mailto:re51@rice.edu" class="bio-link" aria-label="Send email to re51@rice.edu">
+                  <span aria-hidden="true">📧</span> re51@rice.edu
+                </a>
               </p>
-              <p>
-                🔗 <a href="https://linkedin.com/in/erolrecep" target="_blank">linkedin.com/in/erolrecep</a>
+              <p class="bio-item">
+                <a href="https://linkedin.com/in/erolrecep" target="_blank" rel="noopener noreferrer" class="bio-link"
+                  aria-label="Visit Dr. Recep Erol's LinkedIn profile (opens in a new tab)">
+                  <span aria-hidden="true">🔗</span> linkedin.com/in/erolrecep
+                </a>
               </p>
-              <p>
-                💻 <a href="https://github.com/erolrecep" target="_blank">github.com/erolrecep</a>
+              <p class="bio-item">
+                <a href="https://github.com/erolrecep" target="_blank" rel="noopener noreferrer" class="bio-link"
+                  aria-label="Visit Dr. Recep Erol's GitHub profile (opens in a new tab)">
+                  <span aria-hidden="true">💻</span> github.com/erolrecep
+                </a>
               </p>
-              <p>
-                🌐 <a href="https://erolrecep.github.io" target="_blank">erolrecep.github.io</a>
+              <p class="bio-item">
+                <a href="https://erolrecep.github.io" target="_blank" rel="noopener noreferrer" class="bio-link"
+                  aria-label="Visit Dr. Recep Erol's personal website erolrecep.github.io (opens in a new tab)">
+                  <span aria-hidden="true">🌐</span> erolrecep.github.io
+                </a>
               </p>
             </div>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 2 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 3: The Narrative Shift - We Are Partners in Research -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 3: Research Partners -->
+      <!-- ================================================================== -->
+      <section id="slide-3" role="group" aria-roledescription="slide"
+        aria-label="Slide 3 of 16: We Are Your Partners in Research">
         <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-primary">CRC Mission</span>
+          </div>
           <h2>We Are Your Partners in Research</h2>
           <h4>An HPC cluster is not just a larger laptop—it is a shared community ecosystem.</h4>
           <div class="card-grid-3">
-            <div class="glass-card">
-              <div style="font-size: 1.3em; margin-bottom: 4px;">🔬</div>
-              <h4 style="color: #ffffff; font-size: 0.72em;">Cutting-Edge Science</h4>
+            <div class="rice-card">
+              <div style="font-size: 1.4em; margin-bottom: 6px;" aria-hidden="true">🔬</div>
+              <h3 style="font-size: 0.76em; margin-bottom: 6px;">Cutting-Edge Science</h3>
               <p>You push domain boundaries in molecular dynamics, AI/LLMs, genomics, and simulations.</p>
             </div>
-            <div class="glass-card">
-              <div style="font-size: 1.3em; margin-bottom: 4px;">🔄</div>
-              <h4 style="color: #ffffff; font-size: 0.72em;">New Paradigms</h4>
+            <div class="rice-card">
+              <div style="font-size: 1.4em; margin-bottom: 6px;" aria-hidden="true">🔄</div>
+              <h3 style="font-size: 0.76em; margin-bottom: 6px;">New Paradigms</h3>
               <p>Cluster computing introduces batch queues, parallel storage, and hardware accelerators.</p>
             </div>
-            <div class="glass-card">
-              <div style="font-size: 1.3em; margin-bottom: 4px;">🤝</div>
-              <h4 style="color: #ffffff; font-size: 0.72em;">Active Collaboration</h4>
+            <div class="rice-card">
+              <div style="font-size: 1.4em; margin-bottom: 6px;" aria-hidden="true">🤝</div>
+              <h3 style="font-size: 0.76em; margin-bottom: 6px;">Active Collaboration</h3>
               <p>CRC engineers co-design pipelines with you before runs happen, turning queue delays into speedups.</p>
             </div>
           </div>
           <div
-            style="margin-top: 14px; padding: 10px 16px; background: rgba(56, 189, 248, 0.1); border-left: 3px solid var(--primary); border-radius: 6px; text-align: left;">
-            <p style="margin: 0; font-size: 0.5em; color: #e2e8f0;">
+            style="margin-top: 18px; padding: 12px 18px; background: var(--badge-info-bg); border-left: 4px solid var(--rice-blue); border-radius: 6px; text-align: left;">
+            <p style="margin: 0; font-size: 0.52em; color: var(--text-main);">
               <strong>Guiding Philosophy:</strong> Everyone needs help scaling up. Our goal is empowering you to write
               cluster-native code that runs faster, costs less in wait time, and reproduces seamlessly.
             </p>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 3 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 4: Agenda - The 5 Pillars of Cluster-Native Workflows -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 4: The 5 Pillars of Cluster Efficiency -->
+      <!-- ================================================================== -->
+      <section id="slide-4" role="group" aria-roledescription="slide"
+        aria-label="Slide 4 of 16: The 5 Pillars of Cluster Efficiency">
         <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-primary">Agenda & Roadmap</span>
+          </div>
           <h2>The 5 Pillars of Cluster Efficiency</h2>
-          <h4>What we will cover today</h4>
+          <h4>Core competencies covered in this workshop</h4>
           <div class="card-grid-2">
-            <div class="glass-card">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+            <div class="rice-card">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <span class="badge-pill badge-primary">Pillar 1</span>
-                <strong style="font-size: 0.68em;">The Mindset Shift</strong>
+                <strong style="font-size: 0.68em; color: var(--rice-blue);">The Mindset Shift</strong>
               </div>
               <p>Shared resource ethics, interactive vs. batch paradigms, and login node etiquette.</p>
             </div>
-            <div class="glass-card">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+            <div class="rice-card">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <span class="badge-pill badge-primary">Pillar 2</span>
-                <strong style="font-size: 0.68em;">Data Logistics & Storage</strong>
+                <strong style="font-size: 0.68em; color: var(--rice-blue);">Data Logistics & Storage</strong>
               </div>
               <p>High-speed VAST scratch vs. archives; migrating multi-TB datasets via Globus & rsync.</p>
             </div>
-            <div class="glass-card">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+            <div class="rice-card">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <span class="badge-pill badge-primary">Pillar 3</span>
-                <strong style="font-size: 0.68em;">Reproducible Environments</strong>
+                <strong style="font-size: 0.68em; color: var(--rice-blue);">Reproducible Environments</strong>
               </div>
               <p>Containerizing workloads with Apptainer (Singularity) and automating with Makefiles.</p>
             </div>
-            <div class="glass-card">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+            <div class="rice-card">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                 <span class="badge-pill badge-warning">Pillar 4</span>
-                <strong style="font-size: 0.68em;">Slurm & The 3 Traps</strong>
+                <strong style="font-size: 0.68em; color: var(--rice-blue);">Slurm & The 3 Traps</strong>
               </div>
               <p>Memory over-allocation, sequential job loops, and single-GPU lockups on multi-GPU nodes.</p>
             </div>
           </div>
-          <div class="glass-card" style="margin-top: 10px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <div class="rice-card" style="margin-top: 14px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
               <span class="badge-pill badge-success">Pillar 5</span>
-              <strong style="font-size: 0.68em;">Observability & CRC Support</strong>
+              <strong style="font-size: 0.68em; color: var(--rice-blue);">Observability & CRC Support</strong>
             </div>
             <p>Auditing jobs with <code>seff</code>, monitoring live GPUs with <code>nvtop</code>, and collaborating
               during office hours.</p>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 4 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 5: Pillar 1 - The Core Mindset Shift -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 5: Laptop vs. Supercomputer -->
+      <!-- ================================================================== -->
+      <section id="slide-5" role="group" aria-roledescription="slide"
+        aria-label="Slide 5 of 16: Laptop vs. Supercomputer">
         <div class="slide-wrapper">
           <div style="margin-bottom: 8px;">
             <span class="badge-pill badge-primary">Pillar 1: Architecture</span>
@@ -465,82 +694,96 @@
           <h2>Laptop vs. Supercomputer</h2>
           <h4>Moving from synchronous execution to orchestrated batch scheduling</h4>
           <div class="card-grid-2">
-            <div class="glass-card" style="border-left: 3px solid var(--danger);">
-              <h4 style="color: #fca5a5; font-size: 0.72em; margin-bottom: 4px;">💻 Personal Laptop / Workstation</h4>
+            <div class="rice-card" style="border-left: 4px solid var(--badge-bad-border);">
+              <h3 style="color: var(--badge-bad-text); font-size: 0.74em; margin-bottom: 6px;">💻 Personal Laptop / Workstation</h3>
               <ul>
-                <li><strong>Dedicated:</strong> You own 100% of memory and CPU cores.</li>
-                <li><strong>Interactive:</strong> Click "Run", view output, hit Ctrl+C.</li>
-                <li><strong>Unbounded I/O:</strong> Writing temp files to desktop is harmless.</li>
-                <li><strong>Failure:</strong> If laptop sleeps or restarts, process dies.</li>
+                <li><strong>Dedicated Resources:</strong> 100% of CPU and RAM belongs to your single user session.</li>
+                <li><strong>Synchronous Execution:</strong> You click "Run" in VS Code or Jupyter and inspect output immediately.</li>
+                <li><strong>Volatile:</strong> Closing lid, system updates, or WiFi drop terminates execution.</li>
+                <li><strong>Bottlenecks:</strong> Bound to 16–64 GB RAM and local battery / thermal constraints.</li>
               </ul>
             </div>
-            <div class="glass-card" style="border-left: 3px solid var(--accent);">
-              <h4 style="color: #6ee7b7; font-size: 0.72em; margin-bottom: 4px;">⚡ Shared HPC Cluster</h4>
+            <div class="rice-card" style="border-left: 4px solid var(--badge-good-border);">
+              <h3 style="color: var(--badge-good-text); font-size: 0.74em; margin-bottom: 6px;">⚡ Shared HPC Cluster</h3>
               <ul>
-                <li><strong>Shared:</strong> Hundreds of researchers compete for compute nodes.</li>
-                <li><strong>Scheduled:</strong> Slurm orchestrates jobs by fair-share priority.</li>
-                <li><strong>Parallel I/O:</strong> Shared network filesystem (VAST / GPFS).</li>
-                <li><strong>Resilient:</strong> Detached batch jobs continue 24/7 uninterrupted.</li>
+                <li><strong>Shared Community:</strong> Hundreds of researchers share multi-node interconnects.</li>
+                <li><strong>Asynchronous Batch Queues:</strong> Workloads are packaged as Slurm batch scripts and submitted to a scheduler.</li>
+                <li><strong>Persistent & Robust:</strong> Runs complete independently of your laptop's connection state.</li>
+                <li><strong>Massive Scale:</strong> Access to TBs of distributed memory and multi-node GPU clusters.</li>
               </ul>
             </div>
           </div>
-          <div style="margin-top: 12px; text-align: left;">
-            <p style="font-size: 0.52em; color: #94a3b8;">
-              💡 <em>Key Takeaway:</em> HPC is not an interactive playground—it is a production compute factory. Develop
-              locally or interactively, then dispatch autonomous batch workloads.
-            </p>
+        </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
           </div>
+          <span class="footer-counter">Slide 5 of 16</span>
         </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 6: Accessing HPC - Login Nodes vs Compute Nodes -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 6: Accessing HPC: The Golden Rule -->
+      <!-- ================================================================== -->
+      <section id="slide-6" role="group" aria-roledescription="slide"
+        aria-label="Slide 6 of 16: Accessing HPC - The Golden Rule">
         <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-primary">Pillar 1: Access Etiquette</span>
+          </div>
           <h2>Accessing HPC: The Golden Rule</h2>
-          <h4 style="color: var(--danger);">Never execute computational workloads on login nodes!</h4>
+          <h4>Never execute computational workloads on login nodes!</h4>
           <div class="card-grid-2">
-            <div class="glass-card glass-card-bad">
+            <div class="rice-card rice-card-bad">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <h4 style="color: #fca5a5; margin: 0; font-size: 0.72em;">🚫 Login Nodes (Gateway Only)</h4>
-                <span class="badge-pill badge-danger">Strict Limits</span>
+                <strong style="color: var(--badge-bad-text); font-size: 0.72em;">🚫 Login Nodes (Gateway Only)</strong>
+                <span class="badge-pill badge-danger">[✕ DON'T COMPUTE HERE]</span>
               </div>
-              <p><strong>Allowed:</strong></p>
+              <p><strong>Strictly intended for:</strong></p>
               <ul>
-                <li>Navigating files, editing scripts with nano/vim.</li>
-                <li>Submitting jobs (<code>sbatch</code>, <code>squeue</code>, <code>scancel</code>).</li>
-                <li>Light Git cloning and checking status.</li>
+                <li>Submitting Slurm jobs (<code>sbatch</code>, <code>squeue</code>).</li>
+                <li>Editing code, text configs, and reviewing logs.</li>
+                <li>Transferring files, basic git commits.</li>
               </ul>
-              <p style="color: #fca5a5; margin-top: 6px;">
-                <strong>Forbidden:</strong> Remote VSCode Server / Copilot indexing, heavy compiling, running
-                simulations directly.
-              </p>
-            </div>
-            <div class="glass-card glass-card-good">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <h4 style="color: #6ee7b7; margin: 0; font-size: 0.72em;">✅ Compute Nodes (The Workhorses)</h4>
-                <span class="badge-pill badge-success">Full Power</span>
+              <div
+                style="margin-top: 10px; padding: 6px 10px; background: var(--badge-bad-bg); border-radius: 4px; font-size: 0.46em; color: var(--badge-bad-text);">
+                ⚠️ <strong>Violation:</strong> Running <code>python train.py</code> or compiling heavy C++ on login nodes freezes the terminal for everyone on the cluster!
               </div>
-              <p><strong>Interactive Debugging:</strong></p>
+            </div>
+            <div class="rice-card rice-card-good">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <strong style="color: var(--badge-good-text); font-size: 0.72em;">✅ Compute Nodes (The Workhorses)</strong>
+                <span class="badge-pill badge-success">[✓ RECOMMENDED]</span>
+              </div>
+              <p><strong>Two sanctioned access methods:</strong></p>
               <ul>
-                <li><code>salloc --cpus-per-task=4 --mem=16G --time=02:00:00</code></li>
-                <li><strong>OpenOnDemand (OOD):</strong> Web-based Jupyter & MATLAB with dedicated compute allocation.
+                <li><strong>Interactive Debugging:</strong>
+                  <pre><code class="language-bash"># Request 1 GPU for 1 hour of interactive testing
+salloc --partition=gpu --gres=gpu:1 --time=01:00:00 --mem=32G</code></pre>
+                </li>
+                <li><strong>Batch Production:</strong>
+                  <pre><code class="language-bash"># Submit batch script to background queue
+sbatch run_experiment.slurm</code></pre>
                 </li>
               </ul>
-              <p><strong>Production Batch Jobs:</strong></p>
-              <ul>
-                <li><code>sbatch my_job.slurm</code> (unattended, queued, logged).</li>
-              </ul>
             </div>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 6 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 7: Pillar 2 - Data Logistics: Moving Data at Scale -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 7: Moving Data at Scale -->
+      <!-- ================================================================== -->
+      <section id="slide-7" role="group" aria-roledescription="slide"
+        aria-label="Slide 7 of 16: Moving Data at Scale">
         <div class="slide-wrapper">
           <div style="margin-bottom: 8px;">
             <span class="badge-pill badge-primary">Pillar 2: Data Transfer</span>
@@ -548,9 +791,9 @@
           <h2>Moving Data at Scale</h2>
           <h4>Choose the right vehicle for your data payload</h4>
           <div class="card-grid-2">
-            <div class="glass-card">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                <strong style="color: #38bdf8; font-size: 0.72em;">📁 Small to Medium (&lt; 100 GB)</strong>
+            <div class="rice-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <strong style="color: var(--rice-blue); font-size: 0.72em;">📁 Small to Medium (&lt; 100 GB)</strong>
                 <span class="badge-pill badge-primary">Terminal</span>
               </div>
               <p><strong>Tool: <code>rsync</code> or <code>scp</code></strong></p>
@@ -563,9 +806,9 @@ rsync -avzP --exclude '*.tmp' ./my_dataset/ \
                 <li>Ideal for code, configs, and preprocessed subsets.</li>
               </ul>
             </div>
-            <div class="glass-card">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                <strong style="color: #34d399; font-size: 0.72em;">🌐 Massive Payloads (Multi-TB)</strong>
+            <div class="rice-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <strong style="color: var(--badge-good-text); font-size: 0.72em;">🌐 Massive Payloads (Multi-TB)</strong>
                 <span class="badge-pill badge-success">High Throughput</span>
               </div>
               <p><strong>Tool: Globus Transfer</strong></p>
@@ -578,12 +821,20 @@ rsync -avzP --exclude '*.tmp' ./my_dataset/ \
             </div>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 7 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 8: Pillar 2 (Cont.) - Storage Hygiene: Scratch vs Permanent -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 8: Storage Hygiene: Scratch vs. Archive -->
+      <!-- ================================================================== -->
+      <section id="slide-8" role="group" aria-roledescription="slide"
+        aria-label="Slide 8 of 16: Storage Hygiene - Scratch vs. Archive">
         <div class="slide-wrapper">
           <div style="margin-bottom: 8px;">
             <span class="badge-pill badge-primary">Pillar 2: Storage Tiers</span>
@@ -591,28 +842,28 @@ rsync -avzP --exclude '*.tmp' ./my_dataset/ \
           <h2>Storage Hygiene: Scratch vs. Archive</h2>
           <h4>HPC storage is partitioned for specific I/O profiles</h4>
           <div class="card-grid-3">
-            <div class="glass-card">
-              <h4 style="color: #fbbf24; font-size: 0.72em; margin-bottom: 4px;">🏠 Home (~/home)</h4>
-              <div class="stat-box" style="margin-bottom: 6px;">
+            <div class="rice-card">
+              <h3 style="color: var(--rice-blue); font-size: 0.74em; margin-bottom: 6px;">🏠 Home (~/home)</h3>
+              <div class="stat-box" style="margin-bottom: 8px;">
                 <div class="stat-number">~10-50 GB</div>
                 <div class="stat-label">Quota Limited</div>
               </div>
               <p>For dotfiles, SSH keys, virtual environment definitions, and Git repositories. <strong>Never write
                   simulation checkpoints here.</strong></p>
             </div>
-            <div class="glass-card" style="border: 1px solid var(--accent);">
-              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 4px;">⚡ Scratch (/scratch)</h4>
-              <div class="stat-box" style="margin-bottom: 6px;">
-                <div class="stat-number" style="color: var(--accent);">VAST NVMe</div>
+            <div class="rice-card" style="border: 2px solid var(--badge-good-border);">
+              <h3 style="color: var(--badge-good-text); font-size: 0.74em; margin-bottom: 6px;">⚡ Scratch (/scratch)</h3>
+              <div class="stat-box" style="margin-bottom: 8px;">
+                <div class="stat-number" style="color: var(--badge-good-text);">VAST NVMe</div>
                 <div class="stat-label">High-Speed Parallel I/O</div>
               </div>
               <p>For active compute runs, checkpointing, and uncompressed datasets. <strong>Purge policy applies—clean
                   intermediate files!</strong></p>
             </div>
-            <div class="glass-card">
-              <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 4px;">📦 Project / Archive</h4>
-              <div class="stat-box" style="margin-bottom: 6px;">
-                <div class="stat-number" style="color: var(--primary);">Lab Shares</div>
+            <div class="rice-card">
+              <h3 style="color: var(--rice-blue); font-size: 0.74em; margin-bottom: 6px;">📦 Project / Archive</h3>
+              <div class="stat-box" style="margin-bottom: 8px;">
+                <div class="stat-number" style="color: var(--rice-blue);">Lab Shares</div>
                 <div class="stat-label">Long-Term Storage</div>
               </div>
               <p>For published benchmark data and final analysis results. Not for hundreds of thousands of tiny temp
@@ -620,19 +871,27 @@ rsync -avzP --exclude '*.tmp' ./my_dataset/ \
             </div>
           </div>
           <div
-            style="margin-top: 12px; padding: 8px 14px; background: rgba(251, 191, 36, 0.1); border-left: 3px solid var(--warning); text-align: left;">
-            <p style="margin: 0; font-size: 0.48em; color: #fde047;">
+            style="margin-top: 14px; padding: 10px 16px; background: var(--badge-warn-bg); border-left: 4px solid var(--badge-warn-border); text-align: left; border-radius: 4px;">
+            <p style="margin: 0; font-size: 0.50em; color: var(--badge-warn-text);">
               ⚠️ <strong>The Million Tiny Files Trap:</strong> Storing 1,000,000 loose 10KB images degrades
               metadata servers. Always archive or bundle datasets (e.g. <code>tar</code>, HDF5, WebDataset).
             </p>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 8 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 9: Pillar 3 - Reproducible Environments (Apptainer) -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 9: Containers & Reproducibility -->
+      <!-- ================================================================== -->
+      <section id="slide-9" role="group" aria-roledescription="slide"
+        aria-label="Slide 9 of 16: Eliminate Works on My Machine">
         <div class="slide-wrapper">
           <div style="margin-bottom: 8px;">
             <span class="badge-pill badge-primary">Pillar 3: Reproducibility</span>
@@ -640,8 +899,8 @@ rsync -avzP --exclude '*.tmp' ./my_dataset/ \
           <h2>Eliminate "Works on My Machine"</h2>
           <h4>Package once with Apptainer (Singularity) • Run anywhere identically</h4>
           <div class="card-grid-2">
-            <div class="glass-card">
-              <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 6px;">📦 Why Containers on HPC?</h4>
+            <div class="rice-card">
+              <h3 style="color: var(--rice-blue); font-size: 0.74em; margin-bottom: 6px;">📦 Why Containers on HPC?</h3>
               <ul>
                 <li><strong>No Root Needed:</strong> Apptainer executes in unprivileged user space.</li>
                 <li><strong>Direct Hardware Binding:</strong> <code>--nv</code> automatically passes NVIDIA driver &
@@ -652,36 +911,44 @@ rsync -avzP --exclude '*.tmp' ./my_dataset/ \
                   libraries, and CUDA.</li>
               </ul>
             </div>
-            <div class="glass-card">
-              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 6px;">🚀 Example Slurm Execution</h4>
+            <div class="rice-card">
+              <h3 style="color: var(--badge-good-text); font-size: 0.74em; margin-bottom: 6px;">🚀 Example Slurm Execution</h3>
               <pre><code class="language-bash"># Run PyTorch GPU script inside container
 apptainer exec --nv \
   --bind /scratch/re51:/scratch \
   /scratch/re51/containers/pytorch_2.4.sif \
   python3 /scratch/re51/code/train.py \
     --data-dir /scratch/re51/dataset</code></pre>
-              <p style="font-size: 0.48em; margin-top: 6px; color: #94a3b8;">
+              <p style="font-size: 0.50em; margin-top: 8px; color: var(--text-muted);">
                 Pair with a project <code>Makefile</code> so that <code>make train</code> executes the identical recipe
                 locally and on RANGE.
               </p>
             </div>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 9 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 10: Slurm Trap 1 - The Memory Trap -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 10: Slurm Trap 1: Memory Overallocation -->
+      <!-- ================================================================== -->
+      <section id="slide-10" role="group" aria-roledescription="slide"
+        aria-label="Slide 10 of 16: Trap 1 - The Memory Overallocation Trap">
         <div class="slide-wrapper">
           <div style="margin-bottom: 8px;">
-            <span class="badge-pill badge-danger">Slurm Anti-Pattern #1</span>
+            <span class="badge-pill badge-danger">[ANTI-PATTERN #1]</span>
           </div>
           <h2>Trap 1: The Memory Overallocation Trap</h2>
           <h4>Requesting 128 GB "just to be safe" inflates queue wait times for days</h4>
           <div class="card-grid-2">
-            <div class="glass-card glass-card-bad">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <div class="rice-card rice-card-bad">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span class="badge-pill badge-danger">❌ over_allocation_bad_example.sh</span>
               </div>
               <pre><code class="language-bash">#!/bin/bash
@@ -691,14 +958,14 @@ apptainer exec --nv \
 # resources it doesn't actually need.
 
 python data_process.py</code></pre>
-              <ul style="font-size: 0.46em; margin-top: 4px;">
+              <ul style="font-size: 0.48em; margin-top: 6px;">
                 <li>Slurm scheduler must drain nodes to carve out 128GB RAM.</li>
                 <li>Actual script memory peak: <strong>only 12.4 GB</strong>.</li>
                 <li><strong>Wasted:</strong> 115.6 GB RAM locked away from peers.</li>
               </ul>
             </div>
-            <div class="glass-card glass-card-good">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <div class="rice-card rice-card-good">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span class="badge-pill badge-success">✅ enough_amount_allocation.sh</span>
               </div>
               <pre><code class="language-bash">#!/bin/bash
@@ -708,7 +975,7 @@ python data_process.py</code></pre>
 # from a previous run.
 
 python data_process.py</code></pre>
-              <ul style="font-size: 0.46em; margin-top: 4px;">
+              <ul style="font-size: 0.48em; margin-top: 6px;">
                 <li>Slurm instantly fits this job into available node fragments.</li>
                 <li>Queue wait drops from <strong>48 hours to 3 minutes</strong>.</li>
                 <li>Verified with: <code>seff &lt;jobid&gt;</code> (85% memory efficiency).</li>
@@ -716,21 +983,29 @@ python data_process.py</code></pre>
             </div>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 10 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 11: Slurm Trap 2 - The Sequential Execution Trap -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 11: Slurm Trap 2: Sequential Loop Trap -->
+      <!-- ================================================================== -->
+      <section id="slide-11" role="group" aria-roledescription="slide"
+        aria-label="Slide 11 of 16: Trap 2 - The Sequential Loop Trap">
         <div class="slide-wrapper">
           <div style="margin-bottom: 8px;">
-            <span class="badge-pill badge-danger">Slurm Anti-Pattern #2</span>
+            <span class="badge-pill badge-danger">[ANTI-PATTERN #2]</span>
           </div>
           <h2>Trap 2: The Sequential Loop Trap</h2>
           <h4>Running 100 independent simulations sequentially inside a huge multi-core allocation</h4>
           <div class="card-grid-2">
-            <div class="glass-card glass-card-bad">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <div class="rice-card rice-card-bad">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span class="badge-pill badge-danger">❌ single_core_job_full_allocate.sh</span>
               </div>
               <pre><code class="language-bash">#!/bin/bash
@@ -739,91 +1014,103 @@ python data_process.py</code></pre>
 #SBATCH --ntasks=64
 #SBATCH --time=48:00:00
 
-# Wastes 63 cores if the script is single-threaded
-python my_single_thread_script.py param1
-python my_single_thread_script.py param2</code></pre>
-              <p style="font-size: 0.46em; color: #fca5a5; margin-top: 4px;">
-                Allocates 64 cores for 48 hours, but python executes on 1 core. 63 CPU cores idle at 0% load!
-              </p>
+# Wastes 63 cores while 1 task runs at a time!
+for i in {1..100}; do
+  python simulate.py --seed $i
+done</code></pre>
+              <ul style="font-size: 0.48em; margin-top: 6px;">
+                <li>CPU efficiency measured by <code>seff</code>: <strong>1.5%</strong>!</li>
+                <li>If the node restarts at hour 47, all progress is lost.</li>
+              </ul>
             </div>
-            <div class="glass-card glass-card-good">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <div class="rice-card rice-card-good">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span class="badge-pill badge-success">✅ single_core_job_slurm_jobarray.sh</span>
               </div>
               <pre><code class="language-bash">#!/bin/bash
-#SBATCH --job-name=good_array
-#SBATCH --array=1-100%10
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=4G
-#SBATCH --time=02:00:00
+#SBATCH --job-name=smart_array
+#SBATCH --array=1-100%20
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
 
-# Runs 100 tasks concurrently (max 10 at once)
-echo "Running task ID: $SLURM_ARRAY_TASK_ID"
-python my_single_thread_script.py --id $SLURM_ARRAY_TASK_ID</code></pre>
-              <p style="font-size: 0.46em; color: #6ee7b7; margin-top: 4px;">
-                Parallel throughput: Slurm launches 10 concurrent worker tasks, dropping wall-clock runtime by
-                <strong>10x</strong>!
-              </p>
+# Slurm executes tasks concurrently!
+python simulate.py --seed $SLURM_ARRAY_TASK_ID</code></pre>
+              <ul style="font-size: 0.48em; margin-top: 6px;">
+                <li>Slurm launches independent sub-jobs across available nodes.</li>
+                <li>Individual tasks retry automatically on transient failures.</li>
+              </ul>
             </div>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 11 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 12: Slurm Trap 3 - The Multi-GPU Waste Trap -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 12: Slurm Trap 3: Multi-GPU Hoarding Trap -->
+      <!-- ================================================================== -->
+      <section id="slide-12" role="group" aria-roledescription="slide"
+        aria-label="Slide 12 of 16: Trap 3 - The Multi-GPU Hoarding Trap">
         <div class="slide-wrapper">
           <div style="margin-bottom: 8px;">
-            <span class="badge-pill badge-danger">Slurm Anti-Pattern #3</span>
+            <span class="badge-pill badge-danger">[ANTI-PATTERN #3]</span>
           </div>
           <h2>Trap 3: The Multi-GPU Hoarding Trap</h2>
-          <h4>Requesting 4 H100 GPUs for a script that only addresses <code>cuda:0</code></h4>
+          <h4>Requesting 4 H100 GPUs for a script that only addresses cuda:0</h4>
           <div class="card-grid-2">
-            <div class="glass-card glass-card-bad">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <div class="rice-card rice-card-bad">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span class="badge-pill badge-danger">❌ wasting_gpu_resource.sh</span>
               </div>
               <pre><code class="language-bash">#!/bin/bash
-#SBATCH --job-name=gpu_waste
+#SBATCH --job-name=gpu_hoard
+#SBATCH --partition=gpu
 #SBATCH --gres=gpu:4
-#SBATCH --time=24:00:00
 
-# The Python script is only coded to use cuda:0.
-# 3 H100 GPUs sit idle while others wait in queue.
-python train_model.py</code></pre>
-              <p style="font-size: 0.46em; color: #fca5a5; margin-top: 4px;">
-                Locks \$120,000 worth of GPUs. 3 GPUs sit at 0% utilization while lab mates are stuck in
-                <code>PENDING</code> status.
-              </p>
+# Script only uses single GPU cuda:0!
+python single_gpu_train.py</code></pre>
+              <ul style="font-size: 0.48em; margin-top: 6px;">
+                <li>GPUs 1, 2, and 3 sit completely idle ($90k+ of hardware locked).</li>
+                <li>Slurm fairshare score severely drops due to unused GPU billing.</li>
+              </ul>
             </div>
-            <div class="glass-card glass-card-good">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <div class="rice-card rice-card-good">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span class="badge-pill badge-success">✅ correct_gpu_reseource_allocation.sh</span>
               </div>
               <pre><code class="language-bash">#!/bin/bash
-#SBATCH --job-name=gpu_optimized
+#SBATCH --job-name=gpu_right
+#SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
-#SBATCH --time=24:00:00
 
-# Loads Apptainer container with PyTorch
-apptainer exec --nv my_pytorch.sif python train_model.py
-
-# (If using 4 GPUs, script MUST use 
-# DistributedDataParallel or similar).</code></pre>
-              <p style="font-size: 0.46em; color: #6ee7b7; margin-top: 4px;">
-                High priority queueing, 100% GPU saturation. If scaling to 4 GPUs, verify with
-                <code>torch.distributed</code> first!
-              </p>
+# Perfectly matched allocation
+python single_gpu_train.py</code></pre>
+              <ul style="font-size: 0.48em; margin-top: 6px;">
+                <li>Immediate dispatch from the queue.</li>
+                <li>If multi-GPU is needed, implement PyTorch DDP / <code>torchrun</code>.</li>
+              </ul>
             </div>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 12 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 13: Pillar 5 - Observability, Profiling & Audit Tools -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 13: Observability: Auditing Utilization -->
+      <!-- ================================================================== -->
+      <section id="slide-13" role="group" aria-roledescription="slide"
+        aria-label="Slide 13 of 16: Know Your Hardware Utilization">
         <div class="slide-wrapper">
           <div style="margin-bottom: 8px;">
             <span class="badge-pill badge-primary">Pillar 5: Observability</span>
@@ -831,205 +1118,292 @@ apptainer exec --nv my_pytorch.sif python train_model.py
           <h2>Know Your Hardware Utilization</h2>
           <h4>Audit running and finished jobs with native diagnostics</h4>
           <div class="card-grid-2">
-            <div class="glass-card">
-              <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 4px;">📊 Post-Mortem Audit: <code>seff</code>
-              </h4>
-              <p style="font-size: 0.48em; margin-bottom: 4px;">Inspect real CPU & RAM efficiency after job finishes:
-              </p>
-              <pre><code class="language-bash">$ seff 4819201
-Job ID: 4819201
+            <div class="rice-card">
+              <h3 style="color: var(--rice-blue); font-size: 0.74em; margin-bottom: 6px;">📊 Post-Mortem Audit: <code>seff</code></h3>
+              <p>Immediately after your job finishes, check actual resource usage:</p>
+              <pre><code class="language-bash">$ seff 4819204
+Job ID: 4819204
+Cluster: range
 State: COMPLETED (exit code 0)
 Cores: 8
-CPU Utilized: 02:45:12
-CPU Efficiency: 89.2% of 03:05:12 core-walltime
+CPU Utilized: 03:42:10
+CPU Efficiency: 88.5% of 04:12:00 core-walltime
 Memory Utilized: 14.21 GB
 Memory Efficiency: 88.8% of 16.00 GB</code></pre>
-              <p style="font-size: 0.46em; color: #34d399; margin-top: 4px;">
-                ✅ <strong>Golden Rule:</strong> If Memory Efficiency &lt; 30%, reduce <code>--mem</code> in your next
-                run!
+              <p style="font-size: 0.48em; color: var(--text-muted); margin-top: 6px;">
+                If CPU or Memory efficiency is &lt; 40%, tune your Slurm directive on the next run!
               </p>
             </div>
-            <div class="glass-card">
-              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 4px;">🔍 Live Monitoring During
-                <code>salloc</code>
-              </h4>
+            <div class="rice-card">
+              <h3 style="color: var(--badge-good-text); font-size: 0.74em; margin-bottom: 6px;">🔍 Live Monitoring During <code>salloc</code></h3>
+              <p>While testing interactively inside an allocation:</p>
               <ul>
-                <li><strong><code>nvtop</code> / <code>nvidia-smi</code>:</strong> Real-time GPU compute %, memory %,
-                  and PCIe bandwidth.</li>
-                <li><strong><code>htop</code>:</strong> Inspect per-core CPU utilization and thread affinity.</li>
-                <li><strong><code>sacct -j &lt;jobid&gt; --format=JobID,Elapsed,MaxRSS,State</code></strong></li>
+                <li><strong>CPU & RAM:</strong> Run <code>htop</code> to inspect multi-threading and core load.</li>
+                <li><strong>GPU Load & VRAM:</strong> Run <code>nvtop</code> or <code>watch -n 1 nvidia-smi</code>.</li>
+                <li><strong>Disk I/O Wait:</strong> Watch if compute cores are starved waiting on slow disk reads.</li>
               </ul>
               <div
-                style="margin-top: 10px; padding: 6px 10px; background: rgba(56, 189, 248, 0.1); border-radius: 6px;">
-                <p style="margin: 0; font-size: 0.46em; color: #cbd5e1;">
-                  Always run a 1-epoch or 5-minute interactive test on compute nodes before launching a 72-hour batch
-                  job.
-                </p>
+                style="margin-top: 10px; padding: 8px 12px; background: var(--badge-info-bg); border-left: 3px solid var(--rice-blue); border-radius: 4px; font-size: 0.48em;">
+                💡 <strong>Pro Tip:</strong> Profile with PyTorch Profiler or NVIDIA Nsight Systems before scaling to multi-node runs!
               </div>
             </div>
           </div>
         </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 13 of 16</span>
+        </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 14: Organizing Project Layout for Job History -->
-      <!-- =================================================================== -->
-      <section>
+      <!-- ================================================================== -->
+      <!-- SLIDE 14: Project Organization & Slurm Hygiene -->
+      <!-- ================================================================== -->
+      <section id="slide-14" role="group" aria-roledescription="slide"
+        aria-label="Slide 14 of 16: Folder Structure & Slurm Hygiene">
         <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-primary">Pillar 3: Workflow Blueprint</span>
+          </div>
           <h2>Folder Structure & Slurm Hygiene</h2>
           <h4>Pair submitted job scripts with their output logs</h4>
           <div class="card-grid-2">
-            <div class="glass-card">
-              <h4 style="color: #38bdf8; font-size: 0.72em; margin-bottom: 6px;">📁 Recommended Project Blueprint</h4>
-              <pre><code class="language-text">my_project/
-├── Makefile               # Automated build & test targets
-├── requirements.txt       # Environment lockfile
-├── container.sif          # Apptainer image
-├── src/                   # Python / C source modules
-├── sbatch/                # Parameterized Slurm scripts
-│   ├── 01_preprocess.slurm
-│   └── 02_train_array.slurm
-└── results/               # Job history logs
-    ├── 01_prep_48210.out
-    └── 01_prep_48210.err</code></pre>
+            <div class="rice-card">
+              <h3 style="color: var(--rice-blue); font-size: 0.74em; margin-bottom: 6px;">📁 Recommended Project Blueprint</h3>
+              <pre><code class="language-bash">my_project/
+├── data/              # Symbolic link to /scratch/
+├── containers/        # Apptainer .sif images
+├── src/               # Pure Python / C++ source
+├── slurm_jobs/        # All .slurm batch scripts
+├── logs/              # Slurm stdout & stderr logs
+│   ├── %x_%j.out
+│   └── %x_%j.err
+├── Makefile           # One-command orchestration
+└── README.md          # Execution recipes</code></pre>
             </div>
-            <div class="glass-card">
-              <h4 style="color: #34d399; font-size: 0.72em; margin-bottom: 6px;">🎯 Best Practices for Slurm Directives
-              </h4>
-              <pre><code class="language-bash"># Auto-route standard output & errors with JobID
-#SBATCH --output=results/%x_%j.out
-#SBATCH --error=results/%x_%j.err
-
-# Email notifications on failure or completion
-#SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=re51@rice.edu</code></pre>
+            <div class="rice-card">
+              <h3 style="color: var(--badge-good-text); font-size: 0.74em; margin-bottom: 6px;">🎯 Best Practices for Slurm Directives</h3>
               <ul>
-                <li>Never dump stdout into your root home directory.</li>
-                <li><code>%x</code> expands to Job Name, <code>%j</code> expands to Job ID.</li>
+                <li><strong>Name your logs cleanly:</strong>
+                  <code>#SBATCH --output=logs/%x_%j.out</code> (<code>%x</code>=job name, <code>%j</code>=job ID).
+                </li>
+                <li><strong>Set realistic walltimes:</strong> Requesting 2 hours gets scheduled 10x faster than 24 hours.</li>
+                <li><strong>Use email alerts for failures only:</strong>
+                  <code>#SBATCH --mail-type=FAIL</code> (avoid inbox spam).</li>
+                <li><strong>Document software dependencies:</strong> Record git commit hash inside every batch log.</li>
               </ul>
             </div>
           </div>
         </div>
-      </section>
-
-      <!-- =================================================================== -->
-      <!-- SLIDE 15: Partnering with CRC - Office Hours & Support -->
-      <!-- =================================================================== -->
-      <section>
-        <div class="slide-wrapper">
-          <h2>Let's Collaborate: We Are Here to Help!</h2>
-          <h4>Engage with CRC engineers during experimental design, not just when jobs fail</h4>
-          <div class="card-grid-3">
-            <div class="glass-card">
-              <div style="font-size: 1.3em; margin-bottom: 4px;">🚪</div>
-              <h4 style="color: #ffffff; font-size: 0.72em;">Open Office Hours</h4>
-              <p>Every Tuesday:</p>
-              <p style="color: var(--primary); font-weight: 600; font-size: 0.52em;">10:00 AM – 12:00 PM<br />1:00 PM –
-                3:00 PM</p>
-              <p style="font-size: 0.46em; color: #94a3b8;">Drop in with code, Slurm scripts, or architecture questions.
-              </p>
-            </div>
-            <div class="glass-card">
-              <div style="font-size: 1.3em; margin-bottom: 4px;">🎫</div>
-              <h4 style="color: #ffffff; font-size: 0.72em;">CRC Support Tickets</h4>
-              <p>Submit questions anytime:</p>
-              <p style="color: #34d399; font-weight: 600; font-size: 0.52em;">helpdesk@rice.edu<br />or Service Now
-                portal</p>
-              <p style="font-size: 0.46em; color: #94a3b8;">Tag CRC for cluster, GPU, and software support.</p>
-            </div>
-            <div class="glass-card">
-              <div style="font-size: 1.3em; margin-bottom: 4px;">🤝</div>
-              <h4 style="color: #ffffff; font-size: 0.72em;">1-on-1 Consultations</h4>
-              <p>Scaling up a grant or pipeline?</p>
-              <p style="color: var(--warning); font-weight: 600; font-size: 0.52em;">Dedicated Engineering</p>
-              <p style="font-size: 0.46em; color: #94a3b8;">We help optimize MPI, PyTorch DDP, and Slurm arrays.</p>
-            </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
           </div>
-          <div style="margin-top: 14px; text-align: center;">
-            <p style="font-size: 0.56em; color: #ffffff;">
-              Portal: <a href="https://researchcomputing.rice.edu" target="_blank"
-                style="color: var(--primary);">researchcomputing.rice.edu</a> • Cluster Docs: <a
-                href="https://kb.rice.edu" target="_blank" style="color: var(--primary);">kb.rice.edu</a>
-            </p>
-          </div>
+          <span class="footer-counter">Slide 14 of 16</span>
         </div>
       </section>
 
-      <!-- =================================================================== -->
-      <!-- SLIDE 16: Closing & Q&A Slide -->
-      <!-- =================================================================== -->
-      <section>
-        <div class="slide-wrapper" style="text-align: center;">
-          <div style="margin-bottom: 10px;">
-            <span class="badge-pill badge-success">Questions & Discussion</span>
+      <!-- ================================================================== -->
+      <!-- SLIDE 15: Collaboration & CRC Resources -->
+      <!-- ================================================================== -->
+      <section id="slide-15" role="group" aria-roledescription="slide"
+        aria-label="Slide 15 of 16: Let's Collaborate - We Are Here to Help">
+        <div class="slide-wrapper">
+          <div style="margin-bottom: 8px;">
+            <span class="badge-pill badge-primary">Community & Support</span>
           </div>
-          <h2 style="font-size: 1.55em; margin-bottom: 4px;">Thank You!</h2>
-          <h4 style="color: #94a3b8; font-weight: 400; margin-bottom: 18px;">
+          <h2>Let's Collaborate: We Are Here to Help!</h2>
+          <h4>Engage with CRC engineers during experimental design, not just when jobs fail</h4>
+          <div class="card-grid-3">
+            <div class="rice-card">
+              <div style="font-size: 1.4em; margin-bottom: 6px;" aria-hidden="true">🕒</div>
+              <h3 style="font-size: 0.76em; margin-bottom: 6px;">Open Office Hours</h3>
+              <p>Every Tuesday & Thursday:</p>
+              <p style="color: var(--rice-blue); font-weight: 700; font-size: 0.54em;">
+                10:00 AM – 12:00 PM<br />1:00 PM – 3:00 PM
+              </p>
+              <p style="font-size: 0.48em; color: var(--text-muted);">
+                Drop in with code, Slurm scripts, or architecture questions.
+              </p>
+            </div>
+            <div class="rice-card">
+              <div style="font-size: 1.4em; margin-bottom: 6px;" aria-hidden="true">🎫</div>
+              <h3 style="font-size: 0.76em; margin-bottom: 6px;">CRC Support Tickets</h3>
+              <p>Submit questions anytime:</p>
+              <p style="color: var(--badge-good-text); font-weight: 700; font-size: 0.54em;">
+                helpdesk@rice.edu<br />or Service Now portal
+              </p>
+              <p style="font-size: 0.48em; color: var(--text-muted);">
+                Tag CRC for cluster, GPU, and software support.
+              </p>
+            </div>
+            <div class="rice-card">
+              <div style="font-size: 1.4em; margin-bottom: 6px;" aria-hidden="true">🤝</div>
+              <h3 style="font-size: 0.76em; margin-bottom: 6px;">1-on-1 Consultations</h3>
+              <p>Scaling up a grant or pipeline?</p>
+              <p style="color: var(--badge-warn-text); font-weight: 700; font-size: 0.54em;">
+                Dedicated Engineering
+              </p>
+              <p style="font-size: 0.48em; color: var(--text-muted);">
+                We help optimize MPI, PyTorch DDP, and Slurm arrays.
+              </p>
+            </div>
+          </div>
+          <div style="margin-top: 18px; text-align: center;">
+            <p style="font-size: 0.58em; color: var(--text-main);">
+              Portal: <a href="https://researchcomputing.rice.edu" target="_blank" rel="noopener noreferrer">researchcomputing.rice.edu</a> • Cluster Docs: <a
+                href="https://kb.rice.edu" target="_blank" rel="noopener noreferrer">kb.rice.edu</a>
+            </p>
+          </div>
+        </div>
+        <div class="slide-footer" aria-hidden="true">
+          <div class="footer-brand">
+            <img src="images/rice_logo.png" alt="" class="footer-logo" />
+            <span class="footer-title">Best Practices for Using HPC</span>
+          </div>
+          <span class="footer-counter">Slide 15 of 16</span>
+        </div>
+      </section>
+
+      <!-- ================================================================== -->
+      <!-- SLIDE 16: Closing & Consultation (Rice Institutional Blue) -->
+      <!-- ================================================================== -->
+      <section id="slide-16" class="slide-closing" role="group" aria-roledescription="slide"
+        aria-label="Slide 16 of 16: Thank You and Consultation Booking">
+        <div class="slide-wrapper" style="text-align: center; padding-top: 16px;">
+          <div style="margin-bottom: 12px;">
+            <span class="badge-pill"
+              style="background: rgba(255, 255, 255, 0.15); color: #FFFFFF; border: 1.5px solid rgba(255, 255, 255, 0.4);">
+              Questions & Discussion
+            </span>
+          </div>
+          <h2 style="font-size: 1.7em; margin-bottom: 4px; color: #FFFFFF;">Thank You!</h2>
+          <p style="color: #E2E8F0; font-size: 0.64em; margin-bottom: 22px;">
             Let's build scalable, reproducible, cluster-native science together.
-          </h4>
-          <div style="display: flex; gap: 24px; max-width: 960px; margin: 0 auto; align-items: stretch; justify-content: center;">
+          </p>
+
+          <div
+            style="display: flex; gap: 24px; max-width: 980px; margin: 0 auto; align-items: stretch; justify-content: center;">
+            <!-- Presenter Profile Card -->
             <div class="bio-container" style="flex: 1.25; margin: 0; padding: 20px 24px;">
-              <img class="bio-avatar" src="images/avatar.jpeg" alt="Recep Erol, PhD"
-                style="width: 140px; height: 140px;" />
+              <img class="bio-avatar" src="images/avatar.jpeg"
+                alt="Portrait photograph of Dr. Recep Erol, Computational Scientist for AI at Rice University"
+                width="135" height="135" style="width: 135px; height: 135px;" />
               <div class="bio-details">
-                <h3>Recep Erol, PhD</h3>
+                <h3 class="bio-name">Recep Erol, PhD</h3>
                 <div class="bio-role">Computational Scientist for AI</div>
-                <p>
-                  🏛️ <a href="https://researchcomputing.rice.edu/" target="_blank">Center for Research Computing (CRC) •
-                    Rice University</a>
+                <p class="bio-item">
+                  <a href="https://researchcomputing.rice.edu/" target="_blank" rel="noopener noreferrer" class="bio-link"
+                    aria-label="Center for Research Computing at Rice University (opens in a new tab)">
+                    <span aria-hidden="true">🏛️</span> <strong>Center for Research Computing (CRC)</strong> • Rice University
+                  </a>
                 </p>
-                <p>
-                  📧 <a href="mailto:re51@rice.edu">re51@rice.edu</a>
+                <p class="bio-item">
+                  <a href="mailto:re51@rice.edu" class="bio-link" aria-label="Send email to re51@rice.edu">
+                    <span aria-hidden="true">📧</span> re51@rice.edu
+                  </a>
                 </p>
-                <p>
-                  🔗 <a href="https://linkedin.com/in/erolrecep" target="_blank">linkedin.com/in/erolrecep</a>
+                <p class="bio-item">
+                  <a href="https://linkedin.com/in/erolrecep" target="_blank" rel="noopener noreferrer" class="bio-link"
+                    aria-label="Visit Dr. Recep Erol's LinkedIn profile (opens in a new tab)">
+                    <span aria-hidden="true">🔗</span> linkedin.com/in/erolrecep
+                  </a>
                 </p>
-                <p>
-                  💻 <a href="https://github.com/erolrecep" target="_blank">github.com/erolrecep</a>
+                <p class="bio-item">
+                  <a href="https://github.com/erolrecep" target="_blank" rel="noopener noreferrer" class="bio-link"
+                    aria-label="Visit Dr. Recep Erol's GitHub profile (opens in a new tab)">
+                    <span aria-hidden="true">💻</span> github.com/erolrecep
+                  </a>
                 </p>
-                <p>
-                  🌐 <a href="https://erolrecep.github.io" target="_blank">erolrecep.github.io</a>
+                <p class="bio-item">
+                  <a href="https://erolrecep.github.io" target="_blank" rel="noopener noreferrer" class="bio-link"
+                    aria-label="Visit Dr. Recep Erol's personal website erolrecep.github.io (opens in a new tab)">
+                    <span aria-hidden="true">🌐</span> erolrecep.github.io
+                  </a>
                 </p>
               </div>
             </div>
 
-            <div class="glass-card" style="flex: 0.75; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px 20px; text-align: center; border-radius: 12px;">
-              <div style="background: #ffffff; padding: 8px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); line-height: 0; margin-bottom: 10px;">
-                <img src="images/consult_qr.svg" alt="Consultant with Recep QR Code" style="width: 120px; height: 120px; display: block;" />
+            <!-- Consultation Booking Card -->
+            <div class="rice-card"
+              style="flex: 0.85; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 22px; text-align: center; border-radius: 10px;">
+              <div
+                style="background: #FFFFFF; padding: 8px; border-radius: 8px; border: 1px solid var(--rice-card-border); line-height: 0; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                <img src="images/consult_qr.svg"
+                  alt="QR code to book an HPC and AI consultation with Dr. Recep Erol via Google Calendar"
+                  width="120" height="120" style="width: 120px; height: 120px; display: block;" />
               </div>
-              <h4 style="color: #ffffff; font-size: 0.8em; margin: 0 0 4px 0; font-weight: 700;">Consultant with Recep</h4>
-              <p style="font-size: 0.5em; color: var(--primary); margin: 0 0 10px 0; font-weight: 600;">1:1 HPC & AI Consultation Booking</p>
-              <a href="https://calendar.app.google/riPATTce6ZBbuJNR6" target="_blank" style="display: inline-block; padding: 5px 14px; background: rgba(56, 189, 248, 0.15); border: 1px solid var(--primary); border-radius: 9999px; font-size: 0.48em; color: #7dd3fc; text-decoration: none; font-weight: 600; transition: all 0.2s ease;">
-                Book on Google Calendar &rarr;
+              <h3 style="font-size: 0.82em; margin: 0 0 4px 0; color: var(--rice-blue);">Consult with Recep</h3>
+              <p style="font-size: 0.50em; color: var(--rice-slate); margin: 0 0 12px 0; font-weight: 600;">
+                1-on-1 HPC & AI Consultation Booking
+              </p>
+              <a href="https://calendar.app.google/riPATTce6ZBbuJNR6" target="_blank" rel="noopener noreferrer"
+                class="badge-pill"
+                style="background: var(--rice-blue); color: #FFFFFF; border: none; padding: 8px 18px; font-size: 0.52em; text-decoration: none; font-weight: 700; box-shadow: 0 2px 6px rgba(0,32,91,0.25);"
+                aria-label="Book 1-on-1 HPC consultation with Dr. Recep Erol on Google Calendar (opens in a new tab)">
+                <span aria-hidden="true">📅</span> Book Consultation &rarr;
               </a>
             </div>
+          </div>
+
+          <div style="margin-top: 32px;">
+            <img src="images/rice_logo_white.png" alt="Rice University Official Logo" style="height: 34px; width: auto;" />
           </div>
         </div>
       </section>
 
     </div>
-  </div>
+  </main>
 
-  <!-- Reveal.js 5.1 JS & Highlight Plugin -->
+  <!-- Document Footer Landmark (WCAG 1.3.1) -->
+  <footer role="contentinfo" class="sr-only">
+    <p>&copy; 2026 Rice University Center for Research Computing. All rights reserved.</p>
+  </footer>
+
+  <!-- Reveal.js & Highlight.js Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+
   <script>
+    // Detect reduced motion preferences (WCAG 2.2.2 & 2.3.3)
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Initialize Reveal.js Presentation
     Reveal.initialize({
-      // Presentation dimensions (16:9 widescreen HD)
       width: 1280,
       height: 720,
       margin: 0.04,
       minScale: 0.2,
       maxScale: 2.0,
 
-      // Navigation & Layout
+      // Navigation & History
       hash: true,
       slideNumber: 'c/t',
       controls: true,
+      controlsTutorial: false,
       progress: true,
       center: true,
-      transition: 'slide',
+      transition: prefersReducedMotion ? 'none' : 'slide',
+      keyboard: true,
+
+      // Plugins
       plugins: [RevealHighlight]
+    });
+
+    // Dynamic ARIA Live Region Announcement on Slide Change (WCAG 4.1.2)
+    Reveal.on('slidechanged', function (event) {
+      const currentSlide = event.currentSlide;
+      const slideIndex = event.indexh + 1;
+      const totalSlides = Reveal.getTotalSlides();
+      const heading = currentSlide.querySelector('h1, h2, h3');
+      const titleText = heading ? heading.innerText.trim() : 'Presentation Slide';
+      const announcer = document.getElementById('sr-slide-announcer');
+      if (announcer) {
+        announcer.textContent = 'Slide ' + slideIndex + ' of ' + totalSlides + ': ' + titleText;
+      }
     });
   </script>
 </body>
