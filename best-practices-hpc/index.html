@@ -193,9 +193,11 @@
     }
 
     .reveal p,
-    .reveal li {
-      font-size: 0.52em;
-      line-height: 1.5;
+    .reveal li,
+    .rice-card p,
+    .rice-card li {
+      font-size: 15px !important;
+      line-height: 1.55 !important;
       color: var(--text-main);
     }
 
@@ -1022,8 +1024,10 @@ apptainer exec --nv \
           <p class="slide-subtitle">Requesting 128 GB "just to be safe" inflates queue wait times for days</p>
           <div class="card-grid-2">
             <div class="rice-card rice-card-bad">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <h3 style="color: var(--badge-bad-text); font-size: 0.68em; margin: 0;">❌ over_allocation_bad_example.sh</h3>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="color: var(--badge-bad-text); font-size: 18px; margin: 0; font-weight: 700;">
+                  <span aria-hidden="true">❌</span> over_allocation_bad_example.sh
+                </h3>
               </div>
               <pre><code class="language-bash">#!/bin/bash
 #SBATCH --job-name=mem_hog
@@ -1032,15 +1036,17 @@ apptainer exec --nv \
 # resources it doesn't actually need.
 
 python data_process.py</code></pre>
-              <ul style="font-size: 0.48em; margin-top: 6px;">
+              <ul style="margin-top: 10px; margin-bottom: 4px;">
                 <li>Slurm scheduler must drain nodes to carve out 128GB RAM.</li>
                 <li>Actual script memory peak: <strong>only 12.4 GB</strong>.</li>
                 <li><strong>Wasted:</strong> 115.6 GB RAM locked away from peers.</li>
               </ul>
             </div>
             <div class="rice-card rice-card-good">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <h3 style="color: var(--badge-good-text); font-size: 0.68em; margin: 0;">✅ enough_amount_allocation.sh</h3>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="color: var(--badge-good-text); font-size: 18px; margin: 0; font-weight: 700;">
+                  <span aria-hidden="true">✅</span> enough_amount_allocation.sh
+                </h3>
               </div>
               <pre><code class="language-bash">#!/bin/bash
 #SBATCH --job-name=mem_smart
@@ -1049,7 +1055,7 @@ python data_process.py</code></pre>
 # from a previous run.
 
 python data_process.py</code></pre>
-              <ul style="font-size: 0.48em; margin-top: 6px;">
+              <ul style="margin-top: 10px; margin-bottom: 4px;">
                 <li>Slurm instantly fits this job into available node fragments.</li>
                 <li>Queue wait drops from <strong>48 hours to 3 minutes</strong>.</li>
                 <li>Verified with: <code>seff &lt;jobid&gt;</code> (85% memory efficiency).</li>
@@ -1078,8 +1084,10 @@ python data_process.py</code></pre>
           <p class="slide-subtitle">Running 100 independent simulations sequentially inside a huge multi-core allocation</p>
           <div class="card-grid-2">
             <div class="rice-card rice-card-bad">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <h3 style="color: var(--badge-bad-text); font-size: 0.68em; margin: 0;">❌ single_core_job_full_allocate.sh</h3>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="color: var(--badge-bad-text); font-size: 18px; margin: 0; font-weight: 700;">
+                  <span aria-hidden="true">❌</span> single_core_job_full_allocate.sh
+                </h3>
               </div>
               <pre><code class="language-bash">#!/bin/bash
 #SBATCH --job-name=bad_seq
@@ -1091,14 +1099,16 @@ python data_process.py</code></pre>
 for i in {1..100}; do
   python simulate.py --seed $i
 done</code></pre>
-              <ul style="font-size: 0.48em; margin-top: 6px;">
+              <ul style="margin-top: 10px; margin-bottom: 4px;">
                 <li>CPU efficiency measured by <code>seff</code>: <strong>1.5%</strong>!</li>
                 <li>If the node restarts at hour 47, all progress is lost.</li>
               </ul>
             </div>
             <div class="rice-card rice-card-good">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <h3 style="color: var(--badge-good-text); font-size: 0.68em; margin: 0;">✅ single_core_job_slurm_jobarray.sh</h3>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="color: var(--badge-good-text); font-size: 18px; margin: 0; font-weight: 700;">
+                  <span aria-hidden="true">✅</span> single_core_job_slurm_jobarray.sh
+                </h3>
               </div>
               <pre><code class="language-bash">#!/bin/bash
 #SBATCH --job-name=smart_array
@@ -1108,7 +1118,7 @@ done</code></pre>
 
 # Slurm executes tasks concurrently!
 python simulate.py --seed $SLURM_ARRAY_TASK_ID</code></pre>
-              <ul style="font-size: 0.48em; margin-top: 6px;">
+              <ul style="margin-top: 10px; margin-bottom: 4px;">
                 <li>Slurm launches independent sub-jobs across available nodes.</li>
                 <li>Individual tasks retry automatically on transient failures.</li>
               </ul>
@@ -1136,8 +1146,10 @@ python simulate.py --seed $SLURM_ARRAY_TASK_ID</code></pre>
           <p class="slide-subtitle">Requesting 4 H100 GPUs for a script that only addresses cuda:0</p>
           <div class="card-grid-2">
             <div class="rice-card rice-card-bad">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <h3 style="color: var(--badge-bad-text); font-size: 0.68em; margin: 0;">❌ wasting_gpu_resource.sh</h3>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="color: var(--badge-bad-text); font-size: 18px; margin: 0; font-weight: 700;">
+                  <span aria-hidden="true">❌</span> wasting_gpu_resource.sh
+                </h3>
               </div>
               <pre><code class="language-bash">#!/bin/bash
 #SBATCH --job-name=gpu_hoard
@@ -1146,14 +1158,16 @@ python simulate.py --seed $SLURM_ARRAY_TASK_ID</code></pre>
 
 # Script only uses single GPU cuda:0!
 python single_gpu_train.py</code></pre>
-              <ul style="font-size: 0.48em; margin-top: 6px;">
+              <ul style="margin-top: 10px; margin-bottom: 4px;">
                 <li>GPUs 1, 2, and 3 sit completely idle ($90k+ of hardware locked).</li>
                 <li>Slurm fairshare score severely drops due to unused GPU billing.</li>
               </ul>
             </div>
             <div class="rice-card rice-card-good">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <h3 style="color: var(--badge-good-text); font-size: 0.68em; margin: 0;">✅ correct_gpu_reseource_allocation.sh</h3>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="color: var(--badge-good-text); font-size: 18px; margin: 0; font-weight: 700;">
+                  <span aria-hidden="true">✅</span> correct_gpu_reseource_allocation.sh
+                </h3>
               </div>
               <pre><code class="language-bash">#!/bin/bash
 #SBATCH --job-name=gpu_right
@@ -1162,7 +1176,7 @@ python single_gpu_train.py</code></pre>
 
 # Perfectly matched allocation
 python single_gpu_train.py</code></pre>
-              <ul style="font-size: 0.48em; margin-top: 6px;">
+              <ul style="margin-top: 10px; margin-bottom: 4px;">
                 <li>Immediate dispatch from the queue.</li>
                 <li>If multi-GPU is needed, implement PyTorch DDP / <code>torchrun</code>.</li>
               </ul>
