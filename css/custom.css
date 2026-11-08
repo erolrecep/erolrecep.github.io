@@ -88,3 +88,194 @@ blockquote strong {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* ==========================================================================
+   Accessibility & WCAG 2.1/2.2 AA Contrast & Readability Enhancements
+   ========================================================================== */
+
+/* High-Contrast Core Typography (WCAG AAA >= 7:1) */
+html,
+body,
+.container,
+header.post-header,
+#content-pane,
+.content {
+  background-color: #fcfcfc !important;
+  color: #18181b !important;
+}
+
+header.post-header {
+  margin-top: 30px;
+  padding: 12px 0 6px 0 !important;
+  display: flow-root;
+}
+
+.container {
+  overflow: visible !important;
+}
+
+h1.title,
+h1, h2, h3, h4, h5, h6 {
+  color: #09090b !important;
+  font-weight: 700;
+  background-color: transparent !important;
+}
+
+div.content {
+  color: #27272a !important;
+  font-weight: 400 !important;
+  font-size: 19px !important;
+  line-height: 1.7 !important;
+}
+
+div.content p,
+div.content li,
+div.content td,
+div.content th,
+div.content dd,
+div.content dt {
+  color: #27272a !important;
+  background-color: #fcfcfc;
+}
+
+div.content strong,
+div.content b {
+  color: #09090b !important;
+  font-weight: 700 !important;
+}
+
+div.content em,
+div.content i {
+  color: #09090b !important;
+  font-weight: 500 !important;
+  background-color: #fcfcfc;
+}
+
+/* Metadata & Footer Contrast (>= 7:1 ratio on #fcfcfc) */
+.description,
+.meta,
+.footer,
+.copyright,
+.powered {
+  color: #475569 !important;
+}
+
+a.meta,
+a.category-link {
+  color: #991b1b !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+
+/* WCAG 1.4.1: Distinct Links in Text Blocks */
+.content a {
+  color: #991b1b !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  font-weight: 500;
+}
+
+.content a:hover,
+.content a:focus {
+  color: #7f1d1d !important;
+  text-decoration: underline !important;
+}
+
+/* Inline Code Pill */
+.content :not(pre) > code {
+  color: #991b1b !important;
+  background-color: #f1f5f9;
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  font-size: 0.88em;
+  border: 1px solid #e2e8f0;
+}
+
+/* Tables */
+.content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.content table th,
+.content table td {
+  border: 1px solid #cbd5e1;
+  padding: 10px 14px;
+}
+
+.content table th {
+  background-color: #f1f5f9;
+  color: #0f172a !important;
+  font-weight: 700;
+}
+
+/* Accessible High-Contrast Syntax Highlighting (WCAG AA & AAA >= 7:1) */
+pre code.hljs {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  padding: 1.25rem !important;
+  border-radius: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-size: 0.9em !important;
+  line-height: 1.5 !important;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst,
+.hljs-meta,
+.hljs-selector-attr,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-code {
+  color: #38bdf8 !important;
+  font-weight: 600;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type {
+  color: #4ade80 !important;
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion {
+  color: #94a3b8 !important;
+  font-style: italic;
+}
+
+.hljs-number,
+.hljs-regexp,
+.hljs-link {
+  color: #fb923c !important;
+}
+
+.hljs-variable,
+.hljs-built_in {
+  color: #f472b6 !important;
+}
+
+/* Keyboard Navigation & Scrolling for Code Containers (WCAG 2.1.1) */
+pre {
+  overflow-x: auto !important;
+}
+
+pre > code,
+.hljs {
+  overflow: visible !important;
+  overflow-x: visible !important;
+  white-space: pre !important;
+}
+
+pre[tabindex="0"]:focus,
+.highlight[tabindex="0"]:focus,
+pre:focus {
+  outline: 2px solid #2563eb !important;
+  outline-offset: 2px;
+}
