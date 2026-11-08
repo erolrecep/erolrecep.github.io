@@ -225,26 +225,75 @@
       margin-bottom: 5px;
     }
 
-    /* Code Blocks (High Contrast WCAG AA >= 4.5:1) */
+    /* Code Blocks & Terminal Snippets (Crisp, High-Contrast Terminal Styling) */
     .reveal pre {
       background: var(--code-bg);
-      border: 1px solid #334155;
+      border: 1.5px solid #334155;
       border-radius: 8px;
-      font-size: 0.40em !important;
+      font-size: 15px !important;
+      line-height: 1.45 !important;
       width: 100%;
       margin: 8px 0;
       box-sizing: border-box;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.16);
     }
 
     .reveal pre code {
-      font-family: 'Fira Code', ui-monospace, monospace;
-      padding: 10px 14px !important;
-      line-height: 1.45;
+      font-family: 'Fira Code', ui-monospace, monospace !important;
+      font-size: 14.5px !important;
+      line-height: 1.45 !important;
+      padding: 12px 16px !important;
       color: var(--code-text);
-      max-height: 380px;
+      max-height: 420px;
       box-sizing: border-box;
       overflow-x: auto;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+
+    /* High-Contrast Accessible Syntax Highlighting (Tokens >= 5:1 contrast against #0F172A) */
+    .hljs-comment,
+    .hljs-quote {
+      color: #94A3B8 !important; /* Muted Slate - 4.8:1 contrast */
+      font-style: italic;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag,
+    .hljs-subst {
+      color: #38BDF8 !important; /* Sky Blue - 8.3:1 contrast */
+      font-weight: 600;
+    }
+
+    .hljs-string,
+    .hljs-title,
+    .hljs-section,
+    .hljs-attribute,
+    .hljs-literal,
+    .hljs-template-tag,
+    .hljs-template-variable,
+    .hljs-type,
+    .hljs-addition {
+      color: #4ADE80 !important; /* Mint/Emerald - 10.2:1 contrast */
+    }
+
+    .hljs-variable,
+    .hljs-name {
+      color: #FCD34D !important; /* Warm Amber - 12.4:1 contrast */
+    }
+
+    .hljs-number {
+      color: #FB923C !important; /* Vibrant Orange - 7.5:1 contrast */
+    }
+
+    .hljs-built_in,
+    .hljs-builtin-name {
+      color: #A78BFA !important; /* Soft Purple - 6.8:1 contrast */
+      font-weight: 600;
+    }
+
+    .hljs-meta {
+      color: #38BDF8 !important;
     }
 
     /* Rice Institutional Slide Footers */
@@ -779,17 +828,23 @@
                 <h3 style="color: var(--badge-good-text); font-size: 0.72em; margin: 0;">✅ Compute Nodes (The Workhorses)</h3>
                 <span class="badge-pill badge-success">[✓ RECOMMENDED]</span>
               </div>
-              <p><strong>Two sanctioned access methods:</strong></p>
-              <ul>
-                <li><strong>Interactive Debugging:</strong>
-                  <pre><code class="language-bash"># Request 1 GPU for 1 hour of interactive testing
+              <p style="margin-bottom: 8px;"><strong>Two sanctioned access methods:</strong></p>
+              
+              <div style="margin-bottom: 10px;">
+                <p style="font-size: 0.50em; font-weight: 700; color: var(--rice-blue); margin: 0 0 3px 0;">
+                  <span aria-hidden="true">🔹</span> Interactive Debugging:
+                </p>
+                <pre><code class="language-bash"># Request 1 GPU for 1 hour of interactive testing
 salloc --partition=gpu --gres=gpu:1 --time=01:00:00 --mem=32G</code></pre>
-                </li>
-                <li><strong>Batch Production:</strong>
-                  <pre><code class="language-bash"># Submit batch script to background queue
+              </div>
+
+              <div>
+                <p style="font-size: 0.50em; font-weight: 700; color: var(--rice-blue); margin: 0 0 3px 0;">
+                  <span aria-hidden="true">🔹</span> Batch Production:
+                </p>
+                <pre><code class="language-bash"># Submit batch script to background queue
 sbatch run_experiment.slurm</code></pre>
-                </li>
-              </ul>
+              </div>
             </div>
           </div>
         </div>
