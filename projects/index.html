@@ -49,7 +49,7 @@
       <p class="text-start meta mb-0">
          PUBLISHED ON NOV 8, 2026
         
-        / 3 MIN READ
+        / 4 MIN READ
         
       </p>
     </div>
@@ -78,6 +78,20 @@ A single-header, zero-dependency C23 engine unifying modern Computer Vision, Rev
 <li>🧊 <strong><a href="/rcre-docs/learn/strides.html">3D Tensor Strides &amp; Memory Layout Visualizer</a></strong></li>
 <li>⚡ <strong><a href="/rcre-docs/learn/gemm_cache.html">Cache-Tiled GEMM Hierarchy Simulator</a></strong></li>
 <li>🎯 <strong><a href="/rcre-docs/learn/stencils.html">Sliding Convolution SIMD Stencil Visualizer</a></strong></li>
+</ul>
+</li>
+</ul>
+<br>
+<ul>
+<li><strong><a href="https://github.com/erolrecep/gnew-parallel">GNew Parallel (gnewp)</a></strong> <em>(v0.2.2 — in-development)</em><br>
+A topology-, SIMD-I/O-, and accelerator-aware modernization of GNU Parallel written in ISO C23 and powered by <strong><a href="https://github.com/erolrecep/rcre">RCRE v1.1</a></strong>. Preserves the core zero-daemon Unix CLI ergonomics (<code>:::</code>, <code>::::</code>, <code>--pipe</code>, <code>{}</code>, <code>{.}</code>, <code>{/}</code>, <code>--colsep</code>, <code>--joblog</code>, <code>--resume-failed</code>, <code>-k</code>) while replacing the 15,000-line Perl interpreter core with a zero-dependency systems engine. Features shell-bypass direct execution (<code>posix_spawnp</code>) with arena scratchpads, ARM NEON &amp; x86 AVX2 SIMD <code>--pipe</code> stream splitters (2.12–3.24 GiB/s for FASTQ/FASTA/TSV), Apple Silicon P/E-core steering via Mach QoS, Linux cgroups v2 and Slurm CPU quota sympathy, live memory pressure guards, dynamic runtime NVML GPU VRAM-gated scheduling, and loss-proof <code>--worker</code> process pools (delivering 2.0x–23.6x faster orchestration and 11.5x lower RAM).
+<ul>
+<li>💻 <strong><a href="https://github.com/erolrecep/gnew-parallel">GitHub Repository</a></strong></li>
+<li>📚 <strong><a href="/gnew-parallel/GNew_Parallel_Scientific_Resource_Management_EBook.pdf">5-Page Technical E-Book (PDF)</a></strong></li>
+<li>📊 <strong><a href="https://github.com/erolrecep/gnew-parallel/blob/main/docs/benchmarks.md">Audited Cross-Platform Benchmarks</a></strong></li>
+<li>🏗️ <strong><a href="https://github.com/erolrecep/gnew-parallel/blob/main/docs/architecture.md">Systems Architecture &amp; Engineering Deep-Dive</a></strong></li>
+<li>⚖️ <strong><a href="https://github.com/erolrecep/gnew-parallel/blob/main/comparison.md">GNU Parallel vs. GNew Parallel Audited Comparison</a></strong></li>
+<li>🛠️ <strong><a href="https://github.com/erolrecep/gnew-parallel/blob/main/real_world_usage.md">Real-World Production Workflows &amp; Recipes</a></strong></li>
 </ul>
 </li>
 </ul>
