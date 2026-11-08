@@ -1405,6 +1405,7 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
       if (wrapper && wrapper.hasAttribute('role')) {
         wrapper.removeAttribute('role');
       }
+      updateSlideFocusability();
     });
 
     // Safeguard removal on ready event
@@ -1415,8 +1416,27 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
       }
     });
 
+    // Manage focusability of links in inactive slides (WCAG 4.1.2 aria-hidden-focus)
+    function updateSlideFocusability() {
+      const slides = document.querySelectorAll('.reveal .slides section');
+      slides.forEach(function (slide) {
+        const isHidden = slide.getAttribute('aria-hidden') === 'true' || slide.classList.contains('past') || slide.classList.contains('future');
+        const focusables = slide.querySelectorAll('a, button, input, textarea, [tabindex]');
+        focusables.forEach(function (el) {
+          if (isHidden) {
+            el.setAttribute('tabindex', '-1');
+            el.setAttribute('aria-hidden', 'true');
+          } else {
+            el.removeAttribute('tabindex');
+            el.removeAttribute('aria-hidden');
+          }
+        });
+      });
+    }
+
     // Dynamic ARIA Live Region Announcement on Slide Change (WCAG 4.1.2)
     Reveal.on('slidechanged', function (event) {
+      updateSlideFocusability();
       const currentSlide = event.currentSlide;
       const slideIndex = event.indexh + 1;
       const totalSlides = Reveal.getTotalSlides();
@@ -1426,6 +1446,10 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
       if (announcer) {
         announcer.textContent = 'Slide ' + slideIndex + ' of ' + totalSlides + ': ' + titleText;
       }
+    });
+
+    Reveal.on('ready', function () {
+      updateSlideFocusability();
     });
   </script>
 </body>
