@@ -2,6 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://erolrecep.github.io/projects/</loc>
+    <lastmod>2026-11-08T12:15:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/</loc>
+    <lastmod>2026-11-08T12:15:00-06:00</lastmod>
+  </url><url>
     <loc>https://erolrecep.github.io/categories/artificial-intelligence/</loc>
     <lastmod>2026-11-03T06:00:00-06:00</lastmod>
   </url><url>
@@ -33,9 +39,6 @@
     <lastmod>2026-11-03T06:00:00-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/posts/</loc>
-    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/</loc>
     <lastmod>2026-11-03T06:00:00-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/tags/simulation/</loc>
@@ -109,9 +112,6 @@
   </url><url>
     <loc>https://erolrecep.github.io/posts/vibecoding/</loc>
     <lastmod>2026-10-15T11:37:00-05:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/projects/</loc>
-    <lastmod>2026-10-13T17:55:00-05:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/tags/career-development/</loc>
     <lastmod>2025-08-11T10:47:48-05:00</lastmod>

@@ -94,6 +94,12 @@ blockquote strong {
 
 /* High-Contrast Core Typography (WCAG AAA >= 7:1) */
 html,
+body {
+  height: auto !important;
+  min-height: 100% !important;
+}
+
+html,
 body,
 .container,
 header.post-header,

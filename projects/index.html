@@ -47,9 +47,9 @@
     
     <div class="d-flex flex-column flex-md-row justify-content-between">
       <p class="text-start meta mb-0">
-         PUBLISHED ON OCT 13, 2026
+         PUBLISHED ON NOV 8, 2026
         
-        / 2 MIN READ
+        / 3 MIN READ
         
       </p>
     </div>
@@ -83,8 +83,42 @@ A single-header, zero-dependency C23 engine unifying modern Computer Vision, Rev
 </ul>
 <br>
 <ul>
+<li><strong><a href="https://github.com/erolrecep/best_practices_for_hpc">Best Practices for Using HPC: Scaling Up to Cluster-Native Workflows</a></strong> <em>(November 2026)</em><br>
+Comprehensive workshop curriculum, interactive slide deck, and practical guides presented at the Rice University Center for Research Computing (CRC) Research Computing Day. Designed to bridge the gap between running code on personal laptops and scaling compute jobs across large-scale supercomputing clusters. Covers login node etiquette, memory over-allocation traps, multi-core CPU and GPU resource sizing, high-speed shared file systems (Lustre/NFS), Slurm batch script templates, job monitoring with <code>seff</code>, and reproducible cluster-native workflows.
+<ul>
+<li>🖥️ <strong><a href="https://erolrecep.github.io/best-practices-hpc/">Interactive Presentation Slides</a></strong></li>
+<li>📝 <strong><a href="/posts/best-practices-for-hpc/">Technical Companion Article</a></strong></li>
+<li>💻 <strong><a href="https://github.com/erolrecep/best_practices_for_hpc">GitHub Repository</a></strong></li>
+</ul>
+</li>
+</ul>
+<br>
+<ul>
+<li><strong><a href="https://github.com/erolrecep/profiling_hardware_accelerated_computations">Profiling Hardware Accelerated Computations for CPU &amp; GPU</a></strong> <em>(November 2026)</em><br>
+A practical, diagnostic guide and hands-on workshop focused on making computational science and AI workloads run 10x to 1,000x faster across modern hardware architectures (NVIDIA GPUs, Apple Silicon MPS, and multi-core x86/ARM CPUs). Teaches a simple 3-step triage workflow (Run → Spot → Fix) using system-wide macro timeline profiling (nsys), kernel micro-architecture inspection (ncu), deep learning operator tracing (torch.profiler), line-by-line profiling (Scalene), and heap allocation flamegraphs (Memray). Demonstrates how cache-friendly loop reordering, eliminating Python scalar synchronizations (aten::_local_scalar_dense), and 1D grid-stride loops eliminate warp divergence and unlock peak silicon throughput.
+<ul>
+<li>🖥️ <strong><a href="https://erolrecep.github.io/profiling_hardware_accelerated_computations/">Interactive Presentation Slides</a></strong></li>
+<li>📓 <strong><a href="https://colab.research.google.com/github/erolrecep/profiling_hardware_accelerated_computations/blob/main/notebooks/cuda_profiling_colab_workshop.ipynb">Google Colab Interactive Cloud Lab</a></strong></li>
+<li>💻 <strong><a href="https://github.com/erolrecep/profiling_hardware_accelerated_computations">GitHub Repository</a></strong></li>
+</ul>
+</li>
+</ul>
+<br>
+<ul>
+<li><strong><a href="https://github.com/erolrecep/datascience_from_yesterday_to_tomorrow">Data Science: From Yesterday to Tomorrow</a></strong> <em>(November 2026)</em><br>
+A structured retrospective curriculum and interactive keynote delivered at Alparslan Türkeş Science and Technology University (ATU Adana, TR) tracing the 25-year evolution of Data Science—from early Web 2.0 clickstream analytics in 2000 to modern Foundation Models, physics-informed synthetic simulation, and counterfactual causal reasoning. Features an end-to-end physics simulation and telemetry analysis of a Formula 1 Grand Prix at Monza (53 laps, 1,060 telemetry records), dual-panel real-time circuit race animations, feature dominance modeling, and &ldquo;what-if rain&rdquo; scenario counterfactuals verified by an automated test suite.
+<ul>
+<li>🖥️ <strong><a href="https://erolrecep.github.io/datascience_from_yesterday_to_tomorrow/">Interactive Presentation Slides</a></strong></li>
+<li>📝 <strong><a href="/posts/data-science-yesterday-tomorrow/">Article Part 1: Foundations &amp; Evolution</a></strong></li>
+<li>📝 <strong><a href="/posts/data-science-yesterday-tomorrow-part-2/">Article Part 2: Retrospective &amp; Future Frontiers</a></strong></li>
+<li>💻 <strong><a href="https://github.com/erolrecep/datascience_from_yesterday_to_tomorrow">GitHub Repository</a></strong></li>
+</ul>
+</li>
+</ul>
+<br>
+<ul>
 <li><strong><a href="https://github.com/erolrecep/scientific_python_workflow_hpc">Scientific Python Environments &amp; Workflows on HPC</a></strong> <em>(October 2026)</em><br>
-Comprehensive workshop curriculum and hands-on laboratory for transitioning scientific Python workflows from local development environments (macOS/Linux) and Google Colab to multi-core CPUs and GPU-accelerated HPC clusters (Rocky Linux, SLURM, and Lmod). Demonstrates zero-overhead virtual environment management (<code>uv</code>), automated reproducible DAG pipelines (<code>make</code>), CPU/GPU benchmarks, memory profiling with flamegraphs (<code>memray</code>, <code>scalene</code>), and container-free cluster deployments.
+Comprehensive workshop curriculum and hands-on laboratory for transitioning scientific Python workflows from local development environments (macOS/Linux) and Google Colab to multi-core CPUs and GPU-accelerated HPC clusters (Rocky Linux, SLURM, and Lmod). Demonstrates zero-overhead virtual environment management (uv), automated reproducible DAG pipelines (make), CPU/GPU benchmarks, memory profiling with flamegraphs (memray, scalene), and container-free cluster deployments.
 <ul>
 <li>🖥️ <strong><a href="https://erolrecep.github.io/scientific_python_workflow_hpc/">Interactive Presentation Slides</a></strong></li>
 <li>📓 <strong><a href="https://github.com/erolrecep/scientific_python_workflow_hpc/blob/main/notebooks/scientific_python_workflow_colab.ipynb">Google Colab Hands-On Notebook</a></strong></li>
