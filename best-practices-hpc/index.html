@@ -448,8 +448,11 @@
       border: 1px solid var(--rice-card-border);
       border-radius: 10px;
       box-shadow: var(--rice-card-shadow);
-      max-width: 960px;
-      margin: 0 auto;
+      width: -moz-fit-content;
+      width: fit-content;
+      max-width: 100%;
+      box-sizing: border-box;
+      margin: 28px auto 0 auto;
       text-align: left;
     }
 
@@ -609,7 +612,7 @@
           <h2>About the Presenter</h2>
           <p class="slide-subtitle">Computational Scientist for AI at Rice University Center for Research Computing</p>
 
-          <div class="bio-container" style="margin-top: 24px;">
+          <div class="bio-container" style="margin: 28px auto 0 auto;">
             <img src="images/avatar.jpeg"
               alt="Portrait photograph of Dr. Recep Erol, Computational Scientist for AI at Rice University"
               class="bio-avatar" width="145" height="145" />
@@ -1369,9 +1372,9 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
           </p>
 
           <div
-            style="display: flex; gap: 24px; max-width: 1060px; margin: 0 auto; align-items: stretch; justify-content: center;">
+            style="display: flex; gap: 28px; margin: 0 auto; align-items: stretch; justify-content: center; width: fit-content; max-width: 100%;">
             <!-- Presenter Profile Card -->
-            <div class="bio-container" style="flex: 1; margin: 0; padding: 22px 28px;">
+            <div class="bio-container" style="margin: 0; padding: 22px 28px;">
               <img class="bio-avatar" src="images/avatar.jpeg"
                 alt="Portrait photograph of Dr. Recep Erol, Computational Scientist for AI at Rice University"
                 width="135" height="135" style="width: 135px; height: 135px;" />
@@ -1412,7 +1415,7 @@ Memory Efficiency: 88.8% of 16.00 GB</code></pre>
 
             <!-- Consultation Booking Card -->
             <div class="rice-card"
-              style="flex: 0 0 290px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 22px; text-align: center; border-radius: 10px;">
+              style="width: 290px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 22px; text-align: center; border-radius: 10px; box-sizing: border-box; margin: 0;">
               <div
                 style="background: #FFFFFF; padding: 8px; border-radius: 8px; border: 1px solid var(--rice-card-border); line-height: 0; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
                 <img src="images/consult_qr.svg"
