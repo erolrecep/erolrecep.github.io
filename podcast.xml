@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Recep&#39;s Technical Blog (Podcast Edition)</title>
+    <link>https://erolrecep.github.io/</link>
+    <description>HPC | AI | Optimization | C | Python | Experiments</description>
+    <language>en-US</language>
+    <copyright>© 2026. Recep Erol. Made with ❤️ in Houston, TX</copyright>
+    <lastBuildDate>Sat, 07 Nov 2026 23:26:52 -0600</lastBuildDate>
+    <atom:link href="https://erolrecep.github.io/podcast.xml" rel="self" type="application/rss+xml" />
+    <itunes:subtitle>Listen to technical articles on the go</itunes:subtitle>
+    <itunes:author>Recep Erol</itunes:author>
+    <itunes:summary>Listen to technical blog posts by Recep Erol. Perfect for commuting, driving, or workouts.</itunes:summary>
+    <itunes:owner>
+      <itunes:name>Recep Erol</itunes:name>
+      <itunes:email>recep.90@gmail.com</itunes:email>
+    </itunes:owner>
+    <itunes:image href="https://erolrecep.github.io/Recep.jpeg" />
+    <itunes:category text="Technology" />
+    <itunes:explicit>false</itunes:explicit>
+
+    
+      
+      
+        
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>Data Science from Yesterday to Tomorrow, Part 2: Lessons from a Quarter-Century of Hype and Reality</title>
+        <link>https://erolrecep.github.io/posts/data-science-yesterday-tomorrow-part-2/</link>
+        <pubDate>Tue, 03 Nov 2026 06:00:00 -0600</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/data-science-yesterday-tomorrow-part-2/</guid>
+        <description>A 25-Year Chronological Retrospective (2000–Present), Physics-Informed Synthetic Realities, and Counterfactual Reasoning.
+📖 Series Navigation: This is Part 2 of the Data Science: From Yesterday to Tomorrow series. If you haven't read it yet, make sure to explore Part 1: Why Data Science + AI is Your Unstoppable Superpower &larr;, which covers the personal 15-year trek across the compute stack, the Parable of the Alpine Pass, clinical target leakage, and reactive computational graphs. 🖥️ Keynote Presentation: Explore the full companion presentation with dark-tech aesthetics, embedded telemetry animations, and keyboard navigation directly in your browser: Data Science: From Yesterday to Tomorrow (Interactive 24-Slide Deck) &rarr; 🏎️ Open Source Code & Telemetry Labs: The complete Python simulation engine, datasets, and Jupyter notebooks are hosted on GitHub: erolrecep/datascience_from_yesterday_to_tomorrow ↗ Executive Summary: The Quarter-Century Arc Over the past twenty-five years, data science has repeatedly redefined its vocabulary. We have journeyed through Data Mining, Business Intelligence, the Big Data revolution, the Deep Learning renaissance, and now the epoch of Foundation Models and Agentic AI.
+</description>
+        <enclosure url="https://erolrecep.github.io/audio/data-science-yesterday-tomorrow-part-2.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary>A 25-Year Chronological Retrospective (2000–Present), Physics-Informed Synthetic Realities, and Counterfactual Reasoning.
+📖 Series Navigation: This is Part 2 of the Data Science: From Yesterday to Tomorrow series. If you haven't read it yet, make sure to explore Part 1: Why Data Science + AI is Your Unstoppable Superpower &larr;, which covers the personal 15-year trek across the compute stack, the Parable of the Alpine Pass, clinical target leakage, and reactive computational graphs. 🖥️ Keynote Presentation: Explore the full companion presentation with dark-tech aesthetics, embedded telemetry animations, and keyboard navigation directly in your browser: Data Science: From Yesterday to Tomorrow (Interactive 24-Slide Deck) &rarr; 🏎️ Open Source Code & Telemetry Labs: The complete Python simulation engine, datasets, and Jupyter notebooks are hosted on GitHub: erolrecep/datascience_from_yesterday_to_tomorrow ↗ Executive Summary: The Quarter-Century Arc Over the past twenty-five years, data science has repeatedly redefined its vocabulary. We have journeyed through Data Mining, Business Intelligence, the Big Data revolution, the Deep Learning renaissance, and now the epoch of Foundation Models and Agentic AI.
+</itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+      
+      
+        
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>Best Practices for Using HPC: Scaling Up to Cluster-Native Workflows</title>
+        <link>https://erolrecep.github.io/posts/best-practices-for-hpc/</link>
+        <pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/best-practices-for-hpc/</guid>
+        <description>Moving Beyond the Laptop Mindset: A Practical Guide for Researchers and Computational Scientists
+Abstract Unlocking the full potential of advanced computational infrastructure requires moving beyond the mindset of simply scaling up local code. While transitioning from a personal workstation or Google Colab notebook to a shared High-Performance Computing (HPC) cluster removes local compute and memory bottlenecks, true acceleration is achieved only by adopting cluster-native workflows.
+Modern supercomputing systems are not simply bigger laptops; they are orchestrated, multi-tenant community ecosystems governed by batch schedulers, distributed parallel filesystems, and specialized hardware accelerators. Navigating these environments demands an operational paradigm shift.
+</description>
+        <enclosure url="https://erolrecep.github.io/audio/best-practices-for-hpc.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary>Moving Beyond the Laptop Mindset: A Practical Guide for Researchers and Computational Scientists
+Abstract Unlocking the full potential of advanced computational infrastructure requires moving beyond the mindset of simply scaling up local code. While transitioning from a personal workstation or Google Colab notebook to a shared High-Performance Computing (HPC) cluster removes local compute and memory bottlenecks, true acceleration is achieved only by adopting cluster-native workflows.
+Modern supercomputing systems are not simply bigger laptops; they are orchestrated, multi-tenant community ecosystems governed by batch schedulers, distributed parallel filesystems, and specialized hardware accelerators. Navigating these environments demands an operational paradigm shift.
+</itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+      
+      
+        
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>From Yesterday to Tomorrow: Why Data Science &#43; AI is Your Unstoppable Superpower</title>
+        <link>https://erolrecep.github.io/posts/data-science-yesterday-tomorrow/</link>
+        <pubDate>Tue, 20 Oct 2026 20:45:00 -0500</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/data-science-yesterday-tomorrow/</guid>
+        <description>A 15-year journey from commodity laptops and MapReduce to supercomputers, $30B problem, and foundation models—and why foundational rigor matters more than ever.
+Figure: Navigating the alpine pass with live telemetry, neural path predictions, and data science rigor—keeping the human firmly in the driver’s seat.
+</description>
+        <enclosure url="https://erolrecep.github.io/audio/data-science-yesterday-tomorrow.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary>A 15-year journey from commodity laptops and MapReduce to supercomputers, $30B problem, and foundation models—and why foundational rigor matters more than ever.
+Figure: Navigating the alpine pass with live telemetry, neural path predictions, and data science rigor—keeping the human firmly in the driver’s seat.
+</itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+      
+      
+        
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>Vibe Coding for Scientists and Researchers</title>
+        <link>https://erolrecep.github.io/posts/vibecoding-for-scientists-researchers/</link>
+        <pubDate>Fri, 16 Oct 2026 12:08:00 -0500</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/vibecoding-for-scientists-researchers/</guid>
+        <description>Moving Science Forward with a New Way of Practice
+Abstract In empirical research, progress is frequently constrained not by the breadth of human scientific imagination, but by the friction of computational implementation. While the broader tech community has embraced &ldquo;vibe coding&rdquo; as a rapid prototyping methodology for consumer applications, this article formalizes vibe coding habits for scientists and researchers as a disciplined, hypothesis-driven workflow for computational scholars, graduate students, and faculty. By coupling declarative natural language intent with zero-trust synthetic benchmarking, invariant assertion, and automated provenance tracking, researchers can compress months of pipeline engineering into hours without compromising scientific reproducibility or mathematical validity.
+</description>
+        <enclosure url="https://erolrecep.github.io/audio/vibecoding-for-scientists-researchers.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary>Moving Science Forward with a New Way of Practice
+Abstract In empirical research, progress is frequently constrained not by the breadth of human scientific imagination, but by the friction of computational implementation. While the broader tech community has embraced &ldquo;vibe coding&rdquo; as a rapid prototyping methodology for consumer applications, this article formalizes vibe coding habits for scientists and researchers as a disciplined, hypothesis-driven workflow for computational scholars, graduate students, and faculty. By coupling declarative natural language intent with zero-trust synthetic benchmarking, invariant assertion, and automated provenance tracking, researchers can compress months of pipeline engineering into hours without compromising scientific reproducibility or mathematical validity.
+</itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+      
+      
+        
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>Vibe Coding: Building at the Speed of Thought</title>
+        <link>https://erolrecep.github.io/posts/vibecoding/</link>
+        <pubDate>Thu, 15 Oct 2026 11:37:00 -0500</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/vibecoding/</guid>
+        <description>From Imperative Syntax to Declarative Intent in Computational Scholarship
+Abstract In the contemporary computational landscape, the primary bottleneck of software creation is migrating from mechanical syntax to conceptual clarity. Coined by Andrej Karpathy, the term &ldquo;vibe coding&rdquo; captures a paradigm shift in which natural language serves as a declarative programming interface, with large language models (LLMs) managing implementation, scaffolding, and error triage. For academic researchers, doctoral candidates, and interdisciplinary scholars, this transformation represents both an unprecedented accelerator for scientific tooling and a pedagogical challenge to traditional notions of algorithmic literacy. This article outlines the theoretical foundations, operational mechanics, epistemic trade-offs, and verification disciplines required to wield vibe coding with scientific rigor.
+</description>
+        <enclosure url="https://erolrecep.github.io/audio/vibecoding.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary>From Imperative Syntax to Declarative Intent in Computational Scholarship
+Abstract In the contemporary computational landscape, the primary bottleneck of software creation is migrating from mechanical syntax to conceptual clarity. Coined by Andrej Karpathy, the term &ldquo;vibe coding&rdquo; captures a paradigm shift in which natural language serves as a declarative programming interface, with large language models (LLMs) managing implementation, scaffolding, and error triage. For academic researchers, doctoral candidates, and interdisciplinary scholars, this transformation represents both an unprecedented accelerator for scientific tooling and a pedagogical challenge to traditional notions of algorithmic literacy. This article outlines the theoretical foundations, operational mechanics, epistemic trade-offs, and verification disciplines required to wield vibe coding with scientific rigor.
+</itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+      
+      
+        
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>PEARC25 Reflections: A Step Forward in HPC and Scientific Computing</title>
+        <link>https://erolrecep.github.io/posts/pearc2025-columbus-oh/</link>
+        <pubDate>Mon, 11 Aug 2025 10:47:48 -0500</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/pearc2025-columbus-oh/</guid>
+        <description>Introduction PEARC25 Columbus, OH
+This year, I had the opportunity to attend the PEARC25 conference, supported by the ACM Early Career Travel Grant. While I’ve previously attended SC conferences, PEARC was a first for me. My main goals were to network, deepen my understanding of HPC research, and learn about the latest developments in the scientific computing community especially quantum computing.
+The HPC community is vast, and I feel fortunate to be part of it. These conferences are invaluable for staying current with state-of-the-art practices and connecting with the people who are pushing the boundaries of science. I am passionate about contributing to this progress and am working toward becoming one of those who help move science forward.
+</description>
+        <enclosure url="https://erolrecep.github.io/audio/pearc2025-columbus-OH.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary>Introduction PEARC25 Columbus, OH
+This year, I had the opportunity to attend the PEARC25 conference, supported by the ACM Early Career Travel Grant. While I’ve previously attended SC conferences, PEARC was a first for me. My main goals were to network, deepen my understanding of HPC research, and learn about the latest developments in the scientific computing community especially quantum computing.
+The HPC community is vast, and I feel fortunate to be part of it. These conferences are invaluable for staying current with state-of-the-art practices and connecting with the people who are pushing the boundaries of science. I am passionate about contributing to this progress and am working toward becoming one of those who help move science forward.
+</itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+      
+      
+        
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>Foundations of a Future Engineer: A Personal Roadmap</title>
+        <link>https://erolrecep.github.io/posts/a-personal-cs-education-roadmap/</link>
+        <pubDate>Sat, 28 Jun 2025 01:26:45 -0500</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/a-personal-cs-education-roadmap/</guid>
+        <description> A Computer Science Student Studying
+Embarking on a new academic or career journey is exciting, but it can also feel overwhelming. Whether you&rsquo;re just starting university or already a student looking for direction, here’s a roadmap I’ve crafted based on personal experience, habits, and observations. It’s meant to inspire, guide, and ground you as you grow in this fast-changing domain, especially in computer science where the pace of change is intense and constant.
+</description>
+        <enclosure url="https://erolrecep.github.io/audio/a-personal-cs-education-roadmap.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary> A Computer Science Student Studying
+Embarking on a new academic or career journey is exciting, but it can also feel overwhelming. Whether you&rsquo;re just starting university or already a student looking for direction, here’s a roadmap I’ve crafted based on personal experience, habits, and observations. It’s meant to inspire, guide, and ground you as you grow in this fast-changing domain, especially in computer science where the pace of change is intense and constant.
+</itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+      
+      
+        
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>5 days in Atlanta: My Personal Highlights from SC24</title>
+        <link>https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</link>
+        <pubDate>Thu, 28 Nov 2024 11:54:34 -0600</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/my_personal_highlights_from_sc24/</guid>
+        <description> SC24 Logo
+Over the past three years, I’ve had the privilege of attending the Supercomputing (SC) Conference to stay informed about the latest developments, changes, and scientific advancements in the field of supercomputing. In preparation for these experiences, I dedicated myself to building a strong foundation: reading books, taking courses, constructing a mini edge cluster to mimic an HPC center setup, and conducting numerous experiments to explore how different technologies and tools compare.
+</description>
+        <enclosure url="https://erolrecep.github.io/audio/my_personal_highlights_from_SC24.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary> SC24 Logo
+Over the past three years, I’ve had the privilege of attending the Supercomputing (SC) Conference to stay informed about the latest developments, changes, and scientific advancements in the field of supercomputing. In preparation for these experiences, I dedicated myself to building a strong foundation: reading books, taking courses, constructing a mini edge cluster to mimic an HPC center setup, and conducting numerous experiments to explore how different technologies and tools compare.
+</itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+      
+      
+        
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>GNU Parallel for Your Terminal Tasks</title>
+        <link>https://erolrecep.github.io/posts/gnuparallel_for_your_terminal_tasks/</link>
+        <pubDate>Mon, 28 Oct 2024 21:18:27 -0500</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/gnuparallel_for_your_terminal_tasks/</guid>
+        <description>In today&rsquo;s fast-paced world, efficiency is key, especially when working with multiple files and processes. Enter GNU Parallel, a powerful command-line tool that can help you streamline your terminal tasks by running them in parallel. In this blog post, we’ll explore what GNU Parallel is, how to install and use it, and some practical use cases that demonstrate its capabilities.
+What is GNU Parallel? GNU Parallel is a command-line utility designed to execute jobs in parallel, leveraging your system&rsquo;s resources more effectively. Whether you&rsquo;re converting files, processing data, or running scripts, if you can do it in the terminal, you can probably use GNU Parallel to speed it up. This tool is perfect for anyone who relies on the terminal for their daily tasks and wants to optimize their workflow.
+</description>
+        <enclosure url="https://erolrecep.github.io/audio/gnuparallel_for_your_terminal_tasks.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary>In today&rsquo;s fast-paced world, efficiency is key, especially when working with multiple files and processes. Enter GNU Parallel, a powerful command-line tool that can help you streamline your terminal tasks by running them in parallel. In this blog post, we’ll explore what GNU Parallel is, how to install and use it, and some practical use cases that demonstrate its capabilities.
+What is GNU Parallel? GNU Parallel is a command-line utility designed to execute jobs in parallel, leveraging your system&rsquo;s resources more effectively. Whether you&rsquo;re converting files, processing data, or running scripts, if you can do it in the terminal, you can probably use GNU Parallel to speed it up. This tool is perfect for anyone who relies on the terminal for their daily tasks and wants to optimize their workflow.
+</itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+      
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>Workshop Checklist</title>
+        <link>https://erolrecep.github.io/posts/workshop_checklist/</link>
+        <pubDate>Sun, 13 Oct 2024 05:47:10 -0500</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/workshop_checklist/</guid>
+        <description>Before Technical content preparation: List all the topics you want to teach and write a few paragraphs for each of them (this way, you can easily use the content in your speech) Prepare GitHub repository to put all the workshop content there, including: Presentation Always prepare extra slides, hands-on exercises, or technical content to deliver during the workshop in case the audience is more experienced or knowledgeable. Explanations Hands-on exercises Use case scenarios Future works Plan the workshop in advance: Duration of the workshop Date and time The flow of the workshop Prepare a script for the workshop (what you will talk about and in what order) Logistics (arrange room/office, other required things, etc) Determine the pre-requisites for the workshop and add them to the announcement: Bring your own laptop Make sure the browser is working You should have an account for the HPC system Announcement (Determine a platform and make the announcement. You can also distribute it through the email list of your institute.) Prepare a survey and asked them to fill right after the workshop. During Welcome users, and make sure they are seated and ready to start the workshop. Talk to the users and learn more about them while introducing yourself. Make things interactive. You ask them and allow them to ask you. Learn more about their technical background and determine the pace of the workshop. Based on the progress, determine the level of knowledge to deliver. Always measure the interest of audience and change gears as necessary to spark their interest. Never judge their level of knowledge! &ndash;&gt; They are here to learn from you. Be as helpful as possible! In each workshop, ask them to take notes and give them a few minutes intervally so they can keep up. Otherwise, they&rsquo;re going to forget! Always take notes and catch what worked/didn&rsquo;t work, or what you missed and fix this for the next workshops! Be conscious of any kind of input from the audience Give the link of the resources (i.e. GitHub repository) and make sure your audience can access all the resources. After At the end of the workshop, deliver the survey information (either qrcode, link, or email them) for feedback. evaluation survey! Each workshop is a good time for self-reflection and opportunity for your growth. Consider the feedback results and implement them to the workshop appropriately. </description>
+        <enclosure url="https://erolrecep.github.io/audio/workshop_checklist.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary>Before Technical content preparation: List all the topics you want to teach and write a few paragraphs for each of them (this way, you can easily use the content in your speech) Prepare GitHub repository to put all the workshop content there, including: Presentation Always prepare extra slides, hands-on exercises, or technical content to deliver during the workshop in case the audience is more experienced or knowledgeable. Explanations Hands-on exercises Use case scenarios Future works Plan the workshop in advance: Duration of the workshop Date and time The flow of the workshop Prepare a script for the workshop (what you will talk about and in what order) Logistics (arrange room/office, other required things, etc) Determine the pre-requisites for the workshop and add them to the announcement: Bring your own laptop Make sure the browser is working You should have an account for the HPC system Announcement (Determine a platform and make the announcement. You can also distribute it through the email list of your institute.) Prepare a survey and asked them to fill right after the workshop. During Welcome users, and make sure they are seated and ready to start the workshop. Talk to the users and learn more about them while introducing yourself. Make things interactive. You ask them and allow them to ask you. Learn more about their technical background and determine the pace of the workshop. Based on the progress, determine the level of knowledge to deliver. Always measure the interest of audience and change gears as necessary to spark their interest. Never judge their level of knowledge! &ndash;&gt; They are here to learn from you. Be as helpful as possible! In each workshop, ask them to take notes and give them a few minutes intervally so they can keep up. Otherwise, they&rsquo;re going to forget! Always take notes and catch what worked/didn&rsquo;t work, or what you missed and fix this for the next workshops! Be conscious of any kind of input from the audience Give the link of the resources (i.e. GitHub repository) and make sure your audience can access all the resources. After At the end of the workshop, deliver the survey information (either qrcode, link, or email them) for feedback. evaluation survey! Each workshop is a good time for self-reflection and opportunity for your growth. Consider the feedback results and implement them to the workshop appropriately. </itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+      
+      
+      
+      
+        
+        
+          
+        
+      
+
+      
+      <item>
+        <title>Notes for Organizing a Workshop</title>
+        <link>https://erolrecep.github.io/posts/notes_for_organizing_workshops/</link>
+        <pubDate>Sun, 13 Oct 2024 05:26:01 -0500</pubDate>
+        <guid isPermaLink="true">https://erolrecep.github.io/posts/notes_for_organizing_workshops/</guid>
+        <description>TL;DR:
+This post shares insights on organizing a technical workshop on a university campus. As an HPC admin and AI facilitator, I’ve organized several workshops and technical training sessions for HPC users. Here’s a roadmap of what to do before, during, and after a workshop, along with tips and tricks to make life easier for both you and the attendees. These are my personal views.
+From ML Engineer to HPC Admin
+After working as a machine learning engineer in various companies over a decade, I decided to switch my career to high-performance computing (HPC) and supercomputing centers. Upon completing my PhD, I reflected on my background and realized that the role of an HPC admin and AI facilitator fit perfectly with my skill set. I had also spent years in academia, teaching multiple courses, preparing quizzes and assignments, and mentoring over 100 graduate students in programming, problem-solving, data science, machine learning, and AI. These experiences motivated me to pursue this path.
+</description>
+        <enclosure url="https://erolrecep.github.io/audio/notes_for_organizing_workshops.mp3" length="2500000" type="audio/mpeg" />
+        <itunes:author>Recep Erol</itunes:author>
+        <itunes:summary>TL;DR:
+This post shares insights on organizing a technical workshop on a university campus. As an HPC admin and AI facilitator, I’ve organized several workshops and technical training sessions for HPC users. Here’s a roadmap of what to do before, during, and after a workshop, along with tips and tricks to make life easier for both you and the attendees. These are my personal views.
+From ML Engineer to HPC Admin
+After working as a machine learning engineer in various companies over a decade, I decided to switch my career to high-performance computing (HPC) and supercomputing centers. Upon completing my PhD, I reflected on my background and realized that the role of an HPC admin and AI facilitator fit perfectly with my skill set. I had also spent years in academia, teaching multiple courses, preparing quizzes and assignments, and mentoring over 100 graduate students in programming, problem-solving, data science, machine learning, and AI. These experiences motivated me to pursue this path.
+</itunes:summary>
+        <itunes:explicit>false</itunes:explicit>
+      </item>
+      
+    
+  </channel>
+</rss>
+

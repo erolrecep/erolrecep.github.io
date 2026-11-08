@@ -1,0 +1,145 @@
+{
+  "notes_for_organizing_workshops": {
+    "slug": "notes_for_organizing_workshops",
+    "title": "Notes for Organizing a Workshop",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 305.9,
+    "duration_str": "5:05",
+    "file_size": 2301936,
+    "output_path": "static/audio/notes_for_organizing_workshops.mp3",
+    "hash": "706d817e3010e599d2ab0cc2dfad1833350b3f6a50ef8229f53915ac11f536c1"
+  },
+  "workshop_checklist": {
+    "slug": "workshop_checklist",
+    "title": "Workshop Checklist",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 138.13,
+    "duration_str": "2:18",
+    "file_size": 1043976,
+    "output_path": "static/audio/workshop_checklist.mp3",
+    "hash": "257573eaa2de514bf3f42d3894b954d991ce8f9d4ceea15d43486c10327beb84"
+  },
+  "vibecoding": {
+    "slug": "vibecoding",
+    "title": "Vibe Coding: Building at the Speed of Thought",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 785.68,
+    "duration_str": "13:05",
+    "file_size": 5910960,
+    "output_path": "static/audio/vibecoding.mp3",
+    "hash": "0f30090b860fc33d37ace7725eb114e9168f495a8e212afdaff0ff05b0ca05f6"
+  },
+  "a-personal-cs-education-roadmap": {
+    "slug": "a-personal-cs-education-roadmap",
+    "title": "Foundations of a Future Engineer: A Personal Roadmap",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 303.29,
+    "duration_str": "5:03",
+    "file_size": 2229096,
+    "output_path": "static/audio/a-personal-cs-education-roadmap.mp3",
+    "hash": "0e9f6776cd1678751fd0e4b96756c1e284b45f78c1a92ddda8a815943245d285"
+  },
+  "accelerated-computing-with-python-numba": {
+    "slug": "accelerated-computing-with-python-numba",
+    "title": "Accelerated Computing With Python Numba",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 233.92,
+    "duration_str": "3:53",
+    "file_size": 1756248,
+    "output_path": "static/audio/accelerated-computing-with-python-numba.mp3",
+    "hash": "33c92a71a989a41873e24c89f1592180b21e27bee8bae57d2ca2879cc0852e3b"
+  },
+  "best-practices-for-hpc": {
+    "slug": "best-practices-for-hpc",
+    "title": "Best Practices for Using HPC: Scaling Up to Cluster-Native Workflows",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 537.46,
+    "duration_str": "8:57",
+    "file_size": 4021392,
+    "output_path": "static/audio/best-practices-for-hpc.mp3",
+    "hash": "40eccfb64f642b466ae5276bd72c200835539c9df69308eb76d517fdad77b367"
+  },
+  "c-python-profiling": {
+    "slug": "c-python-profiling",
+    "title": "C Python Profiling",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 3.31,
+    "duration_str": "0:03",
+    "file_size": 21864,
+    "output_path": "static/audio/c-python-profiling.mp3",
+    "hash": "314b6766289c9d8ff66a25638fe46866d64ea5d9c2f4889d78932a0d5f61af60"
+  },
+  "data-science-yesterday-tomorrow": {
+    "slug": "data-science-yesterday-tomorrow",
+    "title": "From Yesterday to Tomorrow: Why Data Science + AI is Your Unstoppable Superpower",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 1196.17,
+    "duration_str": "19:56",
+    "file_size": 8976432,
+    "output_path": "static/audio/data-science-yesterday-tomorrow.mp3",
+    "hash": "26d2aa19dcfb1a04b981322697c74d3b9a8e411f63371320306c73048d8b6caa"
+  },
+  "data-science-yesterday-tomorrow-part-2": {
+    "slug": "data-science-yesterday-tomorrow-part-2",
+    "title": "Data Science from Yesterday to Tomorrow, Part 2: Lessons from a Quarter-Century of Hype and Reality",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 1198.97,
+    "duration_str": "19:58",
+    "file_size": 8984112,
+    "output_path": "static/audio/data-science-yesterday-tomorrow-part-2.mp3",
+    "hash": "aa3577d2cddf95beee075ce56c64ece3dbbf91f584d7669cbf51636cc5ac3049"
+  },
+  "gnuparallel_for_your_terminal_tasks": {
+    "slug": "gnuparallel_for_your_terminal_tasks",
+    "title": "GNU Parallel for Your Terminal Tasks",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 448.02,
+    "duration_str": "7:28",
+    "file_size": 3286896,
+    "output_path": "static/audio/gnuparallel_for_your_terminal_tasks.mp3",
+    "hash": "e16f2ce8aa4e36db82aac5e7f9710911313fb96d620e30fced58e6c02d15922d"
+  },
+  "my_personal_highlights_from_SC24": {
+    "slug": "my_personal_highlights_from_SC24",
+    "title": "5 days in Atlanta: My Personal Highlights from SC24",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 438.75,
+    "duration_str": "7:18",
+    "file_size": 3287016,
+    "output_path": "static/audio/my_personal_highlights_from_SC24.mp3",
+    "hash": "7c059d076b5814ab7f26dae8787f21ddede09f1207f756158f1032d9144141a4"
+  },
+  "pearc2025-columbus-OH": {
+    "slug": "pearc2025-columbus-OH",
+    "title": "PEARC25 Reflections: A Step Forward in HPC and Scientific Computing",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 249.88,
+    "duration_str": "4:09",
+    "file_size": 1849944,
+    "output_path": "static/audio/pearc2025-columbus-OH.mp3",
+    "hash": "8b05154c80ee067047da5ea8399c4dfb194d73848c255cad548a4ff31a8d1866"
+  },
+  "vibecoding-for-scientists-researchers": {
+    "slug": "vibecoding-for-scientists-researchers",
+    "title": "Vibe Coding for Scientists and Researchers",
+    "author": "Recep Erol",
+    "voice": "am_adam",
+    "duration_seconds": 681.49,
+    "duration_str": "11:21",
+    "file_size": 5125104,
+    "output_path": "static/audio/vibecoding-for-scientists-researchers.mp3",
+    "hash": "cbd3ac82eb4f51d5aea7e31b4f60b658d872f5c908e1a07a5824f00830ea94e9"
+  }
+}
