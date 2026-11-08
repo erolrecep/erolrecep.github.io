@@ -89,378 +89,410 @@
 
 
 
-<div class="rcre-audio-container" id="rcre-audio-card">
-  <div class="rcre-audio-header">
-    <div class="rcre-audio-title-group">
-      <span class="rcre-audio-badge"><i class="fa-solid fa-podcast"></i> AUDIO EDITION</span>
-      <span class="rcre-audio-label">Listen while commuting or driving</span>
-    </div>
-    <div class="rcre-audio-links">
-      <a href="/audio/vibecoding.mp3" download class="rcre-audio-link-btn" title="Download MP3 for offline listening">
-        <i class="fa-solid fa-arrow-down"></i> MP3
-      </a>
-      <a href="/podcast.xml" class="rcre-audio-link-btn" title="Subscribe in Apple Podcasts, Overcast, or Pocket Casts">
-        <i class="fa-solid fa-rss"></i> RSS
-      </a>
-    </div>
-  </div>
+<div class="listen" data-listen data-state="idle">
+  <audio preload="none" src="/audio/vibecoding.mp3" data-listen-audio></audio>
 
-  <audio id="rcre-native-audio" preload="metadata" src="/audio/vibecoding.mp3"></audio>
+  
+  <button type="button" class="listen-btn" data-listen-play aria-label="Listen to this post">
+    <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M8 5v14l11-7z" fill="currentColor"></path>
+    </svg>
+    <svg class="icon icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"></path>
+    </svg>
+    <span data-listen-label>Listen</span>
+  </button>
 
-  <div class="rcre-audio-controls">
-    
-    <div class="rcre-audio-btn-row">
-      <button type="button" class="rcre-ctrl-btn" id="rcre-btn-rewind" title="Rewind 15 seconds" aria-label="Rewind 15 seconds">
-        <i class="fa-solid fa-rotate-left"></i> <span>15s</span>
-      </button>
+  
+  <button type="button" class="listen-skip-btn" data-listen-skip="-15" title="Rewind 15 seconds" aria-label="Rewind 15 seconds">
+    <svg class="icon icon-skip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+      <path d="M3 3v5h5"/>
+    </svg>
+    <span class="skip-label">15</span>
+  </button>
 
-      <button type="button" class="rcre-play-btn" id="rcre-btn-play" title="Play / Pause" aria-label="Play or Pause">
-        <i class="fa-solid fa-play" id="rcre-play-icon"></i>
-      </button>
+  <button type="button" class="listen-skip-btn" data-listen-skip="15" title="Skip forward 15 seconds" aria-label="Skip 15 seconds">
+    <svg class="icon icon-skip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12a9 9 0 1 1-9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+      <path d="M21 3v5h-5"/>
+    </svg>
+    <span class="skip-label">15</span>
+  </button>
 
-      <button type="button" class="rcre-ctrl-btn" id="rcre-btn-forward" title="Skip 15 seconds" aria-label="Skip 15 seconds">
-        <i class="fa-solid fa-rotate-right"></i> <span>15s</span>
-      </button>
-    </div>
+  
+  <input class="listen-seek" type="range" min="0" max="100" step="0.5" value="0" aria-label="Seek audio" data-listen-seek>
 
-    
-    <div class="rcre-audio-scrub-row">
-      <span class="rcre-time-text" id="rcre-time-current">0:00</span>
-      <input type="range" class="rcre-progress-bar" id="rcre-progress" min="0" max="100" value="0" step="0.1" aria-label="Audio scrubber">
-      <span class="rcre-time-text" id="rcre-time-duration">--:--</span>
-    </div>
+  
+  <span class="listen-time" data-listen-time>--:--</span>
 
-    
-    <div class="rcre-audio-speed-row">
-      <span class="rcre-speed-label"><i class="fa-solid fa-gauge-high"></i> Speed:</span>
-      <div class="rcre-speed-pills">
-        <button type="button" class="rcre-speed-pill active" data-speed="1.0">1.0x</button>
-        <button type="button" class="rcre-speed-pill" data-speed="1.25">1.25x</button>
-        <button type="button" class="rcre-speed-pill" data-speed="1.5">1.5x</button>
-        <button type="button" class="rcre-speed-pill" data-speed="1.75">1.75x</button>
-        <button type="button" class="rcre-speed-pill" data-speed="2.0">2.0x</button>
-      </div>
-    </div>
+  
+  <label class="listen-option" title="Playback speed">
+    <select data-listen-speed aria-label="Playback speed">
+      <option value="1">1×</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2">2×</option>
+    </select>
+  </label>
+
+  
+  <div class="listen-actions">
+    <a href="/audio/vibecoding.mp3" download class="listen-action-btn" title="Download MP3 for offline listening" aria-label="Download MP3">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+    </a>
+    <a href="/podcast.xml" class="listen-action-btn" title="Subscribe via RSS / Apple Podcasts / Overcast" aria-label="Subscribe to Podcast RSS">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"/>
+        <path d="M4 4a16 16 0 0 1 16 16"/>
+        <circle cx="5" cy="19" r="1"/>
+      </svg>
+    </a>
   </div>
 </div>
 
 <style>
-.rcre-audio-container {
-  background: #fdfdfd;
-  border: 1px solid #e1e4e8;
-  border-left: 4px solid #0056b3;
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-  margin: 1.5rem 0 2rem 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+ 
+.listen {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+  margin: 1.25rem 0 1.75rem 0;
+  flex-wrap: wrap;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #334155;
+  user-select: none;
 }
 
-.rcre-audio-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.85rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #edf0f2;
-}
-
-.rcre-audio-title-group {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.rcre-audio-badge {
-  background: #0056b3;
-  color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  padding: 0.2rem 0.55rem;
-  border-radius: 4px;
+ 
+.listen-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-}
-
-.rcre-audio-label {
-  font-size: 0.85rem;
-  color: #555555;
-  font-weight: 500;
-}
-
-.rcre-audio-links {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.rcre-audio-link-btn {
-  font-size: 0.75rem;
-  color: #495057;
-  background: #e9ecef;
-  border: 1px solid #ced4da;
-  padding: 0.18rem 0.55rem;
-  border-radius: 4px;
-  text-decoration: none !important;
-  font-weight: 600;
-  transition: all 0.15s ease;
-}
-
-.rcre-audio-link-btn:hover {
-  background: #0056b3;
-  color: #ffffff !important;
-  border-color: #0056b3;
-}
-
-.rcre-audio-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.rcre-audio-btn-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-.rcre-play-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #0056b3;
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
-  transition: transform 0.1s ease, background 0.15s ease;
-  box-shadow: 0 2px 8px rgba(0, 86, 179, 0.3);
-}
-
-.rcre-play-btn:hover {
-  background: #004085;
-  transform: scale(1.05);
-}
-
-.rcre-ctrl-btn {
-  background: transparent;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  padding: 0.35rem 0.65rem;
-  color: #495057;
-  cursor: pointer;
+  gap: 0.4em;
+  height: 2.1rem;
+  padding: 0 0.95em;
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 500;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.listen-btn:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #f8fafc;
+}
+
+[data-state="playing"] .listen-btn {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #eff6ff;
+}
+
+ 
+.listen .icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.icon-pause,
+[data-state="playing"] .icon-play {
+  display: none !important;
+}
+
+[data-state="playing"] .icon-pause {
+  display: inline-block !important;
+}
+
+ 
+.listen-skip-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  transition: all 0.15s ease;
-}
-
-.rcre-ctrl-btn:hover {
-  background: #e9ecef;
-  color: #000000;
-}
-
-.rcre-audio-scrub-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.rcre-time-text {
-  font-size: 0.8rem;
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  color: #6c757d;
-  min-width: 42px;
-}
-
-.rcre-progress-bar {
-  flex-grow: 1;
-  cursor: pointer;
-  accent-color: #0056b3;
-  height: 6px;
-}
-
-.rcre-audio-speed-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  color: #6c757d;
-  padding-top: 0.25rem;
-}
-
-.rcre-speed-label {
+  justify-content: center;
+  gap: 0.15rem;
+  height: 2.1rem;
+  padding: 0 0.55rem;
+  font-size: 0.72rem;
   font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  outline: none;
 }
 
-.rcre-speed-pills {
+.listen-skip-btn .icon-skip {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.listen-skip-btn:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #f8fafc;
+}
+
+ 
+.listen-seek {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  --progress: 0%;
+  background: transparent;
+  flex: 8rem;
+  min-width: 6rem;
+  height: 2.1rem;
+  margin: 0;
+}
+
+.listen-seek::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #2563eb var(--progress), #cbd5e1 var(--progress));
+  border-radius: 3px;
+  height: 4px;
+  transition: background 0.05s ease;
+}
+
+.listen-seek::-moz-range-track {
+  background: #cbd5e1;
+  border-radius: 3px;
+  height: 4px;
+}
+
+.listen-seek::-moz-range-progress {
+  background: #2563eb;
+  border-radius: 3px;
+  height: 4px;
+}
+
+.listen-seek::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #2563eb;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.12s ease;
+}
+
+.listen-seek::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
+
+.listen-seek::-moz-range-thumb {
+  background: #2563eb;
+  border: 0;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+}
+
+ 
+.listen-time {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: #64748b;
+  min-width: 3.5rem;
+  text-align: right;
+}
+
+ 
+.listen-option select {
+  height: 2.1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  padding: 0 0.55em;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #334155;
+  background: #ffffff;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.listen-option select:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+ 
+.listen-actions {
   display: flex;
   gap: 0.35rem;
 }
 
-.rcre-speed-pill {
-  background: #f1f3f5;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  padding: 0.15rem 0.45rem;
-  font-size: 0.75rem;
-  cursor: pointer;
-  color: #495057;
-  font-weight: 600;
+.listen-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #64748b;
+  text-decoration: none !important;
   transition: all 0.15s ease;
 }
 
-.rcre-speed-pill:hover {
-  background: #e2e6ea;
+.listen-action-btn .icon {
+  width: 0.85rem;
+  height: 0.85rem;
 }
 
-.rcre-speed-pill.active {
-  background: #0056b3;
-  color: #ffffff;
-  border-color: #0056b3;
+.listen-action-btn:hover {
+  border-color: #2563eb;
+  color: #2563eb !important;
+  background: #f8fafc;
+}
+
+@media print {
+  .listen {
+    display: none !important;
+  }
 }
 </style>
 
 <script>
 (function() {
-  const audio = document.getElementById('rcre-native-audio');
-  const btnPlay = document.getElementById('rcre-btn-play');
-  const iconPlay = document.getElementById('rcre-play-icon');
-  const btnRewind = document.getElementById('rcre-btn-rewind');
-  const btnForward = document.getElementById('rcre-btn-forward');
-  const progress = document.getElementById('rcre-progress');
-  const timeCur = document.getElementById('rcre-time-current');
-  const timeDur = document.getElementById('rcre-time-duration');
-  const speedPills = document.querySelectorAll('.rcre-speed-pill');
+  const container = document.querySelector('[data-listen]');
+  if (!container) return;
 
-  if (!audio) return;
+  const audio = container.querySelector('[data-listen-audio]');
+  const playBtn = container.querySelector('[data-listen-play]');
+  const label = container.querySelector('[data-listen-label]');
+  const seek = container.querySelector('[data-listen-seek]');
+  const time = container.querySelector('[data-listen-time]');
+  const speed = container.querySelector('[data-listen-speed]');
+  const skipBtns = container.querySelectorAll('[data-listen-skip]');
 
-  function formatTime(sec) {
-    if (isNaN(sec) || sec < 0) return '0:00';
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
+  if (!audio || !playBtn || !seek) return;
+
+  function formatTime(s) {
+    if (isNaN(s) || s < 0) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${m}:${sec.toString().padStart(2, '0')}`;
   }
 
   
-  const savedSpeed = localStorage.getItem('rcre_audio_speed') || '1.0';
-  audio.playbackRate = parseFloat(savedSpeed);
-  speedPills.forEach(pill => {
-    if (pill.dataset.speed === savedSpeed) {
-      pill.classList.add('active');
-    } else {
-      pill.classList.remove('active');
+  try {
+    const savedSpeed = localStorage.getItem('rcre_tts_speed') || '1';
+    speed.value = savedSpeed;
+    audio.playbackRate = Number(savedSpeed);
+  } catch (e) {}
+
+  function syncState() {
+    const isPlaying = !audio.paused && !audio.ended;
+    container.dataset.state = isPlaying ? 'playing' : (audio.currentTime > 0 && !audio.ended ? 'paused' : 'idle');
+    label.textContent = isPlaying ? 'Pause' : (container.dataset.state === 'paused' ? 'Resume' : 'Listen');
+    playBtn.setAttribute('aria-label', label.textContent);
+
+    const cur = audio.currentTime;
+    const dur = audio.duration || 0;
+
+    if (dur > 0 && !seek.matches(':active')) {
+      seek.value = (cur / dur) * 100;
+      seek.style.setProperty('--progress', `${(cur / dur) * 100}%`);
+      time.textContent = cur > 0 ? `${formatTime(cur)} / ${formatTime(dur)}` : formatTime(dur);
+    } else if (dur > 0) {
+      seek.style.setProperty('--progress', `${seek.value}%`);
     }
-  });
+  }
 
   
-  function togglePlay() {
+  playBtn.addEventListener('click', () => {
     if (audio.paused) {
-      audio.play();
+      audio.playbackRate = Number(speed.value);
+      audio.play().catch(err => console.warn('Audio playback error:', err));
     } else {
       audio.pause();
     }
-  }
-
-  btnPlay.addEventListener('click', togglePlay);
-
-  audio.addEventListener('play', () => {
-    iconPlay.classList.remove('fa-play');
-    iconPlay.classList.add('fa-pause');
-  });
-
-  audio.addEventListener('pause', () => {
-    iconPlay.classList.remove('fa-pause');
-    iconPlay.classList.add('fa-play');
   });
 
   
-  btnRewind.addEventListener('click', () => {
-    audio.currentTime = Math.max(0, audio.currentTime - 15);
-  });
-
-  btnForward.addEventListener('click', () => {
-    audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 15);
-  });
-
-  
-  audio.addEventListener('loadedmetadata', () => {
-    timeDur.textContent = formatTime(audio.duration);
-  });
-
-  audio.addEventListener('durationchange', () => {
-    timeDur.textContent = formatTime(audio.duration);
-  });
-
-  
-  audio.addEventListener('timeupdate', () => {
-    timeCur.textContent = formatTime(audio.currentTime);
-    if (audio.duration && !progress.matches(':active')) {
-      progress.value = (audio.currentTime / audio.duration) * 100;
-    }
-  });
-
-  progress.addEventListener('input', () => {
+  seek.addEventListener('input', () => {
     if (audio.duration) {
-      audio.currentTime = (progress.value / 100) * audio.duration;
+      audio.currentTime = (Number(seek.value) / 100) * audio.duration;
+      seek.style.setProperty('--progress', `${seek.value}%`);
+      syncState();
     }
   });
 
   
-  speedPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      const rate = parseFloat(pill.dataset.speed);
-      audio.playbackRate = rate;
-      localStorage.setItem('rcre_audio_speed', rate.toString());
-      speedPills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
+  speed.addEventListener('change', () => {
+    const rate = Number(speed.value);
+    audio.playbackRate = rate;
+    try {
+      localStorage.setItem('rcre_tts_speed', String(rate));
+    } catch (e) {}
+  });
+
+  
+  skipBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const delta = Number(btn.dataset.listenSkip);
+      audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + delta));
+      syncState();
     });
   });
 
   
+  audio.addEventListener('play', syncState);
+  audio.addEventListener('pause', syncState);
+  audio.addEventListener('timeupdate', syncState);
+  audio.addEventListener('loadedmetadata', () => {
+    time.textContent = formatTime(audio.duration);
+  });
+  audio.addEventListener('ended', () => {
+    audio.currentTime = 0;
+    syncState();
+  });
+
+  
   if ('mediaSession' in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: "Vibe Coding: Building at the Speed of Thought",
-      artist: "Recep Erol",
-      album: "Recep's Technical Blog",
-      artwork: [
-        { src: '\/Recep.jpeg', sizes: '512x512', type: 'image/jpeg' }
-      ]
+    audio.addEventListener('play', () => {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: "Vibe Coding: Building at the Speed of Thought",
+        artist: "Recep Erol",
+        album: "Recep's Technical Blog",
+        artwork: [
+          { src: '\/Recep.jpeg', sizes: '512x512', type: 'image/jpeg' }
+        ]
+      });
     });
 
     navigator.mediaSession.setActionHandler('play', () => audio.play());
     navigator.mediaSession.setActionHandler('pause', () => audio.pause());
     navigator.mediaSession.setActionHandler('seekbackward', (details) => {
-      const skipTime = details.seekOffset || 15;
-      audio.currentTime = Math.max(0, audio.currentTime - skipTime);
+      const skip = details.seekOffset || 15;
+      audio.currentTime = Math.max(0, audio.currentTime - skip);
     });
     navigator.mediaSession.setActionHandler('seekforward', (details) => {
-      const skipTime = details.seekOffset || 15;
-      audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + skipTime);
-    });
-    navigator.mediaSession.setActionHandler('seekto', (details) => {
-      if (details.fastSeek && 'fastSeek' in audio) {
-        audio.fastSeek(details.seekTime);
-        return;
-      }
-      audio.currentTime = details.seekTime;
+      const skip = details.seekOffset || 15;
+      audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + skip);
     });
   }
 })();
 </script>
-
 
 
 
