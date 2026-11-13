@@ -10,9 +10,23 @@
 		
 		
 		
-			<lastBuildDate>Tue, 03 Nov 2026 06:00:00 -0600</lastBuildDate>
+			<lastBuildDate>Fri, 13 Nov 2026 10:00:00 -0600</lastBuildDate>
 		
 			<atom:link href="https://erolrecep.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Education</title>
+				<link>https://erolrecep.github.io/categories/education/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/categories/education/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Systems Engineering</title>
+				<link>https://erolrecep.github.io/categories/systems-engineering/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/categories/systems-engineering/</guid>
+				<description></description>
+			</item>
 			<item>
 				<title>Artificial Intelligence</title>
 				<link>https://erolrecep.github.io/categories/artificial-intelligence/</link>

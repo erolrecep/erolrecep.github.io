@@ -10,9 +10,58 @@
 		
 		
 		
-			<lastBuildDate>Tue, 03 Nov 2026 06:00:00 -0600</lastBuildDate>
+			<lastBuildDate>Fri, 13 Nov 2026 10:00:00 -0600</lastBuildDate>
 		
 			<atom:link href="https://erolrecep.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>C Programming</title>
+				<link>https://erolrecep.github.io/tags/c-programming/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/c-programming/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Computer Vision</title>
+				<link>https://erolrecep.github.io/tags/computer-vision/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/computer-vision/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Education</title>
+				<link>https://erolrecep.github.io/tags/education/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/education/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>HPC</title>
+				<link>https://erolrecep.github.io/tags/hpc/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/hpc/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Interactive Learning</title>
+				<link>https://erolrecep.github.io/tags/interactive-learning/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/interactive-learning/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Systems Engineering</title>
+				<link>https://erolrecep.github.io/tags/systems-engineering/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/systems-engineering/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>WebAssembly</title>
+				<link>https://erolrecep.github.io/tags/webassembly/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/webassembly/</guid>
+				<description></description>
+			</item>
 			<item>
 				<title>Artificial Intelligence</title>
 				<link>https://erolrecep.github.io/tags/artificial-intelligence/</link>
@@ -214,13 +263,6 @@
 				<link>https://erolrecep.github.io/tags/continuous-learning/</link>
 				<pubDate>Sat, 28 Jun 2025 01:26:45 -0500</pubDate>
 				<guid>https://erolrecep.github.io/tags/continuous-learning/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Education</title>
-				<link>https://erolrecep.github.io/tags/education/</link>
-				<pubDate>Sat, 28 Jun 2025 01:26:45 -0500</pubDate>
-				<guid>https://erolrecep.github.io/tags/education/</guid>
 				<description></description>
 			</item>
 			<item>

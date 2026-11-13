@@ -2,10 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://erolrecep.github.io/projects/</loc>
-    <lastmod>2026-11-08T12:15:00-06:00</lastmod>
+    <loc>https://erolrecep.github.io/tags/c-programming/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/categories/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/computer-vision/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/categories/education/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/education/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/hpc/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/interactive-learning/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/posts/introducing-rcre-learn/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/posts/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/categories/systems-engineering/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/systems-engineering/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/tags/webassembly/</loc>
+    <lastmod>2026-11-13T10:00:00-06:00</lastmod>
+  </url><url>
+    <loc>https://erolrecep.github.io/projects/</loc>
     <lastmod>2026-11-08T12:15:00-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/categories/artificial-intelligence/</loc>
@@ -15,9 +54,6 @@
     <lastmod>2026-11-03T06:00:00-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/tags/awesome-datascience/</loc>
-    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/categories/</loc>
     <lastmod>2026-11-03T06:00:00-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/categories/data-science/</loc>
@@ -38,13 +74,7 @@
     <loc>https://erolrecep.github.io/tags/machine-learning/</loc>
     <lastmod>2026-11-03T06:00:00-06:00</lastmod>
   </url><url>
-    <loc>https://erolrecep.github.io/posts/</loc>
-    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
-  </url><url>
     <loc>https://erolrecep.github.io/tags/simulation/</loc>
-    <lastmod>2026-11-03T06:00:00-06:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/tags/</loc>
     <lastmod>2026-11-03T06:00:00-06:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/tags/apptainer/</loc>
@@ -141,9 +171,6 @@
     <lastmod>2025-06-28T01:26:45-05:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/tags/continuous-learning/</loc>
-    <lastmod>2025-06-28T01:26:45-05:00</lastmod>
-  </url><url>
-    <loc>https://erolrecep.github.io/tags/education/</loc>
     <lastmod>2025-06-28T01:26:45-05:00</lastmod>
   </url><url>
     <loc>https://erolrecep.github.io/posts/a-personal-cs-education-roadmap/</loc>

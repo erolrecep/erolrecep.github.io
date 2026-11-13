@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>WebAssembly on Recep&#39;s Technical Blog</title>
+		<link>https://erolrecep.github.io/tags/webassembly/</link>
+		<description>Recent content in WebAssembly on Recep&#39;s Technical Blog</description>
+		<generator>Hugo</generator>
+		<language>en-US</language>
+		
+		
+		
+		
+			<lastBuildDate>Fri, 13 Nov 2026 10:00:00 -0600</lastBuildDate>
+		
+			<atom:link href="https://erolrecep.github.io/tags/webassembly/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Introducing rcre-learn: The Silicon Odyssey</title>
+				<link>https://erolrecep.github.io/posts/introducing-rcre-learn/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/posts/introducing-rcre-learn/</guid>
+				<description>&lt;p&gt;&lt;em&gt;Demystifying Bare-Metal Systems, Computer Vision, and AI for Students and Non-Technical Learners&lt;/em&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;&#xA;&lt;p&gt;Most modern programming education introduces computing as an abstract black box: layers of Python libraries, web frameworks, and virtual runtimes that obscure the physical realities of the machine. While this top-down approach gets beginners writing high-level code quickly, it leaves them with no intuition for why their software slows down, leaks memory, or freezes their laptop.&lt;/p&gt;&#xA;&lt;p&gt;To bridge this gap, I built &lt;a href=&#34;https://erolrecep.github.io/rcre-learn/&#34;&gt;&lt;strong&gt;&lt;code&gt;rcre-learn: The Silicon Odyssey&lt;/code&gt;&lt;/strong&gt;&lt;/a&gt;—an open-access, 10-week educational journey and interactive web application designed specifically for high school students and non-technical enthusiasts.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

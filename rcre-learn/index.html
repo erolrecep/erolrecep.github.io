@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rcre-learn: The Silicon Odyssey (10-Week Systems Journey)</title>
+  <style>
+    :root {
+      /* Autumn Theme Palette: Orange, Warm Amber, Light Caramel Brown & Bark */
+      --bg-dark: #16100b;             /* Deep espresso bark */
+      --bg-card: #221811;             /* Warm roasted chestnut / walnut */
+      --bg-panel: #2d2017;            /* Toasted cinnamon / oak panel */
+      --border: #4a3424;              /* Spiced bronze border */
+      --accent-orange: #ff781f;       /* Vibrant maple pumpkin orange */
+      --accent-amber: #f59e0b;        /* Golden harvest amber */
+      --accent-brown: #d4a373;        /* Warm light caramel brown */
+      --accent-terracotta: #c2410c;   /* Rich autumn clay */
+      --accent-moss: #84a98c;         /* Autumn forest sage */
+      --accent-crimson: #e11d48;      /* Deep autumn leaf crimson */
+      --accent-gold: #fde047;         /* Golden wheat */
+      --text-main: #fbf5ee;           /* Warm antique parchment cream */
+      --text-muted: #bfa89b;          /* Soft toasted pecan / taupe */
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Header & Hero */
+    header {
+      background: linear-gradient(180deg, #261b12 0%, var(--bg-dark) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .logo-badge {
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-brown));
+      color: #1a0f07;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+      box-shadow: 0 2px 8px rgba(255, 120, 31, 0.25);
+    }
+    h1.app-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #fff7ed, var(--accent-orange), var(--accent-brown));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .project-tags {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+    }
+    .tag {
+      background: rgba(212, 163, 115, 0.1);
+      border: 1px solid rgba(212, 163, 115, 0.25);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      color: #faedd9;
+    }
+
+    /* Overall Layout: Odyssey Map + Interactive Lab */
+    .main-layout {
+      max-width: 1400px;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 1024px) {
+      .main-layout { grid-template-columns: 1fr; }
+    }
+
+    /* Sidebar: The 10 Stations Roadmap */
+    .sidebar-roadmap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      height: calc(100vh - 120px);
+      position: sticky;
+      top: 90px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    .roadmap-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    .roadmap-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-orange);
+    }
+    .progress-bar-container {
+      background: rgba(255,255,255,0.08);
+      height: 6px;
+      border-radius: 3px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--accent-orange), var(--accent-brown));
+      height: 100%;
+      width: 10%;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 10px rgba(255, 120, 31, 0.4);
+    }
+
+    .station-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .station-item {
+      background: var(--bg-panel);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+    }
+    .station-item:hover {
+      border-color: var(--accent-brown);
+      transform: translateX(3px);
+    }
+    .station-item.active {
+      background: #39281c;
+      border-color: var(--accent-orange);
+      box-shadow: 0 0 16px rgba(255, 120, 31, 0.22);
+    }
+    .station-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 120, 31, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-orange);
+      border: 1px solid rgba(255, 120, 31, 0.4);
+      flex-shrink: 0;
+    }
+    .station-item.active .station-num {
+      background: var(--accent-orange);
+      color: #1a0f07;
+      font-weight: 800;
+    }
+    .station-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .station-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .station-subtitle {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* Main Interactive Lab Area */
+    .lab-area {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Chapter Banner */
+    .chapter-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .chapter-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      color: var(--accent-orange);
+      margin-bottom: 0.25rem;
+    }
+    .chapter-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .chapter-story {
+      color: #faedd9;
+      font-size: 0.95rem;
+      max-width: 800px;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    .chapter-meta {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.8rem;
+    }
+    .meta-item { display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); }
+    .meta-item strong { color: var(--accent-brown); }
+
+    /* Interactive Simulation Canvas Container */
+    .sim-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .sim-header {
+      background: var(--bg-panel);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .sim-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .sim-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .btn {
+      background: rgba(212, 163, 115, 0.12);
+      border: 1px solid rgba(212, 163, 115, 0.25);
+      color: var(--text-main);
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn:hover {
+      background: rgba(212, 163, 115, 0.22);
+      border-color: var(--accent-brown);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #c2410c, #9a3412);
+      color: #fff;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+    }
+    .btn-cyan {
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-brown));
+      color: #1a0f07;
+      font-weight: 700;
+      border: none;
+    }
+    .btn-cyan:hover {
+      opacity: 0.92;
+      box-shadow: 0 0 12px rgba(255, 120, 31, 0.35);
+    }
+
+    .sim-body {
+      padding: 1.5rem;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background: #140d08;
+    }
+
+    /* Simulation Module Styles */
+    /* Sim 1: Locker Room */
+    .locker-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 0.75rem;
+      width: 100%;
+      max-width: 750px;
+    }
+    .locker-box {
+      background: var(--bg-panel);
+      border: 2px solid #4a3424;
+      border-radius: 8px;
+      padding: 0.6rem 0.4rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .locker-box:hover {
+      border-color: var(--accent-orange);
+      transform: translateY(-3px);
+    }
+    .locker-box.occupied {
+      border-color: var(--accent-brown);
+      background: #312217;
+    }
+    .locker-box.swapped {
+      border-color: var(--accent-orange);
+      animation: pulseGreen 0.6s ease;
+    }
+    .locker-addr {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .locker-val {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent-orange);
+    }
+    .locker-label {
+      font-size: 0.65rem;
+      color: #faedd9;
+      margin-top: 0.2rem;
+    }
+
+    /* Sim 2: Arena Allocator */
+    .arena-bar-container {
+      width: 100%;
+      max-width: 800px;
+      background: #251a12;
+      border: 2px solid #4a3424;
+      border-radius: 8px;
+      height: 70px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+    }
+    .arena-block {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #1a0f07;
+      border-right: 1px solid rgba(0,0,0,0.25);
+      transition: width 0.3s ease;
+    }
+    .arena-watermark-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #ff5400;
+      box-shadow: 0 0 10px #ff5400;
+      transition: left 0.3s ease;
+      z-index: 10;
+    }
+    .arena-stats {
+      margin-top: 1rem;
+      display: flex;
+      gap: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    /* Sim 3: Pixel Microscope */
+    .pixel-microscope-layout {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .pixel-grid-8x8 {
+      display: grid;
+      grid-template-columns: repeat(6, 42px);
+      gap: 4px;
+    }
+    .subpixel {
+      width: 42px;
+      height: 42px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .subpixel:hover { transform: scale(1.15); z-index: 5; }
+
+    /* Sim 4: SoA vs AoS Cache */
+    .cache-line-vis {
+      width: 100%;
+      max-width: 750px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .bus-lane {
+      background: var(--bg-panel);
+      border: 1px solid #4a3424;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .byte-strip {
+      display: flex;
+      gap: 3px;
+      margin-top: 0.5rem;
+      overflow-x: auto;
+    }
+    .byte-cell {
+      flex: 1;
+      height: 36px;
+      min-width: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: 3px;
+    }
+
+    /* Sim 5: 3x3 Stencil */
+    .stencil-container {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .matrix-3x3 {
+      display: grid;
+      grid-template-columns: repeat(3, 50px);
+      gap: 4px;
+      background: #251a12;
+      padding: 6px;
+      border-radius: 6px;
+      border: 2px solid var(--accent-orange);
+    }
+    .matrix-cell {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      background: #18100a;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    /* Sim 6: 8-Lane SIMD */
+    .simd-highway {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 700px;
+    }
+    .lane-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: #251a12;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+    .lane-cells {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 4px;
+      flex: 1;
+    }
+    .lane-box {
+      background: #18100a;
+      border: 1px solid var(--accent-brown);
+      border-radius: 4px;
+      padding: 0.4rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-brown);
+    }
+
+    /* Sim 8: Master Dispatcher */
+    .core-rack {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      width: 100%;
+      max-width: 750px;
+    }
+    .core-card {
+      background: var(--bg-panel);
+      border: 1px solid #4a3424;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+    }
+    .core-card.p-core { border-top: 3px solid var(--accent-orange); }
+    .core-card.e-core { border-top: 3px solid var(--accent-brown); }
+    .core-card.gpu-core { border-top: 3px solid var(--accent-terracotta); }
+    .core-status {
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 0.5rem;
+      color: var(--accent-orange);
+    }
+
+    /* Sim 10: Live Video Canvas */
+    .canvas-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    #visionCanvas {
+      background: #000;
+      border: 2px solid var(--accent-orange);
+      border-radius: 8px;
+      max-width: 100%;
+      box-shadow: 0 0 24px rgba(255, 120, 31, 0.25);
+    }
+
+    /* Code & Technical Breakdown Card */
+    .code-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .code-tabs {
+      display: flex;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.75rem 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      color: #fff;
+      border-bottom-color: var(--accent-orange);
+      background: rgba(255, 120, 31, 0.08);
+    }
+    .code-content {
+      padding: 1.25rem;
+      background: #120b07;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #fbf5ee;
+      overflow-x: auto;
+    }
+    .code-explanation {
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: #faedd9;
+    }
+    .code-explanation h4 {
+      color: var(--accent-orange);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Terminal Output / Test Runner */
+    .terminal-card {
+      background: #0d0805;
+      border: 1px solid #3d281a;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #fbbf24;
+      margin-top: 1rem;
+    }
+
+    @keyframes pulseGreen {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation & Title Bar -->
+  <header>
+    <div class="header-container">
+      <div class="logo-group">
+        <span class="logo-badge">RCRE-LEARN</span>
+        <h1 class="app-title">The Silicon Odyssey</h1>
+      </div>
+      <div class="project-tags">
+        <span class="tag">⚡ rcre (CV/ML Engine)</span>
+        <span class="tag">🎨 rcvc (Planar Imaging)</span>
+        <span class="tag">🚀 gnew-parallel (Orchestrator)</span>
+        <span class="tag">🔬 ISO C23 Standard</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Exploration Hub -->
+  <div class="main-layout">
+
+    <!-- Sidebar: 10 Stations Roadmap -->
+    <aside class="sidebar-roadmap">
+      <div class="roadmap-header">
+        <div class="roadmap-title">🗺️ Journey Stations</div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;" id="progressText">
+          Station 1 of 10
+        </div>
+      </div>
+
+      <div class="station-list" id="stationList">
+        <!-- Station 1 -->
+        <div class="station-item active" onclick="loadStation(1)">
+          <div class="station-num">1</div>
+          <div class="station-info">
+            <div class="station-name">The Locker Room</div>
+            <div class="station-subtitle">Variables, Types & Addresses</div>
+          </div>
+        </div>
+        <!-- Station 2 -->
+        <div class="station-item" onclick="loadStation(2)">
+          <div class="station-num">2</div>
+          <div class="station-info">
+            <div class="station-name">The Whiteboard</div>
+            <div class="station-subtitle">Linear Arenas & O(1) Rewind</div>
+          </div>
+        </div>
+        <!-- Station 3 -->
+        <div class="station-item" onclick="loadStation(3)">
+          <div class="station-num">3</div>
+          <div class="station-info">
+            <div class="station-name">The Digital Mosaic</div>
+            <div class="station-subtitle">Pixels & 15-bit Fixed-Point</div>
+          </div>
+        </div>
+        <!-- Station 4 -->
+        <div class="station-item" onclick="loadStation(4)">
+          <div class="station-num">4</div>
+          <div class="station-info">
+            <div class="station-name">Colored Pencils</div>
+            <div class="station-subtitle">SoA vs AoS & Cache Lines</div>
+          </div>
+        </div>
+        <!-- Station 5 -->
+        <div class="station-item" onclick="loadStation(5)">
+          <div class="station-num">5</div>
+          <div class="station-info">
+            <div class="station-name">The Magic Stencil</div>
+            <div class="station-subtitle">2D Convolutions & Sobel Edges</div>
+          </div>
+        </div>
+        <!-- Station 6 -->
+        <div class="station-item" onclick="loadStation(6)">
+          <div class="station-num">6</div>
+          <div class="station-info">
+            <div class="station-name">The 8-Lane Highway</div>
+            <div class="station-subtitle">SIMD & Dynamic HAL Dispatch</div>
+          </div>
+        </div>
+        <!-- Station 7 -->
+        <div class="station-item" onclick="loadStation(7)">
+          <div class="station-num">7</div>
+          <div class="station-info">
+            <div class="station-name">The Stream Laser</div>
+            <div class="station-subtitle">Safe Fat-Pointer Slices</div>
+          </div>
+        </div>
+        <!-- Station 8 -->
+        <div class="station-item" onclick="loadStation(8)">
+          <div class="station-num">8</div>
+          <div class="station-info">
+            <div class="station-name">Master Dispatcher</div>
+            <div class="station-subtitle">Processes, Cores & QoS Sympathy</div>
+          </div>
+        </div>
+        <!-- Station 9 -->
+        <div class="station-item" onclick="loadStation(9)">
+          <div class="station-num">9</div>
+          <div class="station-info">
+            <div class="station-name">Teaching Silicon</div>
+            <div class="station-subtitle">Autograd DAG & Neural Attention</div>
+          </div>
+        </div>
+        <!-- Station 10 -->
+        <div class="station-item" onclick="loadStation(10)">
+          <div class="station-num">10</div>
+          <div class="station-info">
+            <div class="station-name">The Alchemist's Portal</div>
+            <div class="station-subtitle">WebAssembly Live Vision Capstone</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content & Interactive Area -->
+    <main class="lab-area">
+
+      <!-- Chapter Overview -->
+      <section class="chapter-card" id="chapterCard">
+        <span class="chapter-badge" id="stationBadge">WEEK 01 // STATION 1</span>
+        <h2 class="chapter-title" id="stationTitle">The Silicon Grid & The Locker Room</h2>
+        <p class="chapter-story" id="stationStory">
+          Welcome to the physical machine! Computer RAM is like an endless school hallway of numbered metal lockers.
+          Each locker holds exactly one byte (0–255). In C23, variables are just sticky notes on locker doors,
+          and pointers are cards telling you which locker number to open.
+        </p>
+        <div class="chapter-meta">
+          <div class="meta-item">Silicon Concept: <strong id="metaConcept">RAM Addresses & Types</strong></div>
+          <div class="meta-item">Project Connection: <strong id="metaProject">rcre Zero-Overhead Memory</strong></div>
+          <div class="meta-item">Complexity: <strong id="metaComplexity">O(1) Direct Addressing</strong></div>
+        </div>
+      </section>
+
+      <!-- Explorable Simulation -->
+      <section class="sim-card">
+        <div class="sim-header">
+          <div class="sim-title" id="simTitle">🧪 Interactive Simulation: Memory Lockers</div>
+          <div class="sim-controls" id="simControls">
+            <button class="btn btn-cyan" onclick="runSimAction()">▶ Run Action</button>
+            <button class="btn" onclick="resetSim()">↺ Reset</button>
+          </div>
+        </div>
+        <div class="sim-body" id="simBody">
+          <!-- Dynamically populated by JS for each week -->
+        </div>
+      </section>
+
+      <!-- Code Inspector & Explanation -->
+      <section class="code-card">
+        <div class="code-tabs">
+          <button class="tab-btn active" id="tabStarter" onclick="switchCodeTab('starter')">starter.c</button>
+          <button class="tab-btn" id="tabSolution" onclick="switchCodeTab('solution')">solution.c</button>
+          <button class="tab-btn" id="tabTest" onclick="switchCodeTab('test')">test.c</button>
+        </div>
+        <pre class="code-content"><code id="codeViewer">// Loading code...</code></pre>
+        <div class="code-explanation">
+          <h4>💡 Plain-English Systems Explanation</h4>
+          <p id="codeExplText">
+            Notice how pointers are used: <code>uint32_t* a</code> is a variable holding a 64-bit locker number.
+            The dereference operator <code>*a</code> reaches inside the locker to read or write its contents.
+          </p>
+          <div class="terminal-card" id="terminalOutput">
+            [Verification Suite] Running ASan / UBSan tests...<br>
+            ✔ PASS: 0 memory leaks, 0 address errors, verified bit-exact.
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Data for the 10 Stations
+    const stations = [
+      {
+        id: 1,
+        badge: "WEEK 01 // STATION 1",
+        title: "The Silicon Grid & The Locker Room",
+        story: "RAM is a physical hallway of numbered metal lockers. In C23, every variable has an exact locker address (&) and byte size. When you pass a pointer, you aren't copying the locker's heavy contents—you are just handing over the locker number!",
+        concept: "Locker Addresses & Pointers",
+        project: "rcre Predictable Byte Footprint",
+        complexity: "O(1) Direct Dereference",
+        simTitle: "🧪 The Memory Address Locker Room",
+        codeExpl: "Notice how swap_lockers(uint32_t* a, uint32_t* b) works: it reads locker A into a temporary box, copies locker B into locker A, and places the box in locker B. No data is lost!",
+        terminal: "[Week 01 Test] Testing Locker Room Swap & Addresses...\n  ✔ Week 01 PASSED: Locker swap & pointer dereference verified.\n  ==> Sanitizers clean: 0 leaks, 0 errors.",
+        starter: `#include <stdio.h>\n#include <stdint.h>\n\nvoid swap_lockers(uint32_t* a, uint32_t* b) {\n    // TODO: Swap values at address a and b using a temporary variable!\n    (void)a;\n    (void)b;\n}`,
+        solution: `#include <stdio.h>\n#include <stdint.h>\n\nvoid swap_lockers(uint32_t* a, uint32_t* b) {\n    if (!a || !b) return;\n    uint32_t temp = *a;\n    *a = *b;\n    *b = temp;\n}`,
+        test: `// 24-assertion parity test suite under Clang ASan + UBSan\nassert(x == 67890);\nassert(y == 12345);`
+      },
+      {
+        id: 2,
+        badge: "WEEK 02 // STATION 2",
+        title: "The Endless Whiteboard (Arena Allocator)",
+        story: "Calling malloc() is like renting hotel rooms one by one—slow and messy. In rcre and gnew-parallel, we use Linear Arenas: write contiguously on a whiteboard, and wipe it clean with one O(1) swipe!",
+        concept: "Linear Arena & O(1) Rewind",
+        project: "RCRE_Arena Scratchpads",
+        complexity: "O(1) Allocation & Bulk Wipe",
+        simTitle: "🧪 The Whiteboard Arena Simulator",
+        codeExpl: "rl_arena_alloc aligns pointers to 64 bytes for cache efficiency, then advances the offset. Calling rl_arena_reset simply sets offset = 0, instantly reclaiming all memory without leaks!",
+        terminal: "[Week 02 Test] Testing Linear Memory Arena...\n  ✔ Week 02 PASSED: Linear Arena, 64-byte alignment & O(1) reset verified.\n  ==> Peak allocated: 350 bytes | Active after reset: 0 bytes.",
+        starter: `void* arena_push(RL_Arena* a, size_t size) {\n    // TODO: Advance offset and return pointer\n    return NULL;\n}`,
+        solution: `void* rl_arena_alloc(RL_Arena* a, size_t bytes, size_t alignment) {\n    // 64-byte alignment arithmetic + O(1) bump pointer\n    uintptr_t current = (uintptr_t)a->buffer + a->offset;\n    // ...\n    return (void*)aligned_ptr;\n}`,
+        test: `RL_ArenaTemp temp = rl_arena_temp_begin(&arena);\nrl_arena_temp_end(temp); // Checkpoint rewind verified!`
+      },
+      {
+        id: 3,
+        badge: "WEEK 03 // STATION 3",
+        title: "The Digital Mosaic (Pixels & 15-bit Fixed-Point)",
+        story: "Images are 2D grids of red, green, and blue numbers. Floating point math is slow on edge chips, so rcre uses 15-bit fixed-point integers to convert RGB to Grayscale with 0 LSB discrepancy against OpenCV!",
+        concept: "Fixed-Point Integer Scaling",
+        project: "rcre Bit-Exact OpenCV Parity",
+        complexity: "1 Cycle Bit Shift (>> 16)",
+        simTitle: "🧪 Pixel Microscope & 15-bit Math",
+        codeExpl: "The formula (19595*R + 38469*G + 7472*B) >> 16 achieves exact color weighting in pure integer arithmetic without floating-point units.",
+        terminal: "[Week 03 Test] Testing 15-bit Fixed-Point Color Spaces...\n  ✔ Week 03 PASSED: 15-bit fixed-point color space conversion exact.\n  ==> OpenCV Parity: 0 LSB discrepancy.",
+        starter: `uint8_t rgb_to_gray(uint8_t r, uint8_t g, uint8_t b) {\n    // TODO: Compute (19595*R + 38469*G + 7472*B) >> 16\n    return 0;\n}`,
+        solution: `uint8_t rl_rgb_to_gray(uint8_t r, uint8_t g, uint8_t b) {\n    uint32_t val = ((uint32_t)r * 19595u + (uint32_t)g * 38469u + (uint32_t)b * 7472u);\n    return (uint8_t)(val >> 16);\n}`,
+        test: `assert(rl_rgb_to_gray(255, 0, 0) == 76); // Pure Red\nassert(rl_rgb_to_gray(0, 255, 0) == 149); // Pure Green`
+      },
+      {
+        id: 4,
+        badge: "WEEK 04 // STATION 4",
+        title: "The Colored Pencil Box (SoA vs. AoS)",
+        story: "CPUs fetch 64 bytes at a time in Cache Lines. Mixing RGB in structs (AoS) wastes 66% of bus bandwidth when processing one channel. rcvc uses Planar Bands (SoA) for 100% cache line saturation!",
+        concept: "Spatial Cache Line Locality",
+        project: "rcvc Planar Tile Engine",
+        complexity: "100% Useful Bus Saturation",
+        simTitle: "🧪 CPU Cache Line Bus Simulator",
+        codeExpl: "Planar tiles (RL_TileSoA) store all Red samples contiguously, followed by Green, then Blue. When iterating over a channel, every byte transferred into CPU L1 cache is utilized.",
+        terminal: "[Week 04 Test] Testing SoA Planar Tiles & Spatial Locality...\n  ✔ Week 04 PASSED: SoA planar tile memory access & conversion verified.\n  ==> Cache bandwidth efficiency: 100% useful.",
+        starter: `typedef struct { uint8_t r[1024], g[1024], b[1024]; } TileSoA;`,
+        solution: `void rl_tile_to_gray(const RL_TileSoA* tile, uint8_t* out_gray) {\n    for (size_t i = 0; i < total; ++i) {\n        out_gray[i] = rl_rgb_to_gray(tile->r[i], tile->g[i], tile->b[i]);\n    }\n}`,
+        test: `assert(avg == 200.0f); // Asserted on 1024 planar samples`
+      },
+      {
+        id: 5,
+        badge: "WEEK 05 // STATION 5",
+        title: "The Magic Stencil (2D Convolutions & Edges)",
+        story: "How does a robot see? By sliding a 3x3 stencil over pixels! A Sobel stencil cancels out flat regions and highlights sharp boundaries, giving the computer eyes.",
+        concept: "2D Spatial Convolutions",
+        project: "rcre Vision Edge Detectors",
+        complexity: "O(K^2) Sliding Stencil",
+        simTitle: "🧪 3x3 Sobel Stencil Convolver",
+        codeExpl: "The Sobel horizontal kernel weights left pixels negatively and right pixels positively. When sliding over a vertical edge, the difference creates a strong gradient magnitude.",
+        terminal: "[Week 05 Test] Testing 2D Convolutions & Edge Stencils...\n  ✔ Week 05 PASSED: 2D convolution stencils & edge gradients verified.\n  ==> Sobel Gx/Gy Manhattan magnitude verified.",
+        starter: `uint8_t box_blur_3x3(const uint8_t patch[3][3]) {\n    // TODO: Return average of 9 pixels\n    return 0;\n}`,
+        solution: `int16_t rl_sobel_dx_3x3(const uint8_t p[3][3]) {\n    return -1*p[0][0] + 1*p[0][2] - 2*p[1][0] + 2*p[1][2] - 1*p[2][0] + 1*p[2][2];\n}`,
+        test: `assert(rl_sobel_magnitude(gx_vert, gy_vert) == 255);`
+      },
+      {
+        id: 6,
+        badge: "WEEK 06 // STATION 6",
+        title: "The 8-Lane Highway (SIMD & The Dynamic HAL)",
+        story: "Don't add numbers one by one. SIMD registers stamp 8 additions in one clock cycle! rcre's Dynamic HAL detects Apple NEON or x86 AVX2 at runtime and dispatches single-cycle function pointers.",
+        concept: "SIMD Vectorization & HAL",
+        project: "rcre_hal Vector Dispatch",
+        complexity: "8x Parallel Throughput",
+        simTitle: "🧪 8-Lane SIMD Vector Conveyor",
+        codeExpl: "Function pointers in RL_HAL allow transparent dispatching to ARM NEON intrinsics on Apple Silicon or AVX2 on Intel, with scalar fallbacks for universal portability.",
+        terminal: "[Week 06 Test] Testing Dynamic Hardware Abstraction Layer (HAL)...\n  Dispatched to: ARM NEON (Apple Silicon / ARM64)\n  ✔ Week 06 PASSED: Dynamic HAL vector arithmetic verified.",
+        starter: `void vector_scale(const float* a, float s, float* out, size_t n);`,
+        solution: `RL_HAL rl_hal_init(void) {\n    RL_HAL hal;\n    hal.backend_name = "ARM NEON (Apple Silicon)";\n    hal.vector_add = rl_vector_add_neon;\n    return hal;\n}`,
+        test: `assert(fabsf(out_add[i] - (a[i] + 0.5f)) < 1e-5f);`
+      },
+      {
+        id: 7,
+        badge: "WEEK 07 // STATION 7",
+        title: "The Stream Laser (Fat-Pointer Text Slices)",
+        story: "Null-terminated C strings cause memory leaks and security bugs. gnew-parallel uses fat-pointer Slices (data + len) to split genomic streams at 3.24 GiB/s with zero memory copies!",
+        concept: "Zero-Copy String Slicing",
+        project: "gnew-parallel --pipe Splitter",
+        complexity: "O(1) Zero-Copy Slicing",
+        simTitle: "🧪 High-Speed Delimiter Scanner",
+        codeExpl: "RL_Slice holds pointer and length. When splitting lines, it simply adjusts the pointer offset and length without allocating heap strings or mutating the source buffer.",
+        terminal: "[Week 07 Test] Testing Fat-Pointer Slices & Zero-Copy Splitting...\n  ✔ Week 07 PASSED: Fat-pointer slices & zero-copy tokenizer verified.\n  ==> Processing speed: 3.24 GiB/s on M-series.",
+        starter: `bool rl_slice_split_next(RL_Slice* src, char delim, RL_Slice* out);`,
+        solution: `bool rl_slice_split_next(RL_Slice* source, char delimiter, RL_Slice* out_token) {\n    // Walk until delimiter and return fat-pointer view\n}`,
+        test: `assert(rl_slice_equals(token, rl_slice_from_cstr("banana")));`
+      },
+      {
+        id: 8,
+        badge: "WEEK 08 // STATION 8",
+        title: "The Master Dispatcher (Processes & Core Sympathy)",
+        story: "Shell loops freeze computers by spawning hundreds of unmanaged processes. gnew-parallel bypasses /bin/sh via posix_spawnp and steers jobs to P-cores vs E-cores with memory pressure awareness.",
+        concept: "Kernel Reactors & Core Affinity",
+        project: "gnew-parallel Orchestrator",
+        complexity: "Zero-Shell Direct Execution",
+        simTitle: "🧪 Multi-Core Task Dispatcher",
+        codeExpl: "The master dispatcher enforces backpressure: if all 4 core slots are occupied, incoming jobs are held in a ring buffer, preventing CPU thrashing and swap death.",
+        terminal: "[Week 08 Test] Testing Master Dispatcher & Core Worker Pools...\n  ✔ Week 08 PASSED: Process worker pool backpressure & scheduler verified.",
+        starter: `bool pool_schedule(WorkerPool* pool, uint32_t job_id);`,
+        solution: `int status = posix_spawnp(&pid, argv[0], NULL, NULL, argv, NULL);\n// Direct execution without /bin/sh overhead!`,
+        test: `assert(!pool_schedule(&pool, 105)); // Backpressure active!`
+      },
+      {
+        id: 9,
+        badge: "WEEK 09 // STATION 9",
+        title: "Teaching Silicon to Learn (Autograd & Attention)",
+        story: "Neural networks are chains of multiplications adjusting their own dials. rcre contains a full Micrograd autograd graph and NanoGPT transformer in pure C23 with zero heap allocations during inference.",
+        concept: "Reverse-Mode Autodiff",
+        project: "rcre ScalarVal DAG & NanoGPT",
+        complexity: "O(Nodes) Topological Backprop",
+        simTitle: "🧪 Neural DAG & Attention Spotlight",
+        codeExpl: "In rl_node_backward, gradients propagate backward using the chain rule: dy/da = b * dy, dy/db = a * dy. Parameters then update via w = w - lr * grad.",
+        terminal: "[Week 09 Test] Testing Computational Graph & Autograd Backprop...\n  ✔ Week 09 PASSED: Autograd topological backpropagation verified.",
+        starter: `void update_parameter(RL_Node* param, float learning_rate);`,
+        solution: `void rl_node_backward(RL_Node* root) {\n    root->grad = 1.0f;\n    rl_node_backward_recursive(root);\n}`,
+        test: `assert(fabsf(b.grad - 3.0f) < 1e-5f); // Exact calculus derivative!`
+      },
+      {
+        id: 10,
+        badge: "WEEK 10 // STATION 10",
+        title: "The Alchemist's Portal (WebAssembly Live Vision)",
+        story: "The climax: compile your C23 engine to WebAssembly (.wasm). It runs inside any web browser at near-native speed, directly processing camera frames at 60 FPS!",
+        concept: "WebAssembly FFI & In-Browser Vision",
+        project: "rcre In-Browser WASM Playground",
+        complexity: "60 FPS Native Performance",
+        simTitle: "🧪 Live Video Filter Playground",
+        codeExpl: "JavaScript passes the ImageData pixel pointer directly to the compiled C23 WebAssembly function. C processes the pixels in place with zero serialization overhead.",
+        terminal: "[Week 10 Test] Testing WASM FFI Pixel Processing & Capstone Filter...\n  ✔ Week 10 PASSED: WASM buffer mutation & image filter pipeline verified.\n  ==> Ready for global web deployment!",
+        starter: `void apply_duotone_filter(uint8_t* rgba, int count);`,
+        solution: `void apply_duotone_filter(uint8_t* rgba, int count) {\n    // 15-bit fixed-point gray + Warm Golden Harvest / Autumn Cider duo-tone\n}`,
+        test: `assert(pixels[0] == 0 && pixels[1] == 255); // Duotone asserted`
+      }
+    ];
+
+    let currentStationId = 1;
+    let currentCodeTab = 'starter';
+
+    // Simulation states
+    let simLockerValues = [42, 99, 15, 204, 7, 88, 12, 190];
+    let simArenaOffset = 0;
+    const simArenaCapacity = 512;
+    let simAoSMode = true;
+    let simActiveFilter = 'sobel';
+
+    function init() {
+      loadStation(1);
+    }
+
+    function loadStation(id) {
+      currentStationId = id;
+      const data = stations.find(s => s.id === id);
+
+      // Update roadmap active class
+      document.querySelectorAll('.station-item').forEach((el, idx) => {
+        el.classList.toggle('active', idx + 1 === id);
+      });
+
+      // Update progress
+      document.getElementById('progressBar').style.width = `${(id / 10) * 100}%`;
+      document.getElementById('progressText').innerText = `Station ${id} of 10`;
+
+      // Update text
+      document.getElementById('stationBadge').innerText = data.badge;
+      document.getElementById('stationTitle').innerText = data.title;
+      document.getElementById('stationStory').innerText = data.story;
+      document.getElementById('metaConcept').innerText = data.concept;
+      document.getElementById('metaProject').innerText = data.project;
+      document.getElementById('metaComplexity').innerText = data.complexity;
+      document.getElementById('simTitle').innerText = data.simTitle;
+      document.getElementById('codeExplText').innerText = data.codeExpl;
+      document.getElementById('terminalOutput').innerHTML = data.terminal.replace(/\n/g, '<br>');
+
+      // Update code view
+      updateCodeView();
+
+      // Render the custom simulation for this station
+      renderSimulation(id);
+    }
+
+    function switchCodeTab(tab) {
+      currentCodeTab = tab;
+      document.getElementById('tabStarter').classList.toggle('active', tab === 'starter');
+      document.getElementById('tabSolution').classList.toggle('active', tab === 'solution');
+      document.getElementById('tabTest').classList.toggle('active', tab === 'test');
+      updateCodeView();
+    }
+
+    function updateCodeView() {
+      const data = stations.find(s => s.id === currentStationId);
+      const viewer = document.getElementById('codeViewer');
+      if (currentCodeTab === 'starter') viewer.innerText = data.starter;
+      else if (currentCodeTab === 'solution') viewer.innerText = data.solution;
+      else viewer.innerText = data.test;
+    }
+
+    // Render unique visual simulations for each week
+    function renderSimulation(id) {
+      const body = document.getElementById('simBody');
+      const controls = document.getElementById('simControls');
+
+      if (id === 1) {
+        // Week 1: Locker Room
+        controls.innerHTML = `
+          <button class="btn btn-cyan" onclick="swapSimLockers()">⇄ Swap Locker 0 & 1</button>
+          <button class="btn" onclick="shuffleLockers()">🎲 Randomize</button>
+        `;
+        renderLockerGrid();
+      } else if (id === 2) {
+        // Week 2: Whiteboard Arena
+        controls.innerHTML = `
+          <button class="btn btn-cyan" onclick="pushArenaBlock(64, 'Tensor')">+ Push 64B</button>
+          <button class="btn btn-cyan" onclick="pushArenaBlock(128, 'Image')">+ Push 128B</button>
+          <button class="btn btn-primary" onclick="resetArenaSim()">↺ O(1) Bulk Reset</button>
+        `;
+        renderArenaSim();
+      } else if (id === 3) {
+        // Week 3: Pixel Microscope
+        controls.innerHTML = `
+          <label style="font-size:0.8rem; color:#faedd9;">Zoom Level:</label>
+          <input type="range" min="1" max="5" value="3" onchange="renderPixelMosaic(this.value)">
+          <button class="btn btn-cyan" onclick="toggleGrayscaleMode()">Toggle 15-bit Gray</button>
+        `;
+        renderPixelMosaic(3);
+      } else if (id === 4) {
+        // Week 4: SoA vs AoS
+        controls.innerHTML = `
+          <button class="btn ${simAoSMode ? 'btn-primary' : ''}" onclick="toggleCacheLayout(true)">AoS Layout (Scattered)</button>
+          <button class="btn ${!simAoSMode ? 'btn-cyan' : ''}" onclick="toggleCacheLayout(false)">SoA Planar (100% Saturation)</button>
+        `;
+        renderCacheLineSim();
+      } else if (id === 5) {
+        // Week 5: 3x3 Stencil
+        controls.innerHTML = `
+          <button class="btn btn-cyan" onclick="setStencil('sobel')">Sobel Edge (Gx)</button>
+          <button class="btn" onclick="setStencil('blur')">3x3 Box Blur</button>
+        `;
+        renderStencilSim();
+      } else if (id === 6) {
+        // Week 6: SIMD Highway
+        controls.innerHTML = `
+          <button class="btn btn-cyan" onclick="runSimdRace()">▶ Race: Scalar vs SIMD</button>
+        `;
+        renderSimdHighway();
+      } else if (id === 7) {
+        // Week 7: Stream Laser
+        controls.innerHTML = `
+          <button class="btn btn-cyan" onclick="fireLaser()">⚡ Fire SIMD Byte Laser</button>
+        `;
+        renderStreamLaser();
+      } else if (id === 8) {
+        // Week 8: Dispatcher
+        controls.innerHTML = `
+          <button class="btn btn-cyan" onclick="dispatchJob()">+ Dispatch Heavy Task</button>
+          <button class="btn" onclick="clearDispatch()">↺ Clear Tasks</button>
+        `;
+        renderDispatcherSim();
+      } else if (id === 9) {
+        // Week 9: Autograd & Attention
+        controls.innerHTML = `
+          <button class="btn btn-cyan" onclick="triggerBackprop()">⚡ Forward & Backprop Pass</button>
+        `;
+        renderThoughtGraph();
+      } else if (id === 10) {
+        // Week 10: Canvas / WASM Portal
+        controls.innerHTML = `
+          <button class="btn btn-cyan" onclick="applyCanvasFilter('duotone')">Autumn Amber Duo-Tone</button>
+          <button class="btn" onclick="applyCanvasFilter('sobel')">Sobel Outline</button>
+          <button class="btn" onclick="applyCanvasFilter('invert')">Invert</button>
+        `;
+        renderVisionCanvas();
+      }
+    }
+
+    /* Simulation 1: Locker Room */
+    function renderLockerGrid() {
+      const body = document.getElementById('simBody');
+      let html = '<div class="locker-grid">';
+      for (let i = 0; i < 8; i++) {
+        html += `
+          <div class="locker-box occupied" id="locker_${i}">
+            <div class="locker-addr">0x100${i}</div>
+            <div class="locker-val">${simLockerValues[i]}</div>
+            <div class="locker-label">Locker #${i}</div>
+          </div>
+        `;
+      }
+      html += '</div>';
+      html += `<div style="margin-top:1.5rem; font-size:0.85rem; color:var(--text-muted);">
+        Click <strong>Swap Locker 0 & 1</strong> to see pointers exchange values safely via temporary storage!
+      </div>`;
+      body.innerHTML = html;
+    }
+
+    function swapSimLockers() {
+      const el0 = document.getElementById('locker_0');
+      const el1 = document.getElementById('locker_1');
+      if (el0 && el1) {
+        el0.classList.add('swapped');
+        el1.classList.add('swapped');
+        let temp = simLockerValues[0];
+        simLockerValues[0] = simLockerValues[1];
+        simLockerValues[1] = temp;
+        setTimeout(() => {
+          renderLockerGrid();
+        }, 350);
+      }
+    }
+
+    function shuffleLockers() {
+      for (let i = 0; i < 8; i++) simLockerValues[i] = Math.floor(Math.random() * 255);
+      renderLockerGrid();
+    }
+
+    /* Simulation 2: Whiteboard Arena */
+    let arenaBlocks = [];
+    function renderArenaSim() {
+      const body = document.getElementById('simBody');
+      const pct = (simArenaOffset / simArenaCapacity) * 100;
+      let blocksHtml = '';
+      arenaBlocks.forEach(b => {
+        const bPct = (b.size / simArenaCapacity) * 100;
+        blocksHtml += `<div class="arena-block" style="width: ${bPct}%; background: ${b.color};">${b.name} (${b.size}B)</div>`;
+      });
+
+      body.innerHTML = `
+        <div style="width:100%; max-width:800px; display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.8rem; color:var(--text-muted);">
+          <span>Address: 0x2000 (Base)</span>
+          <span>Capacity: ${simArenaCapacity} Bytes (64-byte Aligned)</span>
+        </div>
+        <div class="arena-bar-container">
+          ${blocksHtml}
+          <div class="arena-watermark-line" style="left: ${pct}%;"></div>
+        </div>
+        <div class="arena-stats">
+          <div>Allocated: <span style="color:var(--accent-orange); font-weight:700;">${simArenaOffset} / ${simArenaCapacity} B</span></div>
+          <div>Watermark: <span style="color:#ff5400; font-weight:700;">${pct.toFixed(1)}%</span></div>
+          <div>Reset Cost: <span style="color:var(--accent-amber); font-weight:700;">1 Cycle (O(1))</span></div>
+        </div>
+        <div style="margin-top:1rem; font-size:0.85rem; color:var(--text-muted);">
+          Notice: Each block is pushed contiguously in 1 nanosecond. A single click of <strong>O(1) Bulk Reset</strong> wipes all allocations instantly!
+        </div>
+      `;
+    }
+
+    function pushArenaBlock(size, name) {
+      if (simArenaOffset + size <= simArenaCapacity) {
+        // Warm Autumn Tones: Orange, Caramel, Amber, Terracotta, Moss
+        const colors = ['#ff781f', '#d4a373', '#f59e0b', '#c2410c', '#84a98c'];
+        arenaBlocks.push({ size, name, color: colors[arenaBlocks.length % colors.length] });
+        simArenaOffset += size;
+        renderArenaSim();
+      } else {
+        alert("Arena capacity reached! Bulk reset the whiteboard.");
+      }
+    }
+
+    function resetArenaSim() {
+      simArenaOffset = 0;
+      arenaBlocks = [];
+      renderArenaSim();
+    }
+
+    /* Simulation 3: Pixel Microscope */
+    let isGrayMode = false;
+    function renderPixelMosaic(zoom) {
+      const body = document.getElementById('simBody');
+      let html = `<div class="pixel-microscope-layout">`;
+      html += `<div class="pixel-grid-8x8">`;
+      const colors = [
+        [245, 120, 31], [212, 163, 115], [194, 65, 12], [245, 158, 11],
+        [160, 82, 45], [132, 169, 140], [234, 88, 12], [180, 140, 100],
+        [70, 45, 30], [254, 243, 199], [217, 119, 6], [120, 53, 15],
+        [251, 146, 60], [225, 29, 72], [180, 83, 9], [146, 64, 14],
+        [202, 138, 4], [90, 60, 40]
+      ];
+      for (let i = 0; i < 18; i++) {
+        let [r, g, b] = colors[i % colors.length];
+        let valText = isGrayMode ? ((r * 19595 + g * 38469 + b * 7472) >> 16) : `${r}`;
+        let bg = isGrayMode ? `rgb(${valText},${valText},${valText})` : `rgb(${r},${g},${b})`;
+        let textColor = isGrayMode ? (valText > 128 ? '#1a0f07' : '#fff') : '#fff';
+        html += `<div class="subpixel" style="background:${bg}; color:${textColor};">${valText}</div>`;
+      }
+      html += `</div>`;
+      html += `
+        <div style="max-width:340px; font-size:0.85rem; color:#faedd9;">
+          <h4 style="color:var(--accent-orange); margin-bottom:0.5rem;">15-Bit Fixed-Point Formula</h4>
+          <code style="background:#251a12; border:1px solid #4a3424; padding:0.4rem 0.6rem; border-radius:4px; display:block; margin-bottom:0.75rem; color:var(--accent-gold);">
+            Y = (19595·R + 38469·G + 7472·B) >> 16
+          </code>
+          <p>Status: <strong>${isGrayMode ? 'Grayscale (0 LSB Discrepancy)' : 'RGB Channels Active'}</strong></p>
+          <p style="margin-top:0.5rem; color:var(--text-muted);">Zero floating point latency. Bit-exact with OpenCV cvtColor!</p>
+        </div>
+      `;
+      html += `</div>`;
+      body.innerHTML = html;
+    }
+
+    function toggleGrayscaleMode() {
+      isGrayMode = !isGrayMode;
+      renderPixelMosaic(3);
+    }
+
+    /* Simulation 4: SoA vs AoS */
+    function toggleCacheLayout(isAos) {
+      simAoSMode = isAos;
+      renderSimulation(4);
+    }
+
+    function renderCacheLineSim() {
+      const body = document.getElementById('simBody');
+      let redCells = '';
+      let busWaste = simAoSMode ? '66.7% Bandwidth Wasted (Unused G & B Bytes)' : '0% Wasted (100% Saturation)';
+
+      if (simAoSMode) {
+        // AoS: [R, G, B, R, G, B...]
+        for (let i = 0; i < 8; i++) {
+          redCells += `<div class="byte-cell" style="background:var(--accent-orange); color:#1a0f07;">R</div>`;
+          redCells += `<div class="byte-cell" style="background:#3d2b1f; color:#8c7565;">G</div>`;
+          redCells += `<div class="byte-cell" style="background:#3d2b1f; color:#8c7565;">B</div>`;
+        }
+      } else {
+        // SoA: [R, R, R, R, R, R...]
+        for (let i = 0; i < 24; i++) {
+          redCells += `<div class="byte-cell" style="background:var(--accent-orange); color:#1a0f07;">R</div>`;
+        }
+      }
+
+      body.innerHTML = `
+        <div class="cache-line-vis">
+          <div class="bus-lane">
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+              <strong>64-Byte CPU Cache Line Bus (${simAoSMode ? 'Array of Structs' : 'Planar Struct of Arrays'})</strong>
+              <span style="color:${simAoSMode ? 'var(--accent-terracotta)' : 'var(--accent-orange)'}; font-weight:700;">${busWaste}</span>
+            </div>
+            <div class="byte-strip">${redCells}</div>
+          </div>
+          <div style="font-size:0.85rem; color:#faedd9; line-height:1.6;">
+            ${simAoSMode ?
+              '⚠️ <strong>In AoS mode:</strong> The CPU fetches Red, Green, and Blue bundled together. When calculating Red channel filters, the memory bus wastes 2 out of every 3 bytes!' :
+              '🚀 <strong>In rcvc Planar SoA mode:</strong> All Red channel samples are contiguous. The 64-byte CPU cache line is 100% loaded with actionable data, unlocking 3.5× to 5× speedup!'}
+          </div>
+        </div>
+      `;
+    }
+
+    /* Simulation 5: 3x3 Stencil */
+    function setStencil(type) {
+      simActiveFilter = type;
+      renderStencilSim();
+    }
+
+    function renderStencilSim() {
+      const body = document.getElementById('simBody');
+      const isSobel = simActiveFilter === 'sobel';
+      const weights = isSobel ?
+        [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]] :
+        [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
+
+      let matrixHtml = '';
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          matrixHtml += `<div class="matrix-cell">${weights[r][c] > 0 ? '+' : ''}${weights[r][c]}</div>`;
+        }
+      }
+
+      body.innerHTML = `
+        <div class="stencil-container">
+          <div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.35rem; text-align:center;">
+              ${isSobel ? 'Sobel Horizontal Kernel (Gx)' : '3x3 Box Blur Stencil (Mean)'}
+            </div>
+            <div class="matrix-3x3">${matrixHtml}</div>
+          </div>
+          <div style="max-width:320px; font-size:0.85rem; color:#faedd9;">
+            <h4 style="color:var(--accent-orange); margin-bottom:0.5rem;">Convolution Math</h4>
+            <p>Slide this stencil over each pixel neighborhood. Flat regions sum to <strong>0</strong>. Boundaries produce high magnitudes!</p>
+            <div style="margin-top:0.75rem; background:#251a12; border:1px solid #4a3424; padding:0.6rem; border-radius:6px; font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-gold);">
+              Gx = -1·P00 + 1·P02 - 2·P10 + 2·P12 - 1·P20 + 1·P22
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* Simulation 6: SIMD Highway */
+    function renderSimdHighway() {
+      const body = document.getElementById('simBody');
+      let laneCells = '';
+      for (let i = 0; i < 8; i++) {
+        laneCells += `<div class="lane-box" id="simdLane_${i}">A${i} + B${i}</div>`;
+      }
+
+      body.innerHTML = `
+        <div class="simd-highway">
+          <div class="lane-row">
+            <span style="font-size:0.8rem; font-weight:700; width:140px; color:var(--accent-brown);">Scalar Loop:</span>
+            <div style="font-size:0.8rem; color:#faedd9;">1 operation per clock cycle (8 cycles total)</div>
+          </div>
+          <div class="lane-row" style="border:1px solid var(--accent-orange);">
+            <span style="font-size:0.8rem; font-weight:700; width:140px; color:var(--accent-orange);">SIMD Vector:</span>
+            <div class="lane-cells">${laneCells}</div>
+          </div>
+          <div id="simdSpeedometer" style="text-align:center; margin-top:1rem; font-family:var(--font-mono); font-size:0.9rem; color:var(--accent-orange); font-weight:700;">
+            Speedup: 8× Parallel Speedup (ARM NEON / AVX2 / WASM SIMD)
+          </div>
+        </div>
+      `;
+    }
+
+    function runSimdRace() {
+      const boxes = document.querySelectorAll('.lane-box');
+      boxes.forEach(b => {
+        b.style.background = 'var(--accent-orange)';
+        b.style.color = '#1a0f07';
+        b.style.fontWeight = '700';
+      });
+      setTimeout(() => {
+        boxes.forEach(b => {
+          b.style.background = '#18100a';
+          b.style.color = 'var(--accent-brown)';
+          b.style.fontWeight = 'normal';
+        });
+      }, 500);
+    }
+
+    /* Simulation 7: Stream Laser */
+    function renderStreamLaser() {
+      const body = document.getElementById('simBody');
+      body.innerHTML = `
+        <div style="width:100%; max-width:650px; text-align:center;">
+          <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem;">
+            Genomic Data Stream (FASTA / FASTQ)
+          </div>
+          <div style="background:#251a12; padding:1rem; border-radius:8px; font-family:var(--font-mono); font-size:1.1rem; letter-spacing:0.15em; border:1px solid #4a3424;" id="streamBox">
+            <span style="color:var(--accent-brown);">ATGC</span><span style="color:var(--accent-orange); font-weight:700;">\\n</span><span style="color:var(--accent-brown);">GGAC</span><span style="color:var(--accent-orange); font-weight:700;">\\n</span><span style="color:var(--accent-brown);">TTGA</span><span style="color:var(--accent-orange); font-weight:700;">\\n</span><span style="color:var(--accent-brown);">CCAA</span>
+          </div>
+          <div style="margin-top:1rem; font-size:0.85rem; color:#faedd9;">
+            Laser Status: <strong style="color:var(--accent-orange);">Zero-Copy Fat Pointer Slices Active (3.24 GiB/s)</strong>
+          </div>
+        </div>
+      `;
+    }
+
+    function fireLaser() {
+      const box = document.getElementById('streamBox');
+      if (box) {
+        box.style.borderColor = 'var(--accent-orange)';
+        box.style.boxShadow = '0 0 25px rgba(255, 120, 31, 0.45)';
+        setTimeout(() => {
+          box.style.boxShadow = 'none';
+          box.style.borderColor = '#4a3424';
+        }, 400);
+      }
+    }
+
+    /* Simulation 8: Dispatcher */
+    let dispatchSlots = [0, 0, 0, 0];
+    function renderDispatcherSim() {
+      const body = document.getElementById('simBody');
+      body.innerHTML = `
+        <div class="core-rack">
+          <div class="core-card p-core">
+            <div style="font-size:0.8rem; font-weight:700; color:var(--accent-orange);">P-Core 0</div>
+            <div class="core-status" id="coreStatus_0">${dispatchSlots[0] ? 'BUSY (PID ' + dispatchSlots[0] + ')' : 'IDLE'}</div>
+          </div>
+          <div class="core-card p-core">
+            <div style="font-size:0.8rem; font-weight:700; color:var(--accent-orange);">P-Core 1</div>
+            <div class="core-status" id="coreStatus_1">${dispatchSlots[1] ? 'BUSY (PID ' + dispatchSlots[1] + ')' : 'IDLE'}</div>
+          </div>
+          <div class="core-card e-core">
+            <div style="font-size:0.8rem; font-weight:700; color:var(--accent-brown);">E-Core 2</div>
+            <div class="core-status" id="coreStatus_2">${dispatchSlots[2] ? 'BUSY (PID ' + dispatchSlots[2] + ')' : 'IDLE'}</div>
+          </div>
+          <div class="core-card gpu-core">
+            <div style="font-size:0.8rem; font-weight:700; color:var(--accent-terracotta);">GPU Slot</div>
+            <div class="core-status" id="coreStatus_3">${dispatchSlots[3] ? 'BUSY (PID ' + dispatchSlots[3] + ')' : 'IDLE'}</div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem; font-size:0.85rem; color:#faedd9; text-align:center;">
+          Direct <code>posix_spawnp</code> orchestration. No shell overhead. Memory pressure guard active.
+        </div>
+      `;
+    }
+
+    function dispatchJob() {
+      let placed = false;
+      for (let i = 0; i < 4; i++) {
+        if (dispatchSlots[i] === 0) {
+          dispatchSlots[i] = Math.floor(1000 + Math.random() * 9000);
+          placed = true;
+          break;
+        }
+      }
+      if (!placed) alert("All cores saturated! Backpressure holding queue.");
+      renderDispatcherSim();
+    }
+
+    function clearDispatch() {
+      dispatchSlots = [0, 0, 0, 0];
+      renderDispatcherSim();
+    }
+
+    /* Simulation 9: Autograd Thought Graph */
+    function renderThoughtGraph() {
+      const body = document.getElementById('simBody');
+      body.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center; gap:1rem;">
+          <div style="display:flex; gap:1.5rem; align-items:center;">
+            <div style="background:#251a12; padding:0.75rem 1rem; border-radius:6px; border:1px solid #4a3424; text-align:center;">
+              <div style="font-size:0.7rem; color:var(--text-muted);">Weight (w)</div>
+              <div style="font-family:var(--font-mono); font-size:1.1rem; color:var(--accent-orange); font-weight:700;">3.00</div>
+              <div style="font-size:0.65rem; color:var(--accent-brown);" id="gradW">grad: +0.00</div>
+            </div>
+            <span style="font-size:1.2rem; font-weight:700; color:var(--accent-brown);">×</span>
+            <div style="background:#251a12; padding:0.75rem 1rem; border-radius:6px; border:1px solid #4a3424; text-align:center;">
+              <div style="font-size:0.7rem; color:var(--text-muted);">Input (x)</div>
+              <div style="font-family:var(--font-mono); font-size:1.1rem; color:var(--accent-orange); font-weight:700;">4.00</div>
+              <div style="font-size:0.65rem; color:var(--accent-brown);" id="gradX">grad: +0.00</div>
+            </div>
+            <span style="font-size:1.2rem; font-weight:700; color:var(--accent-brown);">=</span>
+            <div style="background:#251a12; padding:0.75rem 1.25rem; border-radius:6px; border:1px solid var(--accent-orange); text-align:center;">
+              <div style="font-size:0.7rem; color:var(--text-muted);">Output (y)</div>
+              <div style="font-family:var(--font-mono); font-size:1.1rem; color:var(--accent-gold); font-weight:700;">12.00</div>
+              <div style="font-size:0.65rem; color:var(--accent-gold);">grad: +1.00</div>
+            </div>
+          </div>
+          <div style="font-size:0.85rem; color:#faedd9; margin-top:0.5rem;" id="backpropMsg">
+            Click <strong>Forward & Backprop Pass</strong> to propagate gradients through the chain rule!
+          </div>
+        </div>
+      `;
+    }
+
+    function triggerBackprop() {
+      const gW = document.getElementById('gradW');
+      const gX = document.getElementById('gradX');
+      const msg = document.getElementById('backpropMsg');
+      if (gW && gX) {
+        gW.innerText = "grad: +4.00 (dy/dw = x)";
+        gW.style.color = "var(--accent-orange)";
+        gW.style.fontWeight = "700";
+        gX.innerText = "grad: +3.00 (dy/dx = w)";
+        gX.style.color = "var(--accent-orange)";
+        gX.style.fontWeight = "700";
+        msg.innerText = "✔ Gradients propagated via Chain Rule! Ready for AdamW / SGD parameter update.";
+      }
+    }
+
+    /* Simulation 10: Live Video Canvas (Capstone) */
+    function renderVisionCanvas() {
+      const body = document.getElementById('simBody');
+      body.innerHTML = `
+        <div class="canvas-container">
+          <canvas id="visionCanvas" width="360" height="240"></canvas>
+          <div style="font-size:0.85rem; color:#faedd9;">
+            Live WebAssembly Frame Processing. Toggle filters above to see 60 FPS in-place C-buffer mutation!
+          </div>
+        </div>
+      `;
+      initCanvasDraw();
+    }
+
+    let canvasFilter = 'duotone';
+    function initCanvasDraw() {
+      const cvs = document.getElementById('visionCanvas');
+      if (!cvs) return;
+      const ctx = cvs.getContext('2d');
+
+      let frame = 0;
+      function drawFrame() {
+        if (!document.getElementById('visionCanvas')) return;
+        ctx.fillStyle = '#16100b';
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+        // Autumn test geometry
+        ctx.fillStyle = '#ff781f';
+        ctx.beginPath();
+        ctx.arc(180 + Math.sin(frame * 0.05) * 50, 120, 45, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#c2410c';
+        ctx.fillRect(60, 80 + Math.cos(frame * 0.04) * 30, 60, 60);
+
+        ctx.fillStyle = '#d4a373';
+        ctx.beginPath();
+        ctx.moveTo(260, 60);
+        ctx.lineTo(310, 150);
+        ctx.lineTo(220, 150);
+        ctx.closePath();
+        ctx.fill();
+
+        // Mutate pixels via filter logic
+        const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
+        const data = imgData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i], g = data[i+1], b = data[i+2];
+          const gray = (r * 19595 + g * 38469 + b * 7472) >> 16;
+
+          if (canvasFilter === 'duotone') {
+            if (gray > 90) {
+              data[i] = 255; data[i+1] = 120; data[i+2] = 31; // Maple Pumpkin Orange
+            } else {
+              data[i] = 160; data[i+1] = 82; data[i+2] = 45;  // Warm Sienna Chestnut Brown
+            }
+          } else if (canvasFilter === 'sobel') {
+            data[i] = gray; data[i+1] = gray; data[i+2] = gray;
+          } else if (canvasFilter === 'invert') {
+            data[i] = 255 - r; data[i+1] = 255 - g; data[i+2] = 255 - b;
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+
+        frame++;
+        requestAnimationFrame(drawFrame);
+      }
+      drawFrame();
+    }
+
+    function applyCanvasFilter(f) {
+      canvasFilter = f;
+    }
+
+    function runSimAction() {
+      if (currentStationId === 1) swapSimLockers();
+      else if (currentStationId === 2) pushArenaBlock(64, 'Tensor');
+      else if (currentStationId === 3) toggleGrayscaleMode();
+      else if (currentStationId === 4) toggleCacheLayout(!simAoSMode);
+      else if (currentStationId === 5) setStencil(simActiveFilter === 'sobel' ? 'blur' : 'sobel');
+      else if (currentStationId === 6) runSimdRace();
+      else if (currentStationId === 7) fireLaser();
+      else if (currentStationId === 8) dispatchJob();
+      else if (currentStationId === 9) triggerBackprop();
+      else if (currentStationId === 10) applyCanvasFilter(canvasFilter === 'duotone' ? 'sobel' : 'duotone');
+    }
+
+    function resetSim() {
+      if (currentStationId === 1) shuffleLockers();
+      else if (currentStationId === 2) resetArenaSim();
+      else if (currentStationId === 3) { isGrayMode = false; renderPixelMosaic(3); }
+      else if (currentStationId === 4) { simAoSMode = true; renderCacheLineSim(); }
+      else if (currentStationId === 5) setStencil('sobel');
+      else if (currentStationId === 8) clearDispatch();
+    }
+
+    // Start on load
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

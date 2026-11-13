@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+    <head>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        
+        <meta name="description" content="HPC Admin - AI/ML Specialist Technical Blog">
+        
+        <meta name="keywords" content="minimalist,blog,mlenngineer,hpc,ai,python,c,optimization,computervision,experiments,computation">
+
+        <title>
+              Recep&#39;s Technical Blog - Introducing rcre-learn: The Silicon Odyssey 
+        </title>
+
+        <meta name="generator" content="Hugo 0.169.0">
+
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+        
+
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/custom.css">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#ffffff"></head>
+
+    <body lang="en-US">
+        <div class="container my-auto">
+
+
+<header class="text-start post-header">
+  <h1 class="title">Introducing rcre-learn: The Silicon Odyssey</h1>
+  <div id="category-pane" class="meta">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between">
+      <p class="text-start meta mb-0">
+         PUBLISHED ON NOV 13, 2026
+        
+        / 3 MIN READ
+        
+        
+        
+        —
+        
+        
+        <a class="meta"
+          href="/categories/education">EDUCATION</a>, 
+        
+        <a class="meta"
+          href="/categories/systems-engineering">SYSTEMS ENGINEERING</a>
+        
+        
+        
+      </p>
+    </div>
+    
+  </div>
+</header>
+
+<main id="content-pane" role="main">
+  
+  
+    
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+  
+
+  <div class="text-justify content">
+    
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#1-the-core-philosophy-physical-silicon-intuition">1. The Core Philosophy: Physical Silicon Intuition</a></li>
+    <li><a href="#2-the-10-week-roadmap">2. The 10-Week Roadmap</a></li>
+    <li><a href="#3-the-interactive-web-odyssey">3. The Interactive Web Odyssey</a></li>
+    <li><a href="#4-verification--sanitizer-cleanliness">4. Verification &amp; Sanitizer Cleanliness</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+  </ul>
+</nav>
+    
+    <p><em>Demystifying Bare-Metal Systems, Computer Vision, and AI for Students and Non-Technical Learners</em></p>
+<hr>
+<h2 id="abstract">Abstract</h2>
+<p>Most modern programming education introduces computing as an abstract black box: layers of Python libraries, web frameworks, and virtual runtimes that obscure the physical realities of the machine. While this top-down approach gets beginners writing high-level code quickly, it leaves them with no intuition for why their software slows down, leaks memory, or freezes their laptop.</p>
+<p>To bridge this gap, I built <a href="https://erolrecep.github.io/rcre-learn/"><strong><code>rcre-learn: The Silicon Odyssey</code></strong></a>—an open-access, 10-week educational journey and interactive web application designed specifically for high school students and non-technical enthusiasts.</p>
+<p>Rather than teaching dry academic syntax, <strong><code>rcre-learn</code></strong> demystifies the real-world systems principles powering three of my high-performance C23 engines:</p>
+<ol>
+<li><strong><code>rcre</code> (Recep&rsquo;s Code Run Everywhere)</strong>: A zero-dependency ISO C23 Computer Vision &amp; Machine Learning engine featuring linear memory arenas, OpenCV bit-exact parity, dynamic hardware abstraction (SIMD), and transformers.</li>
+<li><strong><code>rcvc</code> (Recep&rsquo;s Computer Vision Code)</strong>: A high-throughput planar imaging tool using Struct-of-Arrays (SoA) planar tiles and 64-byte cache line saturation.</li>
+<li><strong><code>gnew-parallel</code> (GNew Parallel)</strong>: A high-speed scientific resource orchestrator featuring direct kernel execution (<code>posix_spawnp</code>), vector delimiter line splitting at 3+ GiB/s, and Apple Silicon / Linux resource sympathy.</li>
+</ol>
+<blockquote>
+<p>🍁 <strong>Interactive Web Odyssey</strong>: You can play with the live 10-station interactive simulator and code inspector directly in your browser:<br>
+<a href="https://erolrecep.github.io/rcre-learn/"><strong>https://erolrecep.github.io/rcre-learn/</strong></a><br>
+📦 <strong>GitHub Repository</strong>: <a href="https://github.com/erolrecep/rcre-learn"><strong>github.com/erolrecep/rcre-learn</strong></a></p>
+</blockquote>
+<hr>
+<h2 id="1-the-core-philosophy-physical-silicon-intuition">1. The Core Philosophy: Physical Silicon Intuition</h2>
+<p>In <strong><code>rcre-learn</code></strong>, we discard intimidating jargon in favor of physical metaphors that ground abstract concepts in tangible intuition:</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: left">Concept</th>
+					<th style="text-align: left">The Traditional (Intimidating) Approach</th>
+					<th style="text-align: left">The <code>rcre-learn</code> Physical Metaphor</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left"><strong>RAM &amp; Addresses</strong></td>
+					<td style="text-align: left"><em>&ldquo;Pointers store 64-bit hexadecimal memory addresses; beware of segmentation faults.&rdquo;</em></td>
+					<td style="text-align: left"><strong>The Locker Room</strong>: Memory is a hallway of numbered lockers; a pointer is simply a card with a locker number on it.</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Memory Allocation</strong></td>
+					<td style="text-align: left"><em>&ldquo;Dynamically allocate heap memory using <code>malloc()</code> and remember to invoke <code>free()</code>.&rdquo;</em></td>
+					<td style="text-align: left"><strong>The Endless Whiteboard</strong>: An arena allocator is a whiteboard where you write along a line and wipe it clean with one O(1) swipe.</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Cache Lines &amp; Bandwidth</strong></td>
+					<td style="text-align: left"><em>&ldquo;Optimize matrix striding to avoid L1 data cache misses.&rdquo;</em></td>
+					<td style="text-align: left"><strong>The Colored Pencil Box</strong>: Compare rummaging through mixed packs of pencils (AoS) vs. grabbing a dedicated tray of red pencils (SoA).</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Hardware Vectors</strong></td>
+					<td style="text-align: left"><em>&ldquo;Invoke 128-bit ARM NEON or 256-bit AVX2 vector intrinsics.&rdquo;</em></td>
+					<td style="text-align: left"><strong>The 8-Lane Highway</strong>: Compare a single cashier ringing up items one by one vs. an 8-arm robotic press stamping 8 additions at once.</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>Parallel Orchestration</strong></td>
+					<td style="text-align: left"><em>&ldquo;Fork child processes, connect POSIX pipes, and monitor SIGCHLD.&rdquo;</em></td>
+					<td style="text-align: left"><strong>The Air Traffic Control Tower</strong>: Bypassing shell bureaucracy to direct flights across Performance and Efficiency core runways.</td>
+			</tr>
+	</tbody>
+</table>
+<hr>
+<h2 id="2-the-10-week-roadmap">2. The 10-Week Roadmap</h2>
+<p>The curriculum is divided into four thematic realms:</p>
+<pre tabindex="0"><code>[Phase 1: Silicon Foundations]
+  ├── Week 01: The Locker Room (Variables, Types &amp; Addresses)
+  └── Week 02: The Whiteboard (Linear Arenas &amp; O(1) Rewinds)
+
+[Phase 2: Light &amp; Vision]
+  ├── Week 03: The Digital Mosaic (Pixels &amp; 15-bit Fixed-Point)
+  ├── Week 04: Colored Pencils (SoA vs. AoS &amp; Cache Lines)
+  └── Week 05: The Magic Stencil (2D Convolutions &amp; Sobel Edges)
+
+[Phase 3: The Factory of Speed]
+  ├── Week 06: The 8-Lane Highway (SIMD &amp; Dynamic HAL Dispatch)
+  ├── Week 07: The Stream Laser (Safe Fat-Pointer Slices)
+  └── Week 08: The Master Dispatcher (Processes &amp; Core Sympathy)
+
+[Phase 4: Intelligence &amp; Deployment]
+  ├── Week 09: Teaching Silicon to Learn (Autograd &amp; Attention)
+  └── Week 10: The Alchemist&#39;s Portal (WebAssembly Live Vision)
+</code></pre><hr>
+<h2 id="3-the-interactive-web-odyssey">3. The Interactive Web Odyssey</h2>
+<p>To make the learning experience hands-on from Day 1, the entire curriculum is paired with a standalone, client-side web application built in a warm autumn color palette:</p>
+<div style="margin: 2rem 0; border: 2px solid #ff781f; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(255, 120, 31, 0.2);">
+  <iframe src="https://erolrecep.github.io/rcre-learn/" width="100%" height="680" style="border: none; display: block;" title="rcre-learn Web Odyssey"></iframe>
+</div>
+<p><em>(If the interactive frame does not display above, you can open the full-screen application at <a href="https://erolrecep.github.io/rcre-learn/"><strong>erolrecep.github.io/rcre-learn</strong></a>.)</em></p>
+<hr>
+<h2 id="4-verification--sanitizer-cleanliness">4. Verification &amp; Sanitizer Cleanliness</h2>
+<p>Every single weekly lesson comes with:</p>
+<ul>
+<li><code>starter.c</code>: Clean starter code with guided <code>TODO</code> markers.</li>
+<li><code>solution.c</code>: The reference C23 implementation.</li>
+<li><code>test.c</code>: Automated verification assertions.</li>
+</ul>
+<p>Running <code>make san</code> inside the repository runs the entire 10-week verification battery under <strong>AddressSanitizer (ASan)</strong> and <strong>UndefinedBehaviorSanitizer (UBSan)</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/erolrecep/rcre-learn.git
+</span></span><span style="display:flex;"><span>cd rcre-learn
+</span></span><span style="display:flex;"><span>make test   <span style="color:#75715e"># Compiles and runs all 10 weekly test suites</span>
+</span></span><span style="display:flex;"><span>make san    <span style="color:#75715e"># Validates under ASan + UBSan (0 leaks, 0 undefined behaviors)</span>
+</span></span></code></pre></div><hr>
+<h2 id="getting-started">Getting Started</h2>
+<p>Whether you are a high school student curious about how computers actually work, an educator looking for visual systems programming curriculum, or an engineer exploring modern ISO C23 idioms:</p>
+<p>👉 <strong>Explore the Live Journey:</strong> <a href="https://erolrecep.github.io/rcre-learn/"><strong>https://erolrecep.github.io/rcre-learn/</strong></a><br>
+⭐ <strong>Star the Repository on GitHub:</strong> <a href="https://github.com/erolrecep/rcre-learn"><strong>github.com/erolrecep/rcre-learn</strong></a></p>
+
+  </div>
+
+  <div id="tag-pane" class="meta mt-4">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between">
+      <p class="text-end meta mb-0">
+        
+        
+        
+        TAGS:
+        
+        
+        <a class="meta" href="/tags/c-programming">C PROGRAMMING</a>,
+        
+        
+        <a class="meta" href="/tags/computer-vision">COMPUTER VISION</a>,
+        
+        
+        <a class="meta" href="/tags/education">EDUCATION</a>,
+        
+        
+        <a class="meta" href="/tags/hpc">HPC</a>,
+        
+        
+        <a class="meta" href="/tags/interactive-learning">INTERACTIVE LEARNING</a>,
+        
+        
+        <a class="meta" href="/tags/systems-engineering">SYSTEMS ENGINEERING</a>,
+        
+        
+        <a class="meta" href="/tags/webassembly">WEBASSEMBLY</a>
+        
+        
+        
+      </p>
+    </div>
+    
+  </div>
+</main>
+
+
+
+
+
+
+
+
+<nav id="menu-pane" aria-label="Post navigation" class="menu text-center">
+  
+  <div class="pagination-wrapper">
+    <ul class="pagination justify-content-center">
+      
+      
+      <li class="menu-item">
+        <a class="menu-item" href="https://erolrecep.github.io/posts/data-science-yesterday-tomorrow-part-2/">&lt; prev</a>
+      </li>
+      
+
+      <li class="menu-item">
+        
+        <span class="menu-item">&nbsp;|&nbsp;</span>
+        
+        <a class="menu-item" href="/posts">posts</a>
+        
+      </li>
+
+      
+      
+    </ul>
+  </div>
+  
+  <p class="text-center mt-3 mb-0"><a class="menu-item" href="https://erolrecep.github.io/">home</a></p>
+</nav>
+
+
+<footer class="text-center footer">
+  <hr />
+  
+  <p class="text-center copyright mb-1">© 2026. Recep Erol. Made with ❤️ in Houston, TX</p>
+  
+  <p class="text-center powered mb-1"><a href="https://gohugo.io/">Hugo, themed by </a> <a
+      href="https://github.com/kaapiandcode/hugo-goa">hugo-goa</a> <br> <a href="https://creativecommons.org/version4/" >Some Rights Reserved</a> </p>
+  
+  
+  <p class="text-center mb-0">
+    <a href="https://erolrecep.github.io/index.xml" aria-label="RSS Feed"><i class="fas fa-rss" aria-hidden="true"></i></a>
+  </p>
+  
+  
+</footer>
+
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+
+<script>hljs.highlightAll();</script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="/js/custom.js"></script>
+</body>
+
+</html>
+
