@@ -650,6 +650,90 @@
       margin-top: 1rem;
     }
 
+    /* Systems Lexicon / Glossary Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10, 6, 4, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--accent-orange);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 900px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      overflow: hidden;
+    }
+    .modal-header {
+      background: var(--bg-panel);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .modal-search {
+      flex: 1;
+      background: #140d08;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      color: #fff;
+      font-size: 0.85rem;
+      font-family: var(--font-sans);
+    }
+    .modal-search:focus {
+      outline: none;
+      border-color: var(--accent-orange);
+    }
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .lexicon-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      transition: all 0.2s;
+    }
+    .lexicon-card:hover {
+      border-color: var(--accent-orange);
+      transform: translateY(-2px);
+    }
+    .lexicon-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-orange);
+      margin-bottom: 0.25rem;
+    }
+    .lexicon-metaphor {
+      font-size: 0.75rem;
+      color: var(--accent-brown);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .lexicon-desc {
+      font-size: 0.8rem;
+      color: #faedd9;
+      line-height: 1.5;
+    }
+
     @keyframes pulseGreen {
       0% { transform: scale(1); }
       50% { transform: scale(1.08); }
@@ -671,6 +755,9 @@
         <span class="tag">🎨 rcvc (Planar Imaging)</span>
         <span class="tag">🚀 gnew-parallel (Orchestrator)</span>
         <span class="tag">🔬 ISO C23 Standard</span>
+      </div>
+      <div>
+        <button class="btn btn-cyan" onclick="toggleGlossaryModal()">📖 Systems Lexicon</button>
       </div>
     </div>
   </header>
@@ -1597,8 +1684,150 @@
       else if (currentStationId === 8) clearDispatch();
     }
 
+    // Systems Lexicon / Appendix Data
+    const lexiconData = [
+      {
+        title: "Sanitizers (ASan, UBSan, TSan)",
+        metaphor: "The X-Ray Machine & Smart Spellchecker",
+        desc: "Instruments built into Clang/GCC compilers that wrap every memory access in invisible guard rails. AddressSanitizer (ASan) flags leaks, buffer overflows, and out-of-bounds reads instantly. UndefinedBehaviorSanitizer (UBSan) catches math overflows, null pointer dereferences, and alignment violations."
+      },
+      {
+        title: "Zero-Dependency",
+        metaphor: "Handcrafted Watchmaking vs 500 Unverified Imports",
+        desc: "Software that requires no third-party package managers, runtimes, or external libraries—only the standard C compiler. Eliminates dependency hell, prevents supply-chain security exploits, and compiles anywhere forever."
+      },
+      {
+        title: "SIMD (Single Instruction, Multiple Data)",
+        metaphor: "An 8-Arm Robotic Stamping Press",
+        desc: "Wide CPU registers (128-bit ARM NEON, 256-bit AVX2, WASM SIMD128) that perform arithmetic on 4, 8, or 16 numbers in parallel in a single clock cycle, instead of looping one element at a time."
+      },
+      {
+        title: "Linear Memory Arena (Scratchpad)",
+        metaphor: "The Erasable Whiteboard",
+        desc: "Carving out a contiguous memory slab upfront. Allocations slide an offset forward in O(1) time (~1 nanosecond). When the task finishes, wiping the board clean (offset = 0) instantly reclaims all memory without leaks or fragmentation."
+      },
+      {
+        title: "SoA vs. AoS (Planar vs. Interleaved)",
+        metaphor: "Trays of Red Pencils vs Mixed 3-Packs",
+        desc: "Struct-of-Arrays (SoA) organizes image channels in separate contiguous bands [R, R...][G, G...][B, B...]. Array-of-Structs (AoS) interleaves [RGB][RGB]. SoA achieves 100% CPU cache line saturation for single-channel convolutions."
+      },
+      {
+        title: "CPU Cache Line (64-byte Blocks)",
+        metaphor: "The 64-Item Delivery Crate",
+        desc: "Hardware buses never fetch single bytes from RAM—they fetch contiguous 64-byte blocks into ultra-fast L1 cache. Sequential memory access achieves near-instant access; random pointer jumps cause costly cache miss stalls."
+      },
+      {
+        title: "Fixed-Point Arithmetic",
+        metaphor: "Calculating in Cents instead of Dollars ($1.99 = 199¢)",
+        desc: "Using scaled integers to represent decimal fractions (e.g. 15-bit shift >> 16) without invoking floating-point units. Delivers predictable, bit-exact results across embedded silicon and browsers in 1 clock cycle."
+      },
+      {
+        title: "LSB (Least Significant Bit) & Bit-Exact",
+        metaphor: "The Smallest Penny in a Financial Ledger",
+        desc: "The lowest-order bit in a binary number. '0 LSB discrepancy' means that two separate implementations produce 100% identical numeric outputs across millions of calculations with zero rounding divergence."
+      },
+      {
+        title: "Fat-Pointer Slice",
+        metaphor: "A Chapter Bookmark (Start + Length)",
+        desc: "A safe pointer-and-length struct (RL_Slice). Replaces risky null-terminated strings ('\\0'), preventing buffer overruns and enabling zero-copy substring parsing on multi-gigabyte genomic streams."
+      },
+      {
+        title: "Dynamic Hardware Abstraction Layer (HAL)",
+        metaphor: "A Silicon Chameleon",
+        desc: "Detects the exact CPU features at application startup (ARM NEON, AVX2, or WASM SIMD) and populates a single table of function pointers, delivering vector speed without branch checks inside hot loops."
+      },
+      {
+        title: "Direct Kernel Spawning (posix_spawnp)",
+        metaphor: "Calling the Warehouse Directly without Middlemen",
+        desc: "Launching child processes directly through native operating system kernel calls, completely bypassing heavy /bin/sh shell forks, parsing overhead, and signal leaks."
+      },
+      {
+        title: "Autograd & Reverse-Mode Differentiation",
+        metaphor: "Tracing Pinball Ramps Backward to Hit the Jackpot",
+        desc: "Recording mathematical operations in a Directed Acyclic Graph (DAG) during the forward pass, then applying the calculus chain rule backward to compute exact parameter gradients for neural networks."
+      },
+      {
+        title: "WebAssembly (WASM) & FFI",
+        metaphor: "A Universal Silicon Portal in Every Web Browser",
+        desc: "A compact binary instruction format running compiled C23 code at 90-95% native speed inside sandboxed browser tabs. The Foreign Function Interface (FFI) bridges video frames directly between JS and C."
+      },
+      {
+        title: "Reactor Event Loop (kqueue / epoll)",
+        metaphor: "The Restaurant Pager System",
+        desc: "Single-threaded kernel notification system (kqueue on macOS, epoll on Linux) that monitors thousands of processes, pipes, and sockets without spinning in busy CPU polling loops."
+      },
+      {
+        title: "Core Sympathy (P-Cores vs. E-Cores)",
+        metaphor: "Matching Heavy Trains to Heavy Rails and Trams to Light Rails",
+        desc: "Guiding the OS scheduler via Mach QoS or cgroups to steer heavy SIMD math onto Performance (P) cores and background I/O onto Efficiency (E) cores, preventing thermal throttling and stutter."
+      }
+    ];
+
+    function toggleGlossaryModal(specificTerm) {
+      const modal = document.getElementById('glossaryModal');
+      const isOpening = !modal.classList.contains('active');
+      modal.classList.toggle('active');
+      if (isOpening) {
+        renderGlossaryCards(specificTerm || '');
+        document.getElementById('glossarySearch').value = specificTerm || '';
+        document.getElementById('glossarySearch').focus();
+      }
+    }
+
+    function renderGlossaryCards(query) {
+      const container = document.getElementById('glossaryGrid');
+      const q = query.toLowerCase().trim();
+      const filtered = lexiconData.filter(item => 
+        item.title.toLowerCase().includes(q) ||
+        item.metaphor.toLowerCase().includes(q) ||
+        item.desc.toLowerCase().includes(q)
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:var(--text-muted); padding:2rem;">No matching systems terms found.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="lexicon-card">
+          <div class="lexicon-title">${item.title}</div>
+          <div class="lexicon-metaphor">💡 Metaphor: ${item.metaphor}</div>
+          <div class="lexicon-desc">${item.desc}</div>
+        </div>
+      `).join('');
+    }
+
+    function filterGlossary() {
+      const q = document.getElementById('glossarySearch').value;
+      renderGlossaryCards(q);
+    }
+
+    // Close modal on escape
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('glossaryModal');
+        if (modal && modal.classList.contains('active')) modal.classList.remove('active');
+      }
+    });
+
     // Start on load
     window.addEventListener('DOMContentLoaded', init);
   </script>
+
+  <!-- Interactive Systems Lexicon Modal -->
+  <div class="modal-overlay" id="glossaryModal" onclick="if(event.target === this) toggleGlossaryModal()">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size:1.05rem; color:#fff; display:flex; align-items:center; gap:0.5rem;">
+          📖 The Systems Lexicon & Appendix
+        </h3>
+        <input type="text" id="glossarySearch" class="modal-search" placeholder="Search systems terms (e.g. SIMD, Sanitizer, Arena, SoA, Cache...)" oninput="filterGlossary()">
+        <button class="btn" onclick="toggleGlossaryModal()">✕ Close</button>
+      </div>
+      <div class="modal-body" id="glossaryGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
 </body>
 </html>
