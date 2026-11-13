@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+    <head>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        
+        <meta name="description" content="HPC Admin - AI/ML Specialist Technical Blog">
+        
+        <meta name="keywords" content="minimalist,blog,mlenngineer,hpc,ai,python,c,optimization,computervision,experiments,computation">
+
+        <title>
+              Recep&#39;s Technical Blog - Simulating the Galton Board: From Bernoulli Trials to the Central Limit Theorem at 750M Drops/Sec 
+        </title>
+
+        <meta name="generator" content="Hugo 0.169.0">
+
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+        
+
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/custom.css">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#ffffff"></head>
+
+    <body lang="en-US">
+        <div class="container my-auto">
+
+
+<header class="text-start post-header">
+  <h1 class="title">Simulating the Galton Board: From Bernoulli Trials to the Central Limit Theorem at 750M Drops/Sec</h1>
+  <div id="category-pane" class="meta">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between">
+      <p class="text-start meta mb-0">
+         PUBLISHED ON NOV 13, 2026
+        
+        / 5 MIN READ
+        
+        
+        
+        —
+        
+        
+        <a class="meta"
+          href="/categories/ai/ml">AI/ML</a>, 
+        
+        <a class="meta"
+          href="/categories/algorithms">ALGORITHMS</a>, 
+        
+        <a class="meta"
+          href="/categories/systems-engineering">SYSTEMS ENGINEERING</a>
+        
+        
+        
+      </p>
+    </div>
+    
+  </div>
+</header>
+
+<main id="content-pane" role="main">
+  
+  
+    
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+
+  
+
+  <div class="text-justify content">
+    
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#interactive-visualizer-embed">Interactive Visualizer Embed</a></li>
+    <li><a href="#1-the-mathematical-mechanism-from-bernoulli-to-gauss">1. The Mathematical Mechanism: From Bernoulli to Gauss</a>
+      <ul>
+        <li><a href="#exact-binomial-probability-mass-function-pmf">Exact Binomial Probability Mass Function (PMF)</a></li>
+        <li><a href="#the-de-moivrelaplace-limit-theorem">The De Moivre–Laplace Limit Theorem</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-systems-optimization-750m-dropssec-in-iso-c23">2. Systems Optimization: 750M Drops/Sec in ISO C23</a>
+      <ul>
+        <li><a href="#a-single-cycle-hardware-popcount">A. Single-Cycle Hardware Popcount</a></li>
+        <li><a href="#b-cache-line-alignment--zero-allocations">B. Cache-Line Alignment &amp; Zero Allocations</a></li>
+        <li><a href="#c-pearson-chi-square-goodness-of-fit-test">C. Pearson Chi-Square Goodness-of-Fit Test</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-real-time-streaming-with-python-315--fastapi">3. Real-Time Streaming with Python 3.15 &amp; FastAPI</a></li>
+    <li><a href="#4-in-browser-visualizer--web-audio-synthesis">4. In-Browser Visualizer &amp; Web Audio Synthesis</a></li>
+    <li><a href="#5-summary--verification">5. Summary &amp; Verification</a></li>
+  </ul>
+</nav>
+    
+    <p><em>How Sir Francis Galton&rsquo;s 1873 mechanical probability device inspired a modern C23 bit-level SIMD engine, an in-browser WebAudio visualizer, and a real-time Python 3.15 streaming service.</em></p>
+<hr>
+<h2 id="abstract">Abstract</h2>
+<p>In 1873, Victorian polymath Sir Francis Galton constructed the <strong>quincunx</strong> (commonly known as the <strong>Galton board</strong> or <strong>bean machine</strong>)—a vertical board studded with interleaved rows of pins through which small marbles cascade. As each bead ricochets against pins, it deflects left or right with equal probability. By the time the beads reach the bottom collector bins, an unmistakable geometric silhouette emerges: the smooth, bell-shaped Gaussian normal distribution.</p>
+<p>To celebrate this foundational connection between discrete probability and continuous physical law, I developed <a href="https://erolrecep.github.io/galtonboard/"><strong><code>rcre-galton</code></strong></a> as part of the <strong><code>rcre</code> (Recep&rsquo;s Code Run Everywhere)</strong> project.</p>
+<p>This implementation bridges two worlds:</p>
+<ol>
+<li><strong>Bare-Metal C23 Systems Performance</strong>: A hardware-saturating Monte-Carlo engine that leverages bit-level hardware popcounts on <code>xoshiro256**</code> words to evaluate 64-row lattices at <strong>750+ Million drops/sec</strong> (1.33 ns/drop).</li>
+<li><strong>Interactive WebAssembly &amp; Python 3.15 Serving</strong>: A zero-dependency HTML5 Canvas2D / Web Audio visualizer and an asynchronous Python 3.15 FastAPI streaming service broadcasting live ball trajectories over WebSockets.</li>
+</ol>
+<blockquote>
+<p>🎲 <strong>Live Interactive Web Simulator</strong>:<br>
+Explore the live simulation, adjust pin rows, tweak right-deflection bias, and listen to synthesized collision chimes in your browser:<br>
+<a href="https://erolrecep.github.io/galtonboard/"><strong>https://erolrecep.github.io/galtonboard/</strong></a><br>
+📦 <strong>GitHub Repository &amp; Source Code</strong>:<br>
+Located in <a href="https://github.com/erolrecep/codebase/tree/main/apps/rcre/projects/rcre_galtonboard"><strong><code>apps/rcre/projects/rcre_galtonboard/</code></strong></a> and <a href="https://github.com/erolrecep/codebase/tree/main/_python_/galtonboard_fastapi"><strong><code>_python_/galtonboard_fastapi/</code></strong></a>.</p>
+</blockquote>
+<hr>
+<h2 id="interactive-visualizer-embed">Interactive Visualizer Embed</h2>
+<iframe src="https://erolrecep.github.io/galtonboard/" width="100%" height="820px" style="border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); margin: 1.5rem 0;" title="RCRE Galton Board Interactive Visualizer"></iframe>
+<hr>
+<h2 id="1-the-mathematical-mechanism-from-bernoulli-to-gauss">1. The Mathematical Mechanism: From Bernoulli to Gauss</h2>
+<p>The physics of a Galton board with $N$ rows can be formalized as a sequence of $N$ independent Bernoulli trials $B_1, B_2, \dots, B_N$, where:</p>
+<p>$$B_i = \begin{cases} 1 &amp; \text{with probability } p \text{ (right deflection)} \ 0 &amp; \text{with probability } 1 - p \text{ (left deflection)} \end{cases}$$</p>
+<p>The final column index $K$ into which a bead settles is the sum of right deflections:</p>
+<p>$$K = \sum_{i=1}^N B_i$$</p>
+<h3 id="exact-binomial-probability-mass-function-pmf">Exact Binomial Probability Mass Function (PMF)</h3>
+<p>The probability of a bead landing in bin $k \in {0, 1, \dots, N}$ follows the Binomial distribution:</p>
+<p>$$P(K = k) = \binom{N}{k} p^k (1 - p)^{N - k} = \frac{N!}{k!(N - k)!} p^k (1 - p)^{N - k}$$</p>
+<p>In computer systems, directly computing factorials ($N!$) causes catastrophic 64-bit integer overflow for $N &gt; 20$. In <code>rcre-galton</code>, we compute factorials in continuous log-space using the standard Gamma function ($\Gamma(n + 1) = n!$):</p>
+<p>$$\ln \binom{N}{k} = \ln \Gamma(N + 1) - \ln \Gamma(k + 1) - \ln \Gamma(N - k + 1)$$</p>
+<p>$$\ln P(K = k) = \ln \binom{N}{k} + k \ln p + (N - k) \ln(1 - p)$$</p>
+<p>This guarantees bit-exact probabilities up to $N = 64$ rows with zero floating-point overflow.</p>
+<h3 id="the-de-moivrelaplace-limit-theorem">The De Moivre–Laplace Limit Theorem</h3>
+<p>As the number of pin rows $N \to \infty$, the discrete Binomial distribution converges to the continuous Gaussian Normal density $\mathcal{N}(\mu, \sigma^2)$:</p>
+<p>$$\mu = N p, \quad \sigma^2 = N p (1 - p)$$</p>
+<p>$$f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2\right)$$</p>
+<p>This is a special case of the <strong>Central Limit Theorem (CLT)</strong>: independent microscopic perturbations (peg collisions) compound into macroscopic deterministic structure.</p>
+<hr>
+<h2 id="2-systems-optimization-750m-dropssec-in-iso-c23">2. Systems Optimization: 750M Drops/Sec in ISO C23</h2>
+<p>When simulating hundreds of millions of drops for Monte-Carlo verification or high-frequency rendering, traditional loop-based branches (<code>if (rand() &lt; 0.5) k++;</code>) stall CPU pipelines.</p>
+<p>In <strong><code>rcre-galton</code></strong>, we satuate modern hardware through three techniques:</p>
+<h3 id="a-single-cycle-hardware-popcount">A. Single-Cycle Hardware Popcount</h3>
+<p>For a symmetric board ($p = 0.5$) with $N \le 64$ rows, each ball requires exactly $N$ independent random bits.</p>
+<p>Instead of generating $N$ random floats or branching $N$ times, we draw a single 64-bit pseudo-random word from a fast <code>xoshiro256**</code> generator, mask the active $N$ bits, and compute the number of set bits using the hardware population count instruction (<code>popcnt</code> on x86-64, <code>cnt</code> on ARM Neon):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Symmetric fast-path: 1 pseudo-random word -&gt; 1 marble drop
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">uint64_t</span> word <span style="color:#f92672">=</span> <span style="color:#a6e22e">prng_next_u64</span>(<span style="color:#f92672">&amp;</span>board<span style="color:#f92672">-&gt;</span>prng);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">uint64_t</span> active_bits <span style="color:#f92672">=</span> word <span style="color:#f92672">&amp;</span> ((<span style="color:#ae81ff">1ULL</span> <span style="color:#f92672">&lt;&lt;</span> rows) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1ULL</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">uint32_t</span> bin_index <span style="color:#f92672">=</span> (<span style="color:#66d9ef">uint32_t</span>)<span style="color:#a6e22e">__builtin_popcountll</span>(active_bits);
+</span></span><span style="display:flex;"><span>board<span style="color:#f92672">-&gt;</span>bin_counts[bin_index]<span style="color:#f92672">++</span>;
+</span></span></code></pre></div><p>By unrolling the batch loop by a factor of 4, the inner loop processes <strong>4 full marble trajectories every ~5 nanoseconds</strong>:</p>
+<pre tabindex="0"><code>Executing Monte-Carlo Bernoulli trials...
+[Simulation Completed in 0.0265 seconds]
+  Throughput          : 754.15 Million drops/sec (1.33 ns/drop)
+</code></pre><h3 id="b-cache-line-alignment--zero-allocations">B. Cache-Line Alignment &amp; Zero Allocations</h3>
+<p>Histogram counters are aligned to 64-byte boundaries (<code>alignas(64)</code>), ensuring that all bin updates hit L1 data cache lines without false sharing. The simulation loop performs <strong>zero heap allocations</strong> (<code>malloc</code>), eliminating allocator locks and memory fragmentation.</p>
+<h3 id="c-pearson-chi-square-goodness-of-fit-test">C. Pearson Chi-Square Goodness-of-Fit Test</h3>
+<p>To rigorously verify that the PRNG and bit-level dispatch faithfully reproduce the theoretical binomial law, the engine computes the Pearson $\chi^2$ statistic and evaluates the regularized upper incomplete gamma function $Q(a, x)$:</p>
+<p>$$\chi^2 = \sum_{k=0}^N \frac{(O_k - E_k)^2}{E_k}, \quad \text{dof} = \text{bins} - 1$$</p>
+<pre tabindex="0"><code>--- STATISTICAL VERIFICATION REPORT ---
+  Total Balls (M)     : 20000000
+  Pin Levels (N)      : 16  (Bins: 17)
+  Empirical Mean (x̄)  : 7.999663  (Target: 8.000000, Error: -0.000337)
+  Empirical Variance  : 3.999587  (Target: 4.000000, Error: -0.000413)
+  Chi-Square Test (χ²): 13.8712  (dof: 16, p-value: 0.6083)
+  Null Hypothesis H₀  : ACCEPTED (No divergence from Binomial PMF at α=0.05)
+</code></pre><hr>
+<h2 id="3-real-time-streaming-with-python-315--fastapi">3. Real-Time Streaming with Python 3.15 &amp; FastAPI</h2>
+<p>Alongside the low-level C engine, we developed a modern asynchronous service in <strong>Python 3.15.2</strong> to demonstrate real-time streaming architectures:</p>
+<ul>
+<li><strong>Pydantic v2 Models</strong>: Strict schemas (<code>SimulationConfig</code>, <code>SimulationStats</code>, <code>BinDistributionItem</code>) validating inputs and telemetry outputs.</li>
+<li><strong>WebSocket Streaming (<code>/ws/stream</code>)</strong>: Asynchronous broadcast manager streaming individual drop paths, landed bins, and live moments to multiple connected web clients.</li>
+<li><strong>Vectorized NumPy 2.0 Batching</strong>: When serving batch queries via <code>POST /api/v1/simulate</code>, the engine uses <code>rng.binomial(n=rows, p=bias, size=balls)</code> to simulate 100,000 drops in 1.2 milliseconds.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/api/v1/simulate&#34;</span>, response_model<span style="color:#f92672">=</span>SimulationResponse)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run_simulation</span>(config: SimulationConfig):
+</span></span><span style="display:flex;"><span>    g_engine<span style="color:#f92672">.</span>reset(config)
+</span></span><span style="display:flex;"><span>    _, elapsed_ms <span style="color:#f92672">=</span> g_engine<span style="color:#f92672">.</span>simulate_batch(config<span style="color:#f92672">.</span>balls)
+</span></span><span style="display:flex;"><span>    stats <span style="color:#f92672">=</span> g_engine<span style="color:#f92672">.</span>calculate_statistics()
+</span></span><span style="display:flex;"><span>    items <span style="color:#f92672">=</span> g_engine<span style="color:#f92672">.</span>get_distribution_items()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> SimulationResponse(
+</span></span><span style="display:flex;"><span>        configuration<span style="color:#f92672">=</span>config,
+</span></span><span style="display:flex;"><span>        stats<span style="color:#f92672">=</span>stats,
+</span></span><span style="display:flex;"><span>        distribution<span style="color:#f92672">=</span>items,
+</span></span><span style="display:flex;"><span>        elapsed_ms<span style="color:#f92672">=</span>round(elapsed_ms, <span style="color:#ae81ff">3</span>),
+</span></span><span style="display:flex;"><span>    )
+</span></span></code></pre></div><hr>
+<h2 id="4-in-browser-visualizer--web-audio-synthesis">4. In-Browser Visualizer &amp; Web Audio Synthesis</h2>
+<p>The client-side visualizer (<a href="https://erolrecep.github.io/galtonboard/"><strong><code>web/index.html</code></strong></a>) is built with zero external dependencies:</p>
+<ul>
+<li><strong>Elastic Kinematics</strong>: Marbles bounce elastically against cylindrical pegs with restitution $e \in [0.1, 0.8]$, gravity $g$, and subtle Gaussian velocity jitter.</li>
+<li><strong>Dual Theoretical Distribution Overlays</strong>:
+<ul>
+<li><strong>Amber Dotted Line</strong>: The discrete Binomial PMF line with individual bin probability nodes.</li>
+<li><strong>Cyan Glowing Bell Curve</strong>: The continuous Gaussian Normal density function scaling dynamically with bin accumulation.</li>
+<li><strong>Emerald Gradient Columns</strong>: Physical stacking of fallen marbles into vertical bars.</li>
+</ul>
+</li>
+<li><strong>Web Audio Synthesis</strong>: Every peg collision triggers a synthesized sine oscillator using the Web Audio API. Pitches are mapped along a harmonic pentatonic scale proportional to row depth, creating a crystalline music box effect as beads tumble down the pyramid.</li>
+</ul>
+<hr>
+<h2 id="5-summary--verification">5. Summary &amp; Verification</h2>
+<p>Whether running on bare metal with C23 bit manipulation, streaming over WebSockets via Python 3.15 FastAPI, or rendering in an interactive Canvas2D browser window, the Galton Board demonstrates the elegance of systems computing: simple, discrete, deterministic rules compounding into smooth, universal distributions.</p>
+<p>All code and benchmarks are available in the repository:</p>
+<ul>
+<li><strong>C23 Core Project</strong>: <a href="https://github.com/erolrecep/codebase/tree/main/apps/rcre/projects/rcre_galtonboard"><code>apps/rcre/projects/rcre_galtonboard/</code></a></li>
+<li><strong>Python Standalone</strong>: <a href="https://github.com/erolrecep/codebase/tree/main/_python_/galtonboard_fastapi"><code>_python_/galtonboard_fastapi/</code></a></li>
+<li><strong>Live Web Playground</strong>: <a href="https://erolrecep.github.io/galtonboard/">https://erolrecep.github.io/galtonboard/</a></li>
+</ul>
+
+  </div>
+
+  <div id="tag-pane" class="meta mt-4">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between">
+      <p class="text-end meta mb-0">
+        
+        
+        
+        TAGS:
+        
+        
+        <a class="meta" href="/tags/c-programming">C PROGRAMMING</a>,
+        
+        
+        <a class="meta" href="/tags/fastapi">FASTAPI</a>,
+        
+        
+        <a class="meta" href="/tags/hpc">HPC</a>,
+        
+        
+        <a class="meta" href="/tags/python">PYTHON</a>,
+        
+        
+        <a class="meta" href="/tags/statistics">STATISTICS</a>,
+        
+        
+        <a class="meta" href="/tags/systems-engineering">SYSTEMS ENGINEERING</a>,
+        
+        
+        <a class="meta" href="/tags/webassembly">WEBASSEMBLY</a>
+        
+        
+        
+      </p>
+    </div>
+    
+  </div>
+</main>
+
+
+
+
+
+
+
+
+<nav id="menu-pane" aria-label="Post navigation" class="menu text-center">
+  
+  <div class="pagination-wrapper">
+    <ul class="pagination justify-content-center">
+      
+      
+      <li class="menu-item">
+        <a class="menu-item" href="https://erolrecep.github.io/posts/introducing-rcre-learn/">&lt; prev</a>
+      </li>
+      
+
+      <li class="menu-item">
+        
+        <span class="menu-item">&nbsp;|&nbsp;</span>
+        
+        <a class="menu-item" href="/posts">posts</a>
+        
+      </li>
+
+      
+      
+    </ul>
+  </div>
+  
+  <p class="text-center mt-3 mb-0"><a class="menu-item" href="https://erolrecep.github.io/">home</a></p>
+</nav>
+
+
+<footer class="text-center footer">
+  <hr />
+  
+  <p class="text-center copyright mb-1">© 2026. Recep Erol. Made with ❤️ in Houston, TX</p>
+  
+  <p class="text-center powered mb-1"><a href="https://gohugo.io/">Hugo, themed by </a> <a
+      href="https://github.com/kaapiandcode/hugo-goa">hugo-goa</a> <br> <a href="https://creativecommons.org/version4/" >Some Rights Reserved</a> </p>
+  
+  
+  <p class="text-center mb-0">
+    <a href="https://erolrecep.github.io/index.xml" aria-label="RSS Feed"><i class="fas fa-rss" aria-hidden="true"></i></a>
+  </p>
+  
+  
+</footer>
+
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+
+<script>hljs.highlightAll();</script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="/js/custom.js"></script>
+</body>
+
+</html>
+

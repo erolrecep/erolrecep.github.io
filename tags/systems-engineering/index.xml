@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Fri, 13 Nov 2026 10:00:00 -0600</lastBuildDate>
+			<lastBuildDate>Fri, 13 Nov 2026 15:00:00 -0600</lastBuildDate>
 		
 			<atom:link href="https://erolrecep.github.io/tags/systems-engineering/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Simulating the Galton Board: From Bernoulli Trials to the Central Limit Theorem at 750M Drops/Sec</title>
+				<link>https://erolrecep.github.io/posts/galton-board-quincunx-flow-clt/</link>
+				<pubDate>Fri, 13 Nov 2026 15:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/posts/galton-board-quincunx-flow-clt/</guid>
+				<description>&lt;p&gt;&lt;em&gt;How Sir Francis Galton&amp;rsquo;s 1873 mechanical probability device inspired a modern C23 bit-level SIMD engine, an in-browser WebAudio visualizer, and a real-time Python 3.15 streaming service.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;&#xA;&lt;p&gt;In 1873, Victorian polymath Sir Francis Galton constructed the &lt;strong&gt;quincunx&lt;/strong&gt; (commonly known as the &lt;strong&gt;Galton board&lt;/strong&gt; or &lt;strong&gt;bean machine&lt;/strong&gt;)—a vertical board studded with interleaved rows of pins through which small marbles cascade. As each bead ricochets against pins, it deflects left or right with equal probability. By the time the beads reach the bottom collector bins, an unmistakable geometric silhouette emerges: the smooth, bell-shaped Gaussian normal distribution.&lt;/p&gt;</description>
+			</item>
 			<item>
 				<title>Introducing rcre-learn: The Silicon Odyssey</title>
 				<link>https://erolrecep.github.io/posts/introducing-rcre-learn/</link>

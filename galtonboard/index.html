@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCRE Galton Board — Interactive Flow & Central Limit Theorem</title>
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --card-bg: rgba(18, 24, 38, 0.85);
+      --border-color: rgba(99, 102, 241, 0.2);
+      --accent-cyan: #38bdf8;
+      --accent-indigo: #6366f1;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .badge-rcre {
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 1.25rem;
+      padding: 1.25rem;
+      flex: 1;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (max-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .canvas-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    .canvas-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: rgba(11, 15, 25, 0.6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    button {
+      background: rgba(30, 41, 59, 0.8);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
+    }
+
+    button:hover {
+      background: rgba(51, 65, 85, 1);
+      border-color: var(--accent-cyan);
+    }
+
+    button.btn-primary {
+      background: var(--accent-indigo);
+      border-color: #818cf8;
+      color: white;
+    }
+
+    button.btn-primary:hover {
+      background: #4f46e5;
+    }
+
+    button.btn-active {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: var(--accent-emerald);
+      color: #6ee7b7;
+    }
+
+    canvas {
+      width: 100%;
+      height: 640px;
+      display: block;
+      background: radial-gradient(circle at 50% 20%, #131b2e 0%, #070a12 100%);
+    }
+
+    /* Side Dashboard */
+    .dashboard {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-cyan);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .control-row {
+      margin-bottom: 0.9rem;
+    }
+
+    .control-row label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .control-val {
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 5px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.15);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      cursor: pointer;
+      box-shadow: 0 0 6px var(--accent-cyan);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .stat-item {
+      background: rgba(11, 15, 25, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 0.65rem 0.8rem;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .stat-target {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 0.15rem;
+    }
+
+    .legend-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    .legend-emerald { background: var(--accent-emerald); }
+    .legend-amber { background: var(--accent-amber); }
+    .legend-cyan { background: var(--accent-cyan); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-title">
+      <span class="badge-rcre">RCRE C23 / WASM</span>
+      <h1>Galton Board (Quincunx) Flow Simulator</h1>
+    </div>
+    <div class="btn-group">
+      <button id="btnAudioToggle" title="Toggle collision audio synthesis">
+        <span>🔊 Audio: ON</span>
+      </button>
+      <button id="btnExportCSV">Export CSV</button>
+      <button id="btnExportJSON">Export JSON</button>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- Center Simulation Canvas -->
+    <div class="canvas-container">
+      <div class="canvas-toolbar">
+        <div class="btn-group">
+          <button id="btnPlayPause" class="btn-primary">⏸ Pause</button>
+          <button id="btnStep">Step Single</button>
+          <button id="btnBatch100">+100 Balls</button>
+          <button id="btnBatch1000">+1,000 Balls</button>
+          <button id="btnBatch10000">+10,000 Balls</button>
+          <button id="btnClear" style="color: var(--accent-rose);">Reset</button>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan);">
+          FPS: <span id="lblFPS">60</span> | Active: <span id="lblActiveBalls">0</span>
+        </div>
+      </div>
+      <canvas id="galtonCanvas"></canvas>
+    </div>
+
+    <!-- Right Telemetry Dashboard -->
+    <div class="dashboard">
+      <!-- Controls Card -->
+      <div class="card">
+        <div class="card-title">Lattice & Flow Controls</div>
+        
+        <div class="control-row">
+          <label>
+            <span>Pin Levels (Rows N):</span>
+            <span class="control-val" id="valRows">12</span>
+          </label>
+          <input type="range" id="sliderRows" min="6" max="24" step="1" value="12">
+        </div>
+
+        <div class="control-row">
+          <label>
+            <span>Right Bounce Bias (p):</span>
+            <span class="control-val" id="valBias">0.50</span>
+          </label>
+          <input type="range" id="sliderBias" min="0.10" max="0.90" step="0.01" value="0.50">
+        </div>
+
+        <div class="control-row">
+          <label>
+            <span>Drop Rate (Balls / sec):</span>
+            <span class="control-val" id="valDropRate">30</span>
+          </label>
+          <input type="range" id="sliderDropRate" min="1" max="500" step="1" value="30">
+        </div>
+
+        <div class="control-row">
+          <label>
+            <span>Restitution (Bounciness e):</span>
+            <span class="control-val" id="valRestitution">0.45</span>
+          </label>
+          <input type="range" id="sliderRestitution" min="0.10" max="0.80" step="0.05" value="0.45">
+        </div>
+      </div>
+
+      <!-- Live Statistical Analytics -->
+      <div class="card">
+        <div class="card-title">
+          <span>Statistical Telemetry</span>
+          <span style="color: var(--accent-emerald); font-size: 0.75rem;" id="lblCLTStatus">CLT Converging</span>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-item" style="grid-column: span 2;">
+            <div class="stat-label">Total Balls Dropped (M)</div>
+            <div class="stat-value" id="valTotalBalls" style="color: var(--accent-cyan); font-size: 1.4rem;">0</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-label">Empirical Mean (x̄)</div>
+            <div class="stat-value" id="valMean">0.0000</div>
+            <div class="stat-target" id="valTargetMean">Target: 6.0000</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-label">Empirical StdDev (s)</div>
+            <div class="stat-value" id="valStdDev">0.0000</div>
+            <div class="stat-target" id="valTargetStdDev">Target: 1.7320</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-label">Sample Skewness</div>
+            <div class="stat-value" id="valSkewness">0.0000</div>
+            <div class="stat-target" id="valTargetSkewness">Target: 0.0000</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-label">Excess Kurtosis</div>
+            <div class="stat-value" id="valKurtosis">0.0000</div>
+            <div class="stat-target" id="valTargetKurtosis">Target: -0.1667</div>
+          </div>
+
+          <div class="stat-item" style="grid-column: span 2;">
+            <div class="stat-label">Pearson Chi-Square (χ²) & p-value</div>
+            <div class="stat-value" id="valChiSquare" style="font-size: 0.95rem;">χ²: 0.00 | p: 1.000</div>
+          </div>
+        </div>
+
+        <div class="legend-box">
+          <div class="legend-item">
+            <div class="legend-color legend-emerald"></div>
+            <span>Empirical Accumulation (Actual Bin Counts)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color legend-amber"></div>
+            <span>Theoretical Binomial Distribution PMF (Exact Discrete)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color legend-cyan"></div>
+            <span>Gaussian Normal Bell Curve PDF (De Moivre–Laplace CLT)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========================================================================= */
+    /* Web Audio Synthesis Engine (Zero external dependencies)                  */
+    /* ========================================================================= */
+    class AudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+        this.lastSoundTime = 0;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+      }
+
+      playPlink(row, maxRows) {
+        if (!this.enabled || !this.ctx) return;
+        const now = this.ctx.currentTime;
+        if (now - this.lastSoundTime < 0.015) return; // Rate limiter for audio sanity
+        this.lastSoundTime = now;
+
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          // Musical pitch: Pentatonic frequency mapped to row depth
+          const baseFreq = 380;
+          const octaveRatio = Math.pow(2, (row / Math.max(maxRows, 1)) * 1.5);
+          osc.frequency.setValueAtTime(baseFreq * octaveRatio, now);
+          osc.type = "sine";
+
+          gain.gain.setValueAtTime(0.04, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.06);
+        } catch(e) {}
+      }
+
+      toggle() {
+        this.enabled = !this.enabled;
+        return this.enabled;
+      }
+    }
+
+    /* ========================================================================= */
+    /* Galton Board Simulation & Canvas Visualizer                               */
+    /* ========================================================================= */
+    const canvas = document.getElementById('galtonCanvas');
+    const ctx = canvas.getContext('2d');
+    const audio = new AudioEngine();
+
+    // Simulation Parameters
+    let rows = 12;
+    let bias = 0.50;
+    let dropRate = 30; // balls per sec
+    let restitution = 0.45;
+    let isPaused = false;
+
+    let totalBalls = 0;
+    let binCounts = new Array(rows + 1).fill(0);
+    let activeParticles = [];
+
+    // Peg geometry cache
+    let pegs = [];
+    let binPositions = [];
+    let pinRadius = 4;
+    let ballRadius = 3.5;
+    let gravity = 680; // px / sec^2
+
+    // Timing
+    let lastTime = performance.now();
+    let spawnAccumulator = 0;
+    let fps = 60;
+    let frameCount = 0;
+    let lastFpsTime = performance.now();
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      computeGeometry();
+    }
+
+    function computeGeometry() {
+      const w = canvas.width;
+      const h = canvas.height;
+      pegs = [];
+      binPositions = [];
+
+      const topY = h * 0.12;
+      const boardHeight = h * 0.50;
+      const dy = boardHeight / rows;
+      const dx = dy * 0.88;
+
+      pinRadius = Math.max(2.5, Math.min(6, dy * 0.14));
+      ballRadius = pinRadius * 0.9;
+
+      const centerX = w / 2;
+
+      for (let r = 0; r < rows; ++r) {
+        const count = r + 1;
+        const rowWidth = (count - 1) * dx;
+        const startX = centerX - rowWidth / 2;
+
+        for (let c = 0; c < count; ++c) {
+          pegs.push({
+            x: startX + c * dx,
+            y: topY + r * dy,
+            row: r,
+            col: c
+          });
+        }
+      }
+
+      // Bin slots at bottom
+      const binsCount = rows + 1;
+      const binsWidth = (binsCount - 1) * dx;
+      const binsStartX = centerX - binsWidth / 2;
+      const binTopY = topY + rows * dy + 15;
+      const binBottomY = h - 25;
+
+      for (let b = 0; b < binsCount; ++b) {
+        binPositions.push({
+          x: binsStartX + b * dx,
+          topY: binTopY,
+          bottomY: binBottomY,
+          width: dx
+        });
+      }
+    }
+
+    // Particle
+    class Ball {
+      constructor(x, y) {
+        this.x = x + (Math.random() - 0.5) * 4;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 10;
+        this.vy = 20 + Math.random() * 20;
+        this.landed = false;
+        this.color = Math.random() > 0.5 ? '#38bdf8' : '#60a5fa';
+        this.trail = [];
+      }
+
+      update(dt) {
+        if (this.landed) return;
+
+        this.vy += gravity * dt;
+        this.x += this.vx * dt;
+        this.y += this.vy * dt;
+
+        // Collision against pegs
+        for (let i = 0; i < pegs.length; ++i) {
+          const p = pegs[i];
+          const distSq = (this.x - p.x)**2 + (this.y - p.y)**2;
+          const minDist = pinRadius + ballRadius;
+
+          if (distSq < minDist * minDist) {
+            const dist = Math.sqrt(distSq) || 0.001;
+            const nx = (this.x - p.x) / dist;
+            const ny = (this.y - p.y) / dist;
+
+            // Separate
+            this.x = p.x + nx * (minDist + 0.1);
+            this.y = p.y + ny * (minDist + 0.1);
+
+            // Reflect velocity with restitution
+            const vDotN = this.vx * nx + this.vy * ny;
+            if (vDotN < 0) {
+              this.vx = (this.vx - (1 + restitution) * vDotN * nx);
+              this.vy = (this.vy - (1 + restitution) * vDotN * ny);
+
+              // Inject Bernoulli bias impulse towards right or left
+              const kick = (Math.random() < bias ? 1 : -1) * (30 + Math.random() * 40);
+              this.vx += kick;
+
+              audio.playPlink(p.row, rows);
+            }
+          }
+        }
+
+        // Funnel / Bins entry check
+        const firstBin = binPositions[0];
+        if (this.y >= firstBin.topY) {
+          this.landed = true;
+          // Determine bin index
+          let chosenBin = 0;
+          let minDist = Infinity;
+          for (let b = 0; b < binPositions.length; ++b) {
+            const d = Math.abs(this.x - binPositions[b].x);
+            if (d < minDist) {
+              minDist = d;
+              chosenBin = b;
+            }
+          }
+          if (chosenBin < 0) chosenBin = 0;
+          if (chosenBin >= binCounts.length) chosenBin = binCounts.length - 1;
+
+          binCounts[chosenBin]++;
+          totalBalls++;
+        }
+      }
+
+      draw(c) {
+        c.beginPath();
+        c.arc(this.x, this.y, ballRadius, 0, Math.PI * 2);
+        c.fillStyle = this.color;
+        c.shadowColor = '#38bdf8';
+        c.shadowBlur = 4;
+        c.fill();
+        c.shadowBlur = 0;
+      }
+    }
+
+    function spawnBall() {
+      const centerX = canvas.width / 2;
+      const topY = canvas.height * 0.05;
+      activeParticles.push(new Ball(centerX, topY));
+    }
+
+    function instantDropBatch(n) {
+      // High-speed Bernoulli trial batch
+      for (let i = 0; i < n; ++i) {
+        let k = 0;
+        for (let r = 0; r < rows; ++r) {
+          if (Math.random() < bias) k++;
+        }
+        binCounts[k]++;
+      }
+      totalBalls += n;
+      updateStatistics();
+    }
+
+    /* ========================================================================= */
+    /* Exact Analytical Distributions & Moments                                  */
+    /* ========================================================================= */
+    function logGamma(z) {
+      // Lanczos approximation
+      const c = [57.1562356658629235, -59.5979603554754912, 14.1360979747417471,
+                 -0.491913816097620199, 0.339946499848118887e-4, 0.465236289270485756e-4,
+                 -0.983744753048795646e-4, 0.158088703224379488e-3, -0.210264441724104883e-3,
+                 0.217439618115212643e-3, -0.164318106536763890e-3, 0.844182239838527433e-4,
+                 -0.261908384015814087e-4, 0.368991826595316234e-5];
+      let y = z;
+      let x = z;
+      let tmp = x + 5.24218750000000000;
+      tmp = (x + 0.5) * Math.log(tmp) - tmp;
+      let ser = 0.999999999999997092;
+      for (let j = 0; j < 14; j++) {
+        y += 1;
+        ser += c[j] / y;
+      }
+      return tmp + Math.log(2.5066282746310005 * ser / x);
+    }
+
+    function binomialPMF(n, k, p) {
+      if (k < 0 || k > n) return 0;
+      if (p <= 0) return k === 0 ? 1 : 0;
+      if (p >= 1) return k === n ? 1 : 0;
+      const logComb = logGamma(n + 1) - logGamma(k + 1) - logGamma(n - k + 1);
+      const logProb = logComb + k * Math.log(p) + (n - k) * Math.log(1 - p);
+      return Math.exp(logProb);
+    }
+
+    function gaussianPDF(x, mu, sigma) {
+      if (sigma <= 0) return 0;
+      const diff = (x - mu) / sigma;
+      return (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * diff * diff);
+    }
+
+    function updateStatistics() {
+      const n = rows;
+      const p = bias;
+      const M = totalBalls;
+
+      const theoMean = n * p;
+      const theoVar = n * p * (1 - p);
+      const theoStd = Math.sqrt(theoVar);
+      const theoSkew = theoStd > 1e-6 ? (1 - 2 * p) / theoStd : 0;
+      const theoKurt = theoVar > 1e-6 ? (1 - 6 * p * (1 - p)) / theoVar : 0;
+
+      document.getElementById('valTotalBalls').textContent = M.toLocaleString();
+      document.getElementById('valTargetMean').textContent = `Target: ${theoMean.toFixed(4)}`;
+      document.getElementById('valTargetStdDev').textContent = `Target: ${theoStd.toFixed(4)}`;
+      document.getElementById('valTargetSkewness').textContent = `Target: ${theoSkew.toFixed(4)}`;
+      document.getElementById('valTargetKurtosis').textContent = `Target: ${theoKurt.toFixed(4)}`;
+
+      if (M === 0) {
+        document.getElementById('valMean').textContent = "0.0000";
+        document.getElementById('valStdDev').textContent = "0.0000";
+        document.getElementById('valSkewness').textContent = "0.0000";
+        document.getElementById('valKurtosis').textContent = "0.0000";
+        document.getElementById('valChiSquare').textContent = "χ²: 0.00 | p: 1.000";
+        return;
+      }
+
+      // Empirical Moments
+      let sum = 0;
+      for (let k = 0; k < binCounts.length; ++k) {
+        sum += k * binCounts[k];
+      }
+      const mean = sum / M;
+
+      let sumSq = 0, sumCube = 0, sumQuad = 0;
+      for (let k = 0; k < binCounts.length; ++k) {
+        const count = binCounts[k];
+        if (count === 0) continue;
+        const diff = k - mean;
+        const diff2 = diff * diff;
+        sumSq += diff2 * count;
+        sumCube += diff2 * diff * count;
+        sumQuad += diff2 * diff2 * count;
+      }
+
+      const variance = M > 1 ? sumSq / (M - 1) : 0;
+      const stdDev = Math.sqrt(variance);
+      const skewness = stdDev > 1e-6 ? (sumCube / M) / Math.pow(stdDev, 3) : 0;
+      const kurtosis = variance > 1e-6 ? ((sumQuad / M) / Math.pow(variance, 2)) - 3.0 : 0;
+
+      document.getElementById('valMean').textContent = mean.toFixed(4);
+      document.getElementById('valStdDev').textContent = stdDev.toFixed(4);
+      document.getElementById('valSkewness').textContent = (skewness >= 0 ? "+" : "") + skewness.toFixed(4);
+      document.getElementById('valKurtosis').textContent = (kurtosis >= 0 ? "+" : "") + kurtosis.toFixed(4);
+
+      // Chi-Square Goodness of Fit
+      let chi2 = 0;
+      let activeBins = 0;
+      for (let k = 0; k < binCounts.length; ++k) {
+        const expected = M * binomialPMF(n, k, p);
+        if (expected >= 1.0) {
+          const diff = binCounts[k] - expected;
+          chi2 += (diff * diff) / expected;
+          activeBins++;
+        }
+      }
+      const dof = Math.max(1, activeBins - 1);
+      document.getElementById('valChiSquare').textContent = `χ²: ${chi2.toFixed(2)} (dof: ${dof})`;
+
+      if (M > 200) {
+        const err = Math.abs(mean - theoMean);
+        if (err < 3 * (theoStd / Math.sqrt(M))) {
+          document.getElementById('lblCLTStatus').textContent = "CLT Verified (H₀ Accepted)";
+          document.getElementById('lblCLTStatus').style.color = "var(--accent-emerald)";
+        } else {
+          document.getElementById('lblCLTStatus').textContent = "CLT Converging...";
+          document.getElementById('lblCLTStatus').style.color = "var(--accent-amber)";
+        }
+      }
+    }
+
+    /* ========================================================================= */
+    /* Render Loop                                                               */
+    /* ========================================================================= */
+    function render(currentTime) {
+      requestAnimationFrame(render);
+
+      const dt = Math.min((currentTime - lastTime) / 1000, 0.05);
+      lastTime = currentTime;
+
+      // FPS Counter
+      frameCount++;
+      if (currentTime - lastFpsTime >= 500) {
+        fps = Math.round((frameCount * 1000) / (currentTime - lastFpsTime));
+        document.getElementById('lblFPS').textContent = fps;
+        frameCount = 0;
+        lastFpsTime = currentTime;
+      }
+
+      // Spawning Balls
+      if (!isPaused && dropRate > 0) {
+        spawnAccumulator += dt;
+        const interval = 1.0 / dropRate;
+        while (spawnAccumulator >= interval) {
+          spawnBall();
+          spawnAccumulator -= interval;
+        }
+      }
+
+      // Update Particles
+      if (!isPaused) {
+        for (let i = activeParticles.length - 1; i >= 0; --i) {
+          const ball = activeParticles[i];
+          ball.update(dt);
+          if (ball.landed) {
+            activeParticles.splice(i, 1);
+          }
+        }
+      }
+
+      document.getElementById('lblActiveBalls').textContent = activeParticles.length;
+
+      // Draw Everything
+      const w = canvas.width;
+      const h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+
+      // 1. Draw Funnel at top
+      const centerX = w / 2;
+      const topY = h * 0.08;
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.4)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(centerX - 40, topY - 25);
+      ctx.lineTo(centerX - 12, topY);
+      ctx.lineTo(centerX - 12, topY + 12);
+      ctx.moveTo(centerX + 40, topY - 25);
+      ctx.lineTo(centerX + 12, topY);
+      ctx.lineTo(centerX + 12, topY + 12);
+      ctx.stroke();
+
+      // 2. Draw Pegs
+      for (let i = 0; i < pegs.length; ++i) {
+        const p = pegs[i];
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, pinRadius, 0, Math.PI * 2);
+        ctx.fillStyle = "#38bdf8";
+        ctx.shadowColor = "#0284c7";
+        ctx.shadowBlur = 6;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      // 3. Draw Active Falling Balls
+      for (let i = 0; i < activeParticles.length; ++i) {
+        activeParticles[i].draw(ctx);
+      }
+
+      // 4. Draw Collector Bins & Stacking Bars
+      const maxCount = Math.max(1, ...binCounts);
+      const binBottomY = h - 30;
+      const maxBarHeight = h * 0.28;
+
+      for (let b = 0; b < binPositions.length; ++b) {
+        const bin = binPositions[b];
+        const count = binCounts[b];
+        const barH = (count / maxCount) * maxBarHeight;
+
+        // Slot Divider Lines
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(bin.x - bin.width / 2, bin.topY);
+        ctx.lineTo(bin.x - bin.width / 2, binBottomY);
+        ctx.stroke();
+
+        // Stacking Bar Fill (Emerald Gradient)
+        if (count > 0) {
+          const grad = ctx.createLinearGradient(0, binBottomY - barH, 0, binBottomY);
+          grad.addColorStop(0, "rgba(52, 211, 153, 0.9)");
+          grad.addColorStop(1, "rgba(5, 150, 105, 0.6)");
+          ctx.fillStyle = grad;
+          ctx.fillRect(bin.x - bin.width * 0.42, binBottomY - barH, bin.width * 0.84, barH);
+        }
+
+        // Bin index numbers
+        ctx.fillStyle = "rgba(148, 163, 184, 0.7)";
+        ctx.font = `${Math.max(9, Math.min(13, bin.width * 0.45))}px monospace`;
+        ctx.textAlign = "center";
+        ctx.fillText(b.toString(), bin.x, binBottomY + 16);
+      }
+
+      // Right boundary of last bin
+      if (binPositions.length > 0) {
+        const lastBin = binPositions[binPositions.length - 1];
+        ctx.beginPath();
+        ctx.moveTo(lastBin.x + lastBin.width / 2, lastBin.topY);
+        ctx.lineTo(lastBin.x + lastBin.width / 2, binBottomY);
+        ctx.stroke();
+      }
+
+      // 5. Draw Dual Theoretical Distribution Overlays
+      if (totalBalls > 0 && binPositions.length > 0) {
+        const n = rows;
+        const p = bias;
+        const theoMean = n * p;
+        const theoStd = Math.sqrt(n * p * (1 - p));
+
+        // Theoretical Binomial PMF (Amber dotted line + points)
+        ctx.strokeStyle = "#f59e0b";
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        for (let b = 0; b < binPositions.length; ++b) {
+          const prob = binomialPMF(n, b, p);
+          const expCount = totalBalls * prob;
+          const y = binBottomY - (expCount / maxCount) * maxBarHeight;
+          if (b === 0) ctx.moveTo(binPositions[b].x, y);
+          else ctx.lineTo(binPositions[b].x, y);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Theoretical Gaussian PDF (Smooth Cyan Curve)
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        const startX = binPositions[0].x;
+        const endX = binPositions[binPositions.length - 1].x;
+        const steps = 120;
+        for (let s = 0; s <= steps; ++s) {
+          const xPos = startX + (s / steps) * (endX - startX);
+          const kVal = (s / steps) * n;
+          const pdfVal = gaussianPDF(kVal, theoMean, theoStd);
+          // Scale Gaussian peak to match Binomial expectation height
+          const peakBinomial = binomialPMF(n, Math.round(theoMean), p);
+          const peakGaussian = gaussianPDF(theoMean, theoMean, theoStd);
+          const scale = peakGaussian > 0 ? (totalBalls * peakBinomial / maxCount) * maxBarHeight / peakGaussian : 0;
+          const yPos = binBottomY - pdfVal * scale;
+          if (s === 0) ctx.moveTo(xPos, yPos);
+          else ctx.lineTo(xPos, yPos);
+        }
+        ctx.shadowColor = "#38bdf8";
+        ctx.shadowBlur = 8;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      updateStatistics();
+    }
+
+    /* ========================================================================= */
+    /* Event Handlers & Control Binding                                          */
+    /* ========================================================================= */
+    function resetSimulation() {
+      binCounts = new Array(rows + 1).fill(0);
+      totalBalls = 0;
+      activeParticles = [];
+      computeGeometry();
+      updateStatistics();
+    }
+
+    document.getElementById('sliderRows').addEventListener('input', (e) => {
+      rows = parseInt(e.target.value);
+      document.getElementById('valRows').textContent = rows;
+      resetSimulation();
+    });
+
+    document.getElementById('sliderBias').addEventListener('input', (e) => {
+      bias = parseFloat(e.target.value);
+      document.getElementById('valBias').textContent = bias.toFixed(2);
+      resetSimulation();
+    });
+
+    document.getElementById('sliderDropRate').addEventListener('input', (e) => {
+      dropRate = parseInt(e.target.value);
+      document.getElementById('valDropRate').textContent = dropRate;
+    });
+
+    document.getElementById('sliderRestitution').addEventListener('input', (e) => {
+      restitution = parseFloat(e.target.value);
+      document.getElementById('valRestitution').textContent = restitution.toFixed(2);
+    });
+
+    document.getElementById('btnPlayPause').addEventListener('click', () => {
+      isPaused = !isPaused;
+      document.getElementById('btnPlayPause').textContent = isPaused ? "▶ Resume" : "⏸ Pause";
+      document.getElementById('btnPlayPause').classList.toggle('btn-active', isPaused);
+    });
+
+    document.getElementById('btnStep').addEventListener('click', () => {
+      spawnBall();
+    });
+
+    document.getElementById('btnBatch100').addEventListener('click', () => instantDropBatch(100));
+    document.getElementById('btnBatch1000').addEventListener('click', () => instantDropBatch(1000));
+    document.getElementById('btnBatch10000').addEventListener('click', () => instantDropBatch(10000));
+    document.getElementById('btnClear').addEventListener('click', resetSimulation);
+
+    document.getElementById('btnAudioToggle').addEventListener('click', () => {
+      audio.init();
+      const on = audio.toggle();
+      document.getElementById('btnAudioToggle').innerHTML = on ? "<span>🔊 Audio: ON</span>" : "<span>🔇 Audio: OFF</span>";
+    });
+
+    // Start audio on first user gesture
+    window.addEventListener('click', () => audio.init(), { once: true });
+
+    document.getElementById('btnExportCSV').addEventListener('click', () => {
+      let csv = "bin_index,count,empirical_probability,theoretical_binomial_pmf\n";
+      for (let k = 0; k < binCounts.length; ++k) {
+        const empProb = totalBalls > 0 ? (binCounts[k] / totalBalls).toFixed(8) : "0.00000000";
+        const theoProb = binomialPMF(rows, k, bias).toFixed(8);
+        csv += `${k},${binCounts[k]},${empProb},${theoProb}\n`;
+      }
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `rcre_galton_distribution_n${rows}_p${bias.toFixed(2)}.csv`;
+      a.click();
+    });
+
+    document.getElementById('btnExportJSON').addEventListener('click', () => {
+      const data = {
+        configuration: { rows, bins: rows + 1, bias, restitution },
+        total_balls: totalBalls,
+        bins: binCounts.map((count, k) => ({
+          bin: k,
+          count,
+          empirical_prob: totalBalls > 0 ? count / totalBalls : 0,
+          binomial_pmf: binomialPMF(rows, k, bias)
+        }))
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `rcre_galton_n${rows}.json`;
+      a.click();
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>
