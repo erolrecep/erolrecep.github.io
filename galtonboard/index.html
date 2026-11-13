@@ -321,7 +321,26 @@
             <span>Pin Levels (Rows N):</span>
             <span class="control-val" id="valRows">12</span>
           </label>
-          <input type="range" id="sliderRows" min="6" max="24" step="1" value="12">
+          <input type="range" id="sliderRows" min="2" max="28" step="1" value="12">
+        </div>
+
+        <div class="control-row">
+          <label>
+            <span>Apex Starting Pins (P₀):</span>
+            <span class="control-val" id="valStartPins">1</span>
+          </label>
+          <input type="range" id="sliderStartPins" min="1" max="8" step="1" value="1">
+        </div>
+
+        <div class="control-row">
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem;">Experiment Presets:</div>
+          <div class="btn-group" style="flex-wrap: wrap; gap: 0.35rem;">
+            <button type="button" class="btn-preset" data-rows="3" data-pins="1" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">N=3, P₀=1</button>
+            <button type="button" class="btn-preset" data-rows="4" data-pins="1" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">N=4, P₀=1</button>
+            <button type="button" class="btn-preset" data-rows="12" data-pins="3" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">N=12, P₀=3</button>
+            <button type="button" class="btn-preset" data-rows="12" data-pins="4" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">N=12, P₀=4</button>
+            <button type="button" class="btn-preset" data-rows="12" data-pins="1" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">Classic (P₀=1)</button>
+          </div>
         </div>
 
         <div class="control-row">
@@ -472,13 +491,14 @@
 
     // Simulation Parameters
     let rows = 12;
+    let startPins = 1;
     let bias = 0.50;
     let dropRate = 30; // balls per sec
     let restitution = 0.45;
     let isPaused = false;
 
     let totalBalls = 0;
-    let binCounts = new Array(rows + 1).fill(0);
+    let binCounts = new Array(rows + startPins).fill(0);
     let activeParticles = [];
 
     // Peg geometry cache
@@ -519,7 +539,7 @@
       const centerX = w / 2;
 
       for (let r = 0; r < rows; ++r) {
-        const count = r + 1;
+        const count = r + startPins;
         const rowWidth = (count - 1) * dx;
         const startX = centerX - rowWidth / 2;
 
@@ -534,7 +554,7 @@
       }
 
       // Bin slots at bottom
-      const binsCount = rows + 1;
+      const binsCount = rows + startPins;
       const binsWidth = (binsCount - 1) * dx;
       const binsStartX = centerX - binsWidth / 2;
       const binTopY = topY + rows * dy + 15;
@@ -635,13 +655,19 @@
     function spawnBall() {
       const centerX = canvas.width / 2;
       const topY = canvas.height * 0.05;
-      activeParticles.push(new Ball(centerX, topY));
+      const boardHeight = canvas.height * 0.50;
+      const dy = boardHeight / rows;
+      const dx = dy * 0.88;
+      const startRowWidth = (startPins - 1) * dx;
+      const dropX = (centerX - startRowWidth / 2) + (startPins > 1 ? Math.random() * startRowWidth : 0) + (Math.random() - 0.5) * 4;
+      activeParticles.push(new Ball(dropX, topY));
     }
 
     function instantDropBatch(n) {
-      // High-speed Bernoulli trial batch
+      // High-speed Bernoulli trial batch across apex entry pins
       for (let i = 0; i < n; ++i) {
-        let k = 0;
+        let initPin = Math.floor(Math.random() * startPins);
+        let k = initPin;
         for (let r = 0; r < rows; ++r) {
           if (Math.random() < bias) k++;
         }
@@ -688,13 +714,26 @@
       return (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * diff * diff);
     }
 
+    function mixturePMF(n, sp, k, p) {
+      if (sp <= 1) return binomialPMF(n, k, p);
+      let sum = 0;
+      for (let j = 0; j < sp; ++j) {
+        if (k >= j && (k - j) <= n) {
+          sum += binomialPMF(n, k - j, p);
+        }
+      }
+      return sum / sp;
+    }
+
     function updateStatistics() {
       const n = rows;
+      const sp = startPins;
       const p = bias;
       const M = totalBalls;
 
-      const theoMean = n * p;
-      const theoVar = n * p * (1 - p);
+      const theoMean = ((sp - 1) / 2.0) + (n * p);
+      const varU = (sp * sp - 1.0) / 12.0;
+      const theoVar = varU + (n * p * (1 - p));
       const theoStd = Math.sqrt(theoVar);
       const theoSkew = theoStd > 1e-6 ? (1 - 2 * p) / theoStd : 0;
       const theoKurt = theoVar > 1e-6 ? (1 - 6 * p * (1 - p)) / theoVar : 0;
@@ -746,7 +785,7 @@
       let chi2 = 0;
       let activeBins = 0;
       for (let k = 0; k < binCounts.length; ++k) {
-        const expected = M * binomialPMF(n, k, p);
+        const expected = M * mixturePMF(n, sp, k, p);
         if (expected >= 1.0) {
           const diff = binCounts[k] - expected;
           chi2 += (diff * diff) / expected;
@@ -817,15 +856,19 @@
       // 1. Draw Funnel at top
       const centerX = w / 2;
       const topY = h * 0.08;
+      const boardHeight = h * 0.50;
+      const dy = boardHeight / rows;
+      const dx = dy * 0.88;
+      const funnelHalf = Math.max(16, ((startPins - 1) * dx) / 2 + 14);
       ctx.strokeStyle = "rgba(148, 163, 184, 0.4)";
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(centerX - 40, topY - 25);
-      ctx.lineTo(centerX - 12, topY);
-      ctx.lineTo(centerX - 12, topY + 12);
-      ctx.moveTo(centerX + 40, topY - 25);
-      ctx.lineTo(centerX + 12, topY);
-      ctx.lineTo(centerX + 12, topY + 12);
+      ctx.moveTo(centerX - funnelHalf - 24, topY - 25);
+      ctx.lineTo(centerX - funnelHalf, topY);
+      ctx.lineTo(centerX - funnelHalf, topY + 12);
+      ctx.moveTo(centerX + funnelHalf + 24, topY - 25);
+      ctx.lineTo(centerX + funnelHalf, topY);
+      ctx.lineTo(centerX + funnelHalf, topY + 12);
       ctx.stroke();
 
       // 2. Draw Pegs
@@ -891,17 +934,19 @@
       // 5. Draw Dual Theoretical Distribution Overlays
       if (totalBalls > 0 && binPositions.length > 0) {
         const n = rows;
+        const sp = startPins;
         const p = bias;
-        const theoMean = n * p;
-        const theoStd = Math.sqrt(n * p * (1 - p));
+        const theoMean = ((sp - 1) / 2.0) + (n * p);
+        const theoVar = ((sp * sp - 1.0) / 12.0) + (n * p * (1 - p));
+        const theoStd = Math.sqrt(theoVar);
 
-        // Theoretical Binomial PMF (Amber dotted line + points)
+        // Theoretical Mixture PMF (Amber dotted line + points)
         ctx.strokeStyle = "#f59e0b";
         ctx.lineWidth = 2.5;
         ctx.setLineDash([4, 3]);
         ctx.beginPath();
         for (let b = 0; b < binPositions.length; ++b) {
-          const prob = binomialPMF(n, b, p);
+          const prob = mixturePMF(n, sp, b, p);
           const expCount = totalBalls * prob;
           const y = binBottomY - (expCount / maxCount) * maxBarHeight;
           if (b === 0) ctx.moveTo(binPositions[b].x, y);
@@ -916,15 +961,16 @@
         ctx.beginPath();
         const startX = binPositions[0].x;
         const endX = binPositions[binPositions.length - 1].x;
+        const totalBins = binPositions.length;
         const steps = 120;
         for (let s = 0; s <= steps; ++s) {
           const xPos = startX + (s / steps) * (endX - startX);
-          const kVal = (s / steps) * n;
+          const kVal = (s / steps) * (totalBins - 1);
           const pdfVal = gaussianPDF(kVal, theoMean, theoStd);
-          // Scale Gaussian peak to match Binomial expectation height
-          const peakBinomial = binomialPMF(n, Math.round(theoMean), p);
+          // Scale Gaussian peak to match discrete expectation height
+          const peakDiscrete = mixturePMF(n, sp, Math.round(theoMean), p);
           const peakGaussian = gaussianPDF(theoMean, theoMean, theoStd);
-          const scale = peakGaussian > 0 ? (totalBalls * peakBinomial / maxCount) * maxBarHeight / peakGaussian : 0;
+          const scale = peakGaussian > 0 ? (totalBalls * peakDiscrete / maxCount) * maxBarHeight / peakGaussian : 0;
           const yPos = binBottomY - pdfVal * scale;
           if (s === 0) ctx.moveTo(xPos, yPos);
           else ctx.lineTo(xPos, yPos);
@@ -942,7 +988,7 @@
     /* Event Handlers & Control Binding                                          */
     /* ========================================================================= */
     function resetSimulation() {
-      binCounts = new Array(rows + 1).fill(0);
+      binCounts = new Array(rows + startPins).fill(0);
       totalBalls = 0;
       activeParticles = [];
       computeGeometry();
@@ -953,6 +999,24 @@
       rows = parseInt(e.target.value);
       document.getElementById('valRows').textContent = rows;
       resetSimulation();
+    });
+
+    document.getElementById('sliderStartPins').addEventListener('input', (e) => {
+      startPins = parseInt(e.target.value);
+      document.getElementById('valStartPins').textContent = startPins;
+      resetSimulation();
+    });
+
+    document.querySelectorAll('.btn-preset').forEach(btn => {
+      btn.addEventListener('click', () => {
+        rows = parseInt(btn.getAttribute('data-rows'));
+        startPins = parseInt(btn.getAttribute('data-pins'));
+        document.getElementById('sliderRows').value = rows;
+        document.getElementById('valRows').textContent = rows;
+        document.getElementById('sliderStartPins').value = startPins;
+        document.getElementById('valStartPins').textContent = startPins;
+        resetSimulation();
+      });
     });
 
     document.getElementById('sliderBias').addEventListener('input', (e) => {
@@ -996,36 +1060,36 @@
     window.addEventListener('click', () => audio.init(), { once: true });
 
     document.getElementById('btnExportCSV').addEventListener('click', () => {
-      let csv = "bin_index,count,empirical_probability,theoretical_binomial_pmf\n";
+      let csv = "bin_index,count,empirical_probability,theoretical_mixture_pmf\n";
       for (let k = 0; k < binCounts.length; ++k) {
         const empProb = totalBalls > 0 ? (binCounts[k] / totalBalls).toFixed(8) : "0.00000000";
-        const theoProb = binomialPMF(rows, k, bias).toFixed(8);
+        const theoProb = mixturePMF(rows, startPins, k, bias).toFixed(8);
         csv += `${k},${binCounts[k]},${empProb},${theoProb}\n`;
       }
       const blob = new Blob([csv], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `rcre_galton_distribution_n${rows}_p${bias.toFixed(2)}.csv`;
+      a.download = `rcre_galton_distribution_n${rows}_p0${startPins}_p${bias.toFixed(2)}.csv`;
       a.click();
     });
 
     document.getElementById('btnExportJSON').addEventListener('click', () => {
       const data = {
-        configuration: { rows, bins: rows + 1, bias, restitution },
+        configuration: { rows, start_pins: startPins, bins: rows + startPins, bias, restitution },
         total_balls: totalBalls,
         bins: binCounts.map((count, k) => ({
           bin: k,
           count,
           empirical_prob: totalBalls > 0 ? count / totalBalls : 0,
-          binomial_pmf: binomialPMF(rows, k, bias)
+          mixture_pmf: mixturePMF(rows, startPins, k, bias)
         }))
       };
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `rcre_galton_n${rows}.json`;
+      a.download = `rcre_galton_n${rows}_p0${startPins}.json`;
       a.click();
     });
 
