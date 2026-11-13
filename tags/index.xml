@@ -10,56 +10,14 @@
 		
 		
 		
-			<lastBuildDate>Fri, 13 Nov 2026 15:00:00 -0600</lastBuildDate>
+			<lastBuildDate>Fri, 13 Nov 2026 10:00:00 -0600</lastBuildDate>
 		
 			<atom:link href="https://erolrecep.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
 			<item>
 				<title>C Programming</title>
 				<link>https://erolrecep.github.io/tags/c-programming/</link>
-				<pubDate>Fri, 13 Nov 2026 15:00:00 -0600</pubDate>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
 				<guid>https://erolrecep.github.io/tags/c-programming/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>FastAPI</title>
-				<link>https://erolrecep.github.io/tags/fastapi/</link>
-				<pubDate>Fri, 13 Nov 2026 15:00:00 -0600</pubDate>
-				<guid>https://erolrecep.github.io/tags/fastapi/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>HPC</title>
-				<link>https://erolrecep.github.io/tags/hpc/</link>
-				<pubDate>Fri, 13 Nov 2026 15:00:00 -0600</pubDate>
-				<guid>https://erolrecep.github.io/tags/hpc/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Python</title>
-				<link>https://erolrecep.github.io/tags/python/</link>
-				<pubDate>Fri, 13 Nov 2026 15:00:00 -0600</pubDate>
-				<guid>https://erolrecep.github.io/tags/python/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Statistics</title>
-				<link>https://erolrecep.github.io/tags/statistics/</link>
-				<pubDate>Fri, 13 Nov 2026 15:00:00 -0600</pubDate>
-				<guid>https://erolrecep.github.io/tags/statistics/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Systems Engineering</title>
-				<link>https://erolrecep.github.io/tags/systems-engineering/</link>
-				<pubDate>Fri, 13 Nov 2026 15:00:00 -0600</pubDate>
-				<guid>https://erolrecep.github.io/tags/systems-engineering/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>WebAssembly</title>
-				<link>https://erolrecep.github.io/tags/webassembly/</link>
-				<pubDate>Fri, 13 Nov 2026 15:00:00 -0600</pubDate>
-				<guid>https://erolrecep.github.io/tags/webassembly/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -77,10 +35,31 @@
 				<description></description>
 			</item>
 			<item>
+				<title>HPC</title>
+				<link>https://erolrecep.github.io/tags/hpc/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/hpc/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>Interactive Learning</title>
 				<link>https://erolrecep.github.io/tags/interactive-learning/</link>
 				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
 				<guid>https://erolrecep.github.io/tags/interactive-learning/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Systems Engineering</title>
+				<link>https://erolrecep.github.io/tags/systems-engineering/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/systems-engineering/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>WebAssembly</title>
+				<link>https://erolrecep.github.io/tags/webassembly/</link>
+				<pubDate>Fri, 13 Nov 2026 10:00:00 -0600</pubDate>
+				<guid>https://erolrecep.github.io/tags/webassembly/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -168,7 +147,7 @@
 				<description></description>
 			</item>
 			<item>
-				<title>Slurm</title>
+				<title>SLURM</title>
 				<link>https://erolrecep.github.io/tags/slurm/</link>
 				<pubDate>Mon, 02 Nov 2026 12:00:00 -0600</pubDate>
 				<guid>https://erolrecep.github.io/tags/slurm/</guid>
